@@ -1,0 +1,22 @@
+{
+  "version": "0.0.1",
+  "name": "eddy",
+  "description": "coming soon",
+  "homepage": "https://github.com/WebReflection/eddy",
+  "keywords": [],
+  "author": {
+    "name": "Andrea Giammarchi",
+    "web": "http://webreflection.blogspot.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/WebReflection/eddy.git"
+  },
+  "main": "./build/eddy.node.js",
+  "scripts": {
+    "test": "node test/.test.js"
+  },
+  "dependencies": {
+    "wru": ">= 0.0.0"
+  }
+}
