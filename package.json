@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "version": "0.0.1",
   "name": "eddy",
   "description": "coming soon",
@@ -8,16 +7,6 @@
   "author": {
     "name": "Andrea Giammarchi",
     "web": "http://webreflection.blogspot.com/"
-=======
-  "version": "0.0.0",
-  "name": "eddy",
-  "description": "",
-  "homepage": "https://github.com/WebReflection/eddy",
-  "keywords": [],
-  "author": {
-    "name": "",
-    "web": ""
->>>>>>> d4c872c6bd74ba80098f22d02352664b5e57589c
   },
   "repository": {
     "type": "git",
