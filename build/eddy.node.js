@@ -54,9 +54,9 @@ THE SOFTWARE.
     once = commonDescriptor(
       function once(type, handler, capture) {
         var self = this;
-        return self.on(type, function once(e) {
+        return self.on(type, function once() {
           self.off(type, once, capture);
-          triggerAny(handler, self, e);
+          triggerEvent(handler, self, arguments);
         }, capture);
       }
     ),
@@ -96,6 +96,24 @@ THE SOFTWARE.
     },
     JSDescriptor = {
       boundTo: boundTo,
+      emit: commonDescriptor(
+        function JSemit(type) {
+          var array = this[uid][type];
+          if (array) {
+            array.forEach(
+              emitJS,
+              {
+                arguments: (
+                  array.shift.call(arguments),
+                  arguments
+                ),
+                context: this
+              }
+            );
+          }
+          return this;
+        }
+      ),
       off: commonDescriptor(
         function JSOff(type, handler) {
           var
@@ -203,6 +221,13 @@ THE SOFTWARE.
       stoppedPropagation
     );
   }
+  function triggerEvent(handler, context, args) {
+    if (typeof handler == 'function') {
+      handler.apply(context, args);
+    } else {
+      handler.handleEvent.apply(handler, args);
+    }
+  }
   function triggerAny(handler, context, e) {
     if (typeof handler == 'function') {
       handler.call(context, e);
@@ -214,6 +239,10 @@ THE SOFTWARE.
     /*jshint validthis:true */
     triggerAny(handler, this.target, this);
     return this._active;
+  }
+  function emitJS(handler) {
+    /*jshint validthis:true */
+    handler.apply(this.context, this.arguments);
   }
   function triggerJS(handler) {
     /*jshint validthis:true */
@@ -271,6 +300,9 @@ THE SOFTWARE.
     {
       boundTo: commonDescriptor(
         defineCommonMethod('boundTo')
+      ),
+      emit: commonDescriptor(
+        defineCommonMethod('emit')
       ),
       handleEvent: commonDescriptor(
         defineCommonMethod('trigger')

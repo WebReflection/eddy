@@ -141,5 +141,34 @@ wru.test([
         })).trigger(data, data));
       }
     }
+  },{
+    name: 'emit data',
+    test: function () {
+      var err = new Error,
+          data = {},
+          cb;
+      ({}.on('emit', cb = wru.async(function($err, $data){
+        wru.assert('invoked with right arguments', err === $err && data === $data);
+        this.off('emit', cb);
+        this.once('emit',wru.async(function($err, $data){
+          wru.assert('invoked once', err === $err && data === $data);
+        })).emit('emit', $err, $data);
+      })).emit('emit', err, data));
+    }
+  },{
+    name: 'lazy assignment',
+    test: function () {
+      function ST() {
+        return st = {boundTo:function(){}};
+      }
+      var st;
+      wru.assert('emit', ST().emit('whatever') === st);
+      wru.assert('trigger', ST().trigger('whatever') === st);
+      wru.assert('handleEvent', ST().handleEvent('whatever') === st);
+      wru.assert('on', ST().on('whatever') === st);
+      wru.assert('off', ST().off('whatever') === st);
+      wru.assert('once', ST().once('whatever') === st);
+      wru.assert('boundTo', ST().boundTo('boundTo') === st.boundTo('boundTo'));
+    }
   }
 ]);
