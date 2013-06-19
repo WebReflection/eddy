@@ -157,19 +157,92 @@ wru.test([
       })).emit('emit', err, data));
     }
   },{
-    name: 'lazy assignment',
+    name: 'inherited and lazily assigned',
     test: function () {
-      function ST() {
+      var st, ST = function () {
         return st = {boundTo:function(){}};
-      }
-      var st;
+      };
       wru.assert('emit', ST().emit('whatever') === st);
       wru.assert('trigger', ST().trigger('whatever') === st);
-      wru.assert('handleEvent', ST().handleEvent('whatever') === st);
+      //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
       wru.assert('on', ST().on('whatever') === st);
       wru.assert('off', ST().off('whatever') === st);
       wru.assert('once', ST().once('whatever') === st);
       wru.assert('boundTo', ST().boundTo('boundTo') === st.boundTo('boundTo'));
+      if (hasDOM) {
+        ST = function () {
+          return st = document.createElement('div');
+        };
+        wru.assert('trigger', ST().trigger('whatever') === st);
+        //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
+        wru.assert('on', ST().on('whatever') === st);
+        wru.assert('off', ST().off('whatever') === st);
+        wru.assert('once', ST().once('whatever') === st);
+        wru.assert('boundTo', ST().boundTo('boundTo') === st.boundTo('boundTo'));
+      }
+    }
+  },{
+    name: 'String#toLocaleString',
+    test: function () {
+      String.language = {
+        greetings: 'Hello, my name is ${name}'
+      };
+      wru.assert(
+        'it works with direct property',
+        'greetings'.toLocaleString({
+          name: 'WebReflection'
+        }) ===
+        'Hello, my name is WebReflection'
+      );
+    }
+  },{
+    name: 'handleEvent',
+    test: function () {
+      ({}.on('handle-event', {
+        handleEvent: wru.async(function () {
+          wru.assert('here we go');
+        })
+      }).emit('handle-event'));
     }
   }
+  /*
+  ,{
+    name: 'handleEvent',
+    test: function () {
+      var target = {},
+          source = {};
+      target.on('source', source);
+      source.once('source', wru.async(function(e){
+        wru.assert('right type', e.type === 'source');
+        wru.assert('target', e.target === target);
+        wru.assert('context', this === source);
+        if (hasDOM) {
+          target.on('source', (source = document.createElement('div')).once(
+            'source', wru.async(function(){
+              wru.assert('right type', e.type === 'source');
+              wru.assert('target', e.target === target);
+              wru.assert('context', this === source);
+            })
+          )).trigger('source');
+        }
+      }));
+      target.trigger('source');
+    }
+  }
+  ,{
+    name: 'mixed behavior',
+    test: function () {
+      var o = {};
+      o.handleEvent = wru.async(function(){
+        wru.assert('called');
+        o.on('self', {
+          handleEvent: wru.async(function(){
+            wru.assert('called');
+          })
+        }).emit('self');
+      });
+      ({}.on('generic', o).trigger('generic'));
+    }
+  }
+  */
 ]);

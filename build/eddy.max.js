@@ -64,6 +64,16 @@ THE SOFTWARE.
     ),
     DOMDescriptor = {
       boundTo: boundTo,
+      emit: commonDescriptor(
+        function DOMemit(type) {
+          return this.trigger(
+            type,
+            {
+              data: Array.prototype.slice.call(arguments, 1)
+            }
+          );
+        }
+      ),
       off: commonDescriptor(
         function DOMOff(type, handler, capture) {
           this.removeEventListener(type, handler, !!capture);
@@ -156,9 +166,10 @@ THE SOFTWARE.
             array.every(
               triggerJS,
               {
-                event: isNotEvent ?
+                arguments: [isNotEvent ?
                   new Event(this, evt, data) :
-                  injectActiveStatus(evt),
+                  (evt instanceof Event ?
+                    evt : injectActiveStatus(evt))],
                 context: this
               }
             );
@@ -183,6 +194,7 @@ THE SOFTWARE.
   }
   function commonDescriptor(value) {
     return {
+      // writable: true,
       configurable: true,
       value: value
     };
@@ -205,7 +217,6 @@ THE SOFTWARE.
     ifNotPresent(e, 'timeStamp', Date.now());
     for(var key in data) e[key] = data[key];
     ifNotPresent(e, 'type', type);
-    ifNotPresent(e, 'currentTarget', target);
     ifNotPresent(e, 'target', target);
     if (data) ifNotPresent(e, 'data', data);
   }
@@ -237,19 +248,14 @@ THE SOFTWARE.
       handler.handleEvent(e);
     }
   }
-  function triggerDOM(handler) {
-    /*jshint validthis:true */
-    triggerAny(handler, this.target, this);
-    return this._active;
-  }
   function emitJS(handler) {
     /*jshint validthis:true */
-    handler.apply(this.context, this.arguments);
+    triggerEvent(handler, this.context, this.arguments);
   }
   function triggerJS(handler) {
     /*jshint validthis:true */
-    triggerAny(handler, this.context, this.event);
-    return this.event._active;
+    triggerEvent(handler, this.context, this.arguments);
+    return this.arguments[0]._active;
   }
   if (hasDOM) {
     DOMWM = WM ? new WM() : {
@@ -303,9 +309,11 @@ THE SOFTWARE.
       emit: commonDescriptor(
         defineCommonMethod('emit')
       ),
+      /*
       handleEvent: commonDescriptor(
-        defineCommonMethod('trigger')
+        defineCommonMethod('handleEvent')
       ),
+      */
       off: commonDescriptor(
         defineCommonMethod('off')
       ),
@@ -319,6 +327,26 @@ THE SOFTWARE.
         defineCommonMethod('trigger')
       )
     }
+  );
+  defineProperty(
+    String.prototype,
+    'toLocaleString',
+    commonDescriptor((function(){
+      var
+        re = /\$\{([^}]+?)\}/g,
+        place = function ($0, $1) {
+          return current[$1];
+        },
+        current;
+      String.language = {};
+      return function toLocaleString(object) {
+        var result;
+        current = object;
+        result = (String.language[this] || this).replace(re, place);
+        current = null;
+        return result;
+      };
+    }()))
   );
   defineProperty(global, 'eddy', {
     value: true
