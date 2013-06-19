@@ -23,9 +23,11 @@
               b: []
             }
           ),
-          i = bound.m.indexOf(method);
+          fn = typeof method === 'string' ?
+            this[method] : method,
+          i = bound.m.indexOf(fn);
         return i < 0 ?
-          bound.b[bound.m.push(method) - 1] = method.bind(this) :
+          bound.b[bound.m.push(fn) - 1] = fn.bind(this) :
           bound.b[i];
       }
     ),

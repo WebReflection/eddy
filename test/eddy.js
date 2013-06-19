@@ -21,6 +21,7 @@ wru.test([
       };
       wru.assert('bound once', o.boundTo(o.method) === o.boundTo(method));
       wru.assert('it\'s bound', o.boundTo(method)() === o);
+      wru.assert('as string too', o.boundTo('toString') === o.boundTo('toString'));
       if (hasDOM) {
         var node = document.createElement('div');
         wru.assert('inherits methods', node.on);
