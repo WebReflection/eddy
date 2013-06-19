@@ -264,9 +264,6 @@ define(function(){
       }
     };
   }
-  defineProperty(global, 'eddy', {
-    value: true
-  });
   defineProperties(
     Event.prototype,
     {
@@ -322,6 +319,9 @@ define(function(){
       )
     }
   );
+  defineProperty(global, 'eddy', {
+    value: true
+  });
 }(
   typeof global == 'undefined' ? window : global
 ));});

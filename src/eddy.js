@@ -241,9 +241,6 @@
       }
     };
   }
-  defineProperty(global, 'eddy', {
-    value: true
-  });
   defineProperties(
     Event.prototype,
     {
@@ -299,6 +296,9 @@
       )
     }
   );
+  defineProperty(global, 'eddy', {
+    value: true
+  });
 }(
   typeof global == 'undefined' ? window : global
 ));

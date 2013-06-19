@@ -263,9 +263,6 @@ THE SOFTWARE.
       }
     };
   }
-  defineProperty(global, 'eddy', {
-    value: true
-  });
   defineProperties(
     Event.prototype,
     {
@@ -321,6 +318,9 @@ THE SOFTWARE.
       )
     }
   );
+  defineProperty(global, 'eddy', {
+    value: true
+  });
 }(
   typeof global == 'undefined' ? window : global
 ));
