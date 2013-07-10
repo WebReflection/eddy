@@ -208,7 +208,10 @@ var magic = Object.defineProperties({},{
 });
 
 'hi'.toLocaleString(magic);
+// Hello WebReflection and for the 1 time
+
 'hi'.toLocaleString(magic);
+// Hello WebReflection and for the 2 time
 ```
 This implementation is ridiculously simple on purpose since "nobody" is using `toLocaleString` in JS in any case but this is most likely everything you need without going too fancy with nested, complicated, or slow, string operations for a runtime output.
 
@@ -220,9 +223,10 @@ Anyway, here the list of files you need:
 
  * [browser](build/eddy.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
  * [AMD](build/eddy.amd.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
- * [node.js](build/eddy.node.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
+ * [node.js](build/eddy.node.js), meaning ... node.js
 
-You can install `eddy.js` directly via `npm install eddy` and use `require('eddy')`. The version for node should work for Rhino too without problems ;-)
+You can install `eddy.js` directly via `npm install eddy` too and simply use `require('eddy')`.
+The version for node should work for Rhino too without problems ;-)
 
 
 ### Why Eddy As Name ?
