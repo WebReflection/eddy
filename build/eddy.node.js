@@ -30,15 +30,16 @@ THE SOFTWARE.
     create = Object.create,
     defineProperty = Object.defineProperty,
     defineProperties = Object.defineProperties,
+    slice = Array.prototype.slice,
     DOM = global.Node || global.Element || global.HTMLElement,
     hasDOM = !!DOM,
     boundTo = commonDescriptor(
       function boundTo(method) {
         var
-          listeners = this[uid] || DOMWM.get(this) || (
+          listeners = hasDOM ? DOMWM.get(this) || (
             DOMWM.set(this, create(null)),
             DOMWM.get(this)
-          ),
+          ) : this[uid],
           bound = listeners[uid] || (
             listeners[uid] = {
               m: [],
@@ -69,7 +70,7 @@ THE SOFTWARE.
           return this.trigger(
             type,
             {
-              data: Array.prototype.slice.call(arguments, 1)
+              data: slice.call(arguments, 1)
             }
           );
         }
@@ -215,7 +216,7 @@ THE SOFTWARE.
   }
   function initEvent(e, target, type, data) {
     ifNotPresent(e, 'timeStamp', Date.now());
-    for(var key in data) e[key] = data[key];
+    for(var key in data) ifNotPresent(e, key, data[key]);
     ifNotPresent(e, 'type', type);
     ifNotPresent(e, 'target', target);
     if (data) ifNotPresent(e, 'data', data);
@@ -254,7 +255,7 @@ THE SOFTWARE.
   }
   function triggerJS(handler) {
     /*jshint validthis:true */
-    triggerEvent(handler, this.context, this.arguments);
+    emitJS.call(this, handler);
     return this.arguments[0]._active;
   }
   if (hasDOM) {
@@ -333,16 +334,29 @@ THE SOFTWARE.
     'toLocaleString',
     commonDescriptor((function(){
       var
+        hasOwnProperty = {}.hasOwnProperty,
         re = /\$\{([^}]+?)\}/g,
         place = function ($0, $1) {
           return current[$1];
         },
+        locale = create(null),
         current;
-      String.language = {};
+      defineProperty(
+        String,
+        'setLocale',
+        commonDescriptor(function setLocale(language){
+          for (var key in language) {
+            if (hasOwnProperty.call(language, key)) {
+              locale[key] = language[key];
+            }
+          }
+          return language;
+        })
+      );
       return function toLocaleString(object) {
         var result;
         current = object;
-        result = (String.language[this] || this).replace(re, place);
+        result = (locale[this] || this).replace(re, place);
         current = null;
         return result;
       };

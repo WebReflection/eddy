@@ -184,9 +184,9 @@ wru.test([
   },{
     name: 'String#toLocaleString',
     test: function () {
-      String.language = {
+      String.setLocale({
         greetings: 'Hello, my name is ${name}'
-      };
+      });
       wru.assert(
         'it works with direct property',
         'greetings'.toLocaleString({
