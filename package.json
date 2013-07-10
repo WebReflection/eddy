@@ -1,7 +1,7 @@
 {
-  "version": "0.0.2",
+  "version": "0.1.0",
   "name": "eddy",
-  "description": "Event Driven KISS & YAGNI Environment",
+  "description": "Event Driven JS - KISS & YAGNI Environment",
   "homepage": "https://github.com/WebReflection/eddy",
   "keywords": [],
   "author": {

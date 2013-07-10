@@ -210,4 +210,24 @@ var magic = Object.defineProperties({},{
 'hi'.toLocaleString(magic);
 'hi'.toLocaleString(magic);
 ```
-This implementation is ridiculously simple on purpose since "*nobody*" is using `toLocaleString` in JS in any case but this is most likely everything you need without going too fancy with nested, complicated, or slow, string operations for a runtime output.
+This implementation is ridiculously simple on purpose since "nobody" is using `toLocaleString` in JS in any case but this is most likely everything you need without going too fancy with nested, complicated, or slow, string operations for a runtime output.
+
+
+### Which File ?
+`eddy.js` comes in different flavors but it operates on global, native, constructors.
+This means once you require or include or load `eddy.js` you need to manually `delete` polluted prototypes if needed.
+Anyway, here the list of files you need:
+
+ * [browser](build/eddy.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
+ * [AMD](build/eddy.amd.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
+ * [node.js](build/eddy.node.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
+
+You can install `eddy.js` directly via `npm install eddy` and use `require('eddy')`. The version for node should work for Rhino too without problems ;-)
+
+
+### Why Eddy As Name ?
+The definition I prefer is the following one:
+
+> a current or trend, as of opinion or events, running counter to the main current.
+
+but [all other definitions](http://dictionary.reference.com/browse/eddy) are somehow very metaphoric too ;-)
