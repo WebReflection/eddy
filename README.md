@@ -230,7 +230,7 @@ The version for node should work for Rhino too without problems ;-)
 
 
 ### Why Eddy As Name ?
-The definition I prefer is the following one:
+Not only because of the " *Event Driven* sound check ", the definition I prefer is the following one:
 
 > a current or trend, as of opinion or events, running counter to the main current.
 
