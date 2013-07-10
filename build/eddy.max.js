@@ -310,11 +310,6 @@ THE SOFTWARE.
       emit: commonDescriptor(
         defineCommonMethod('emit')
       ),
-      /*
-      handleEvent: commonDescriptor(
-        defineCommonMethod('handleEvent')
-      ),
-      */
       off: commonDescriptor(
         defineCommonMethod('off')
       ),
@@ -329,6 +324,7 @@ THE SOFTWARE.
       )
     }
   );
+  /* abandoned right now ... 
   defineProperty(
     String.prototype,
     'toLocaleString',
@@ -362,6 +358,7 @@ THE SOFTWARE.
       };
     }()))
   );
+  // */
   defineProperty(global, 'eddy', {
     value: true
   });

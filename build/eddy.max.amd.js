@@ -311,11 +311,6 @@ define(function(){
       emit: commonDescriptor(
         defineCommonMethod('emit')
       ),
-      /*
-      handleEvent: commonDescriptor(
-        defineCommonMethod('handleEvent')
-      ),
-      */
       off: commonDescriptor(
         defineCommonMethod('off')
       ),
@@ -330,6 +325,7 @@ define(function(){
       )
     }
   );
+  /* abandoned right now ... 
   defineProperty(
     String.prototype,
     'toLocaleString',
@@ -363,6 +359,7 @@ define(function(){
       };
     }()))
   );
+  // */
   defineProperty(global, 'eddy', {
     value: true
   });

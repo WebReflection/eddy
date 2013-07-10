@@ -181,7 +181,9 @@ wru.test([
         wru.assert('boundTo', ST().boundTo('boundTo') === st.boundTo('boundTo'));
       }
     }
-  },{
+  }
+  /* abandoned right now
+  ,{
     name: 'String#toLocaleString',
     test: function () {
       String.setLocale({
@@ -195,7 +197,9 @@ wru.test([
         'Hello, my name is WebReflection'
       );
     }
-  },{
+  }
+  //*/
+  ,{
     name: 'handleEvent',
     test: function () {
       ({}.on('handle-event', {

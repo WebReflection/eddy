@@ -1,7 +1,7 @@
 Event Driven JS
 ===============
 
-a not so obtrusive and highly optimized attempt to make JavaScript more awesome than ever!
+a not so obtrusive and *highly optimized* attempt to make JavaScript more awesome than ever!
 
 [![build status](https://secure.travis-ci.org/WebReflection/eddy.png)](http://travis-ci.org/WebReflection/eddy)
 
@@ -11,6 +11,8 @@ It does not matter if you code client or server side, we all need the same thing
 I am talking about all *de-facto standards API* such `.on(type, handler)`, `.once(type, handler)`, `.off(type, handler)` together with `.emit(type, arg1, argN)` or `.trigger(type, data)` to deal with DOM nodes.
 
 `eddy.js` aim is to harmonize all these API at core level polluting in a **non enumerable** way the `Object.prototype` in a smart way that simply works!
+
+This means, *as soon as we use one of those methods, objects become lazily Event Emitters* so we can use them as such.
 
 
 ### Object.prototype Enriched API
@@ -144,78 +146,6 @@ console.log(
 ```
 
 
-### Not Only Objects
-The JavaScript environment could be enriched in many ways but it's very hard to define methods everybody agrees on.
-All `Object.prototype` entries described before are a common thing every library does some how so it's easy to spot the utility but there are many other options we could explore it's very hard to decide what will scale in terms of both performance, size, features, and reliability.
-
-This is why `eddy.js` keeps things simple and try to avoid anything that might be superfluous for a developer but there is at least one more thing I'd like to suggest with this utility, and it's about internationalization/i18n.
-
-
-#### String#toLocaleString([object])
-This method is inspired by `Objective-C` `Cocoa` framework and *local* functionality keeping the behavior as simple, well defined, and performant as possible in both server side and client side, included old and low performant mobile devices.
-
-The aim of this method is to return a translated copy of the meant string by generic `String.language` object or the `string` itself.
-```javascript
-// two language objects with same keys
-var
-  eng = {
-    hi: 'Hello'
-  },
-  ita = {
-    hi: 'Ciao'
-  }
-;
-
-// set default language
-String.setLocale(eng);
-
-// say hi
-'hi'.toLocaleString(); // Hello
-
-// change language
-String.setLocale(ita);
-'hi'.toLocaleString(); // Ciao
-```
-The optional object argument can be used to retrieve at runtime a different content for that specific string.
-```javascript
-// two language objects with same keys
-var eng = String.setLocale({
-  hi: 'Hello ${user}'
-  // `user` is the object key
-});
-
-// say hi to me
-'hi'.toLocaleString({
-  user: 'WebReflection'
-}); // Hello WebReflection
-```
-Being the key retrieved at runtime it's possible to use getters too so that special keys can be computed on demand.
-```javascript
-// two language objects with same keys
-var eng = String.setLocale({
-  hi: 'Hello ${user} and for the ${times} time'
-});
-
-var magic = Object.defineProperties({},{
-  user: {value: 'WebReflection'},
-  times: {get: function () {
-    return ++this.__times;
-  }},
-  __times: {
-    value: 0,
-    writable: true
-  }
-});
-
-'hi'.toLocaleString(magic);
-// Hello WebReflection and for the 1 time
-
-'hi'.toLocaleString(magic);
-// Hello WebReflection and for the 2 time
-```
-This implementation is ridiculously simple on purpose since "nobody" is using `toLocaleString` in JS in any case but this is most likely everything you need without going too fancy with nested, complicated, or slow, string operations for a runtime output.
-
-
 ### Which File ?
 `eddy.js` comes in different flavors but it operates on global, native, constructors.
 This means once you require or include or load `eddy.js` you need to manually `delete` polluted prototypes if needed.
@@ -235,3 +165,9 @@ Not only because of the " *Event Driven* sound check ", the definition I prefer 
 > a current or trend, as of opinion or events, running counter to the main current.
 
 but [all other definitions](http://dictionary.reference.com/browse/eddy) are somehow very metaphoric too ;-)
+
+
+### Not Your Meal ?
+If you are stuck in late 90s dogmas about JS and forbidden `Object.prototype` pollution, you can always go for [EventTarget](https://github.com/WebReflection/event-target#event-target) mixin and use that with all your classes.
+
+What `eddy.js` gives you here, is the ability to forget all these problems and use emitters when you need them, if you need them, as easy as that.
