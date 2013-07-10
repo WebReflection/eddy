@@ -14,6 +14,10 @@ I am talking about all *de-facto standards API* such `.on(type, handler)`, `.onc
 
 This means, *as soon as we use one of those methods, objects become lazily Event Targets* so we can use them as such.
 
+As summary, [this is the philosophy behind this module](https://twitter.com/WebReflection/status/354958592601899008)
+
+> eddy.js is a very pragmatic approach, back those days where developers enriched native prototypes to do more with less code ;-)
+
 
 ### Object.prototype Enriched API
 Here a list of methods you can use by default in an `eddy.js` environment.
