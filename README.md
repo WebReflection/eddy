@@ -12,7 +12,7 @@ I am talking about all *de-facto standards API* such `.on(type, handler)`, `.onc
 
 `eddy.js` aim is to harmonize all these API at core level polluting in a **non enumerable** way the `Object.prototype` in a smart way that simply works!
 
-This means, *as soon as we use one of those methods, objects become lazily Event Emitters* so we can use them as such.
+This means, *as soon as we use one of those methods, objects become lazily Event Targets* so we can use them as such.
 
 
 ### Object.prototype Enriched API
