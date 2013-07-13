@@ -165,7 +165,7 @@ wru.test([
       var st, ST = function () {
         return st = {boundTo:function(){}};
       };
-      wru.assert('trigger', ST().trigger('whatever') === st);
+      wru.assert('trigger', ST().trigger('whatever') === true);
       //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
       wru.assert('on', ST().on('whatever') === st);
       wru.assert('off', ST().off('whatever') === st);
@@ -175,12 +175,42 @@ wru.test([
         ST = function () {
           return st = document.createElement('div');
         };
-        wru.assert('trigger', ST().trigger('whatever') === st);
+        wru.assert('trigger', ST().trigger('whatever') === true);
         //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
         wru.assert('on', ST().on('whatever') === st);
         wru.assert('off', ST().off('whatever') === st);
         wru.assert('once', ST().once('whatever') === st);
         wru.assert('boundTo', ST().boundTo('boundTo') === st.boundTo('boundTo'));
+      }
+    }
+  },{
+    name: 'deeper emit',
+    test: function () {
+      wru.assert('emitted', {}.on('type', Object).emit('type') === true);
+      wru.assert('not emitted', {}.on('type', Object).emit('nope') === false);
+      wru.assert('not emitted', {}.emit('nope') === false);
+    }
+  },{
+    name: 'deeper trigger tests',
+    test: function () {
+      var o = {};
+      o.on('event', function(e){
+        e.stopImmediatePropagation();
+      });
+      o.on('event', Object);
+      o.on('pass', Object);
+      wru.assert('was not stopped', o.trigger('pass') === true);
+      wru.assert('was stopped', o.trigger('event') === false);
+      wru.assert('was irrelevant', o.trigger('whatsoever') === true);
+      if (hasDOM) {
+        o = document.createElement('div');
+        o.on('event', function(e){
+          e.preventDefault();
+        });
+        o.on('pass', Object);
+        wru.assert('DOM was not stopped', o.trigger('pass') === true);
+        wru.assert('DOM was stopped', o.trigger('event') === false);
+        wru.assert('was irrelevant', o.trigger('whatsoever') === true);
       }
     }
   }

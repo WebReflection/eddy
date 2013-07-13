@@ -11,27 +11,6 @@
     slice = Array.prototype.slice,
     DOM = global.Node || global.Element || global.HTMLElement,
     hasDOM = !!DOM,
-    boundTo = commonDescriptor(
-      function boundTo(method) {
-        var
-          listeners = hasDOM ? DOMWM.get(this) || (
-            DOMWM.set(this, create(null)),
-            DOMWM.get(this)
-          ) : this[uid],
-          bound = listeners[uid] || (
-            listeners[uid] = {
-              m: [],
-              b: []
-            }
-          ),
-          fn = typeof method === 'string' ?
-            this[method] : method,
-          i = bound.m.indexOf(fn);
-        return i < 0 ?
-          bound.b[bound.m.push(fn) - 1] = fn.bind(this) :
-          bound.b[i];
-      }
-    ),
     once = commonDescriptor(
       function once(type, handler, capture) {
         var self = this;
@@ -42,7 +21,16 @@
       }
     ),
     DOMDescriptor = {
-      boundTo: boundTo,
+      boundTo: commonDescriptor(function(method){
+        return boundTo(
+          this,
+          DOMWM.get(this) || (
+            DOMWM.set(this, create(null)),
+            DOMWM.get(this)
+          ),
+          method
+        );
+      }),
       emit: commonDescriptor(
         function DOMemit(type) {
           return this.trigger(
@@ -80,13 +68,14 @@
             data && data.cancelable || 1
           );
           initEvent(e, this, type, stringEvent && data);
-          this.dispatchEvent(e);
-          return true; // since the event has been dispatched
+          return this.dispatchEvent(e);
         }
       )
     },
     JSDescriptor = {
-      boundTo: boundTo,
+      boundTo: commonDescriptor(function(method){
+        return boundTo(this, this[uid], method);
+      }),
       emit: commonDescriptor(
         function JSemit(type) {
           var array = this[uid][type],
@@ -142,19 +131,16 @@
             listeners = this[uid],
             isNotEvent = typeof evt === 'string',
             array = listeners[isNotEvent ? evt : evt.type];
-          if (array) {
-            array.every(
-              triggerJS,
-              {
-                arguments: [isNotEvent ?
-                  new Event(this, evt, data) :
-                  (evt instanceof Event ?
-                    evt : injectActiveStatus(evt))],
-                context: this
-              }
-            );
-          }
-          return this;
+          return array ?   array.every(
+            triggerJS,
+            {
+              arguments: [isNotEvent ?
+                new Event(this, evt, data) :
+                (evt instanceof Event ?
+                  evt : injectActiveStatus(evt))],
+              context: this
+            }
+          ) : true;
         }
       )
     },
@@ -174,10 +160,26 @@
   }
   function commonDescriptor(value) {
     return {
-      // writable: true,
+      enumerable: false,
+      writable: true,
       configurable: true,
       value: value
     };
+  }
+  function boundTo(self, listeners, method) {
+    var
+      bound = listeners[uid] || (
+        listeners[uid] = {
+          m: [],
+          b: []
+        }
+      ),
+      fn = typeof method === 'string' ?
+        self[method] : method,
+      i = bound.m.indexOf(fn);
+    return i < 0 ?
+      bound.b[bound.m.push(fn) - 1] = fn.bind(self) :
+      bound.b[i];
   }
   function defineCommonMethod(name) {
     return function () {
@@ -303,41 +305,6 @@
       )
     }
   );
-  /* abandoned right now ... 
-  defineProperty(
-    String.prototype,
-    'toLocaleString',
-    commonDescriptor((function(){
-      var
-        hasOwnProperty = {}.hasOwnProperty,
-        re = /\$\{([^}]+?)\}/g,
-        place = function ($0, $1) {
-          return current[$1];
-        },
-        locale = create(null),
-        current;
-      defineProperty(
-        String,
-        'setLocale',
-        commonDescriptor(function setLocale(language){
-          for (var key in language) {
-            if (hasOwnProperty.call(language, key)) {
-              locale[key] = language[key];
-            }
-          }
-          return language;
-        })
-      );
-      return function toLocaleString(object) {
-        var result;
-        current = object;
-        result = (locale[this] || this).replace(re, place);
-        current = null;
-        return result;
-      };
-    }()))
-  );
-  // */
   defineProperty(global, 'eddy', {
     value: true
   });
