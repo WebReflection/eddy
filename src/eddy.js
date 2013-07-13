@@ -89,8 +89,9 @@
       boundTo: boundTo,
       emit: commonDescriptor(
         function JSemit(type) {
-          var array = this[uid][type];
-          if (array) {
+          var array = this[uid][type],
+              emitted = !!array;
+          if (emitted) {
             array.forEach(
               emitJS,
               {
@@ -102,7 +103,7 @@
               }
             );
           }
-          return this;
+          return emitted;
         }
       ),
       off: commonDescriptor(

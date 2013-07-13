@@ -148,13 +148,16 @@ wru.test([
       var err = new Error,
           data = {},
           cb;
-      ({}.on('emit', cb = wru.async(function($err, $data){
+      data.on('true', Object);
+      wru.assert('emit returns true', data.emit('true') === true);
+      wru.assert('emit returns false', data.emit('whatever') === false);
+      wru.assert('did emit the event!', ({}.on('emit', cb = wru.async(function($err, $data){
         wru.assert('invoked with right arguments', err === $err && data === $data);
         this.off('emit', cb);
         this.once('emit',wru.async(function($err, $data){
           wru.assert('invoked once', err === $err && data === $data);
         })).emit('emit', $err, $data);
-      })).emit('emit', err, data));
+      })).emit('emit', err, data)));
     }
   },{
     name: 'inherited and lazily assigned',
@@ -162,7 +165,6 @@ wru.test([
       var st, ST = function () {
         return st = {boundTo:function(){}};
       };
-      wru.assert('emit', ST().emit('whatever') === st);
       wru.assert('trigger', ST().trigger('whatever') === st);
       //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
       wru.assert('on', ST().on('whatever') === st);
