@@ -103,7 +103,7 @@ THE SOFTWARE.
           );
           initEvent(e, this, type, stringEvent && data);
           this.dispatchEvent(e);
-          return this;
+          return true; // since the event has been dispatched
         }
       )
     },
