@@ -205,7 +205,8 @@ wru.test([
       if (hasDOM) {
         o = document.createElement('div');
         o.on('event', function(e){
-          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (e.preventDefault) e.preventDefault();
         });
         o.on('pass', Object);
         wru.assert('DOM was not stopped', o.trigger('pass') === true);
