@@ -344,7 +344,7 @@ EventPrototype._active = true;
 EventPrototype.stopImmediatePropagation = function () {
   this._active = false;
 };
-(function(key){
+(function(){
 
   var
     oldIE = !('addEventListener' in window),
@@ -370,7 +370,7 @@ EventPrototype.stopImmediatePropagation = function () {
     dom = {
       boundTo: eddy.boundTo,
       emit: function emit(type) {
-        return dispatchEvent(createEvent(type));
+        return dispatchEvent(this, createEvent(type));
       },
       off: oldIE ?
         function (type, handler, capture) {
@@ -410,8 +410,8 @@ EventPrototype.stopImmediatePropagation = function () {
           type = isString ? evt : evt.type,
           e = createEvent(type)
         ;
-        Event.call(e, data);
-        return dispatchEvent(e);
+        Event.call(e, this, type, isString && data);
+        return dispatchEvent(this, e);
       }
     }
   ;
@@ -433,7 +433,7 @@ EventPrototype.stopImmediatePropagation = function () {
       handler.boundTo(handler.handleEvent);
   }
 
-  for (key in eddy) {
+  for (var key in eddy) {
     if (hasOwnProperty.call(eddy, key)) {
       if (IE) {
         ObjectPrototype[key] = dominable(key);
@@ -448,6 +448,6 @@ EventPrototype.stopImmediatePropagation = function () {
     }
   }
 
-}(key));
+}());
 
 }(Object));
