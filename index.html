@@ -31,37 +31,205 @@
         <hr>
 
         <section id="main_content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <h1>
+<a name="event-driven-js" class="anchor" href="#event-driven-js"><span class="octicon octicon-link"></span></a>Event Driven JS</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>a not so obtrusive and <em>highly optimized</em> attempt to make JavaScript more awesome than ever!</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p><a href="http://travis-ci.org/WebReflection/eddy"><img src="https://secure.travis-ci.org/WebReflection/eddy.png" alt="build status"></a></p>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="the-eddyjs-philosophy" class="anchor" href="#the-eddyjs-philosophy"><span class="octicon octicon-link"></span></a>The eddy.js Philosophy</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.</p>
+
+<p>I am talking about all <em>de-facto standards API</em> such <code>.on(type, handler)</code>, <code>.once(type, handler)</code>, <code>.off(type, handler)</code> together with <code>.emit(type, arg1, argN)</code> or <code>.trigger(type, data)</code> to deal with DOM nodes.</p>
+
+<p><code>eddy.js</code> aim is to harmonize all these API at core level polluting in a <strong>non enumerable</strong> way the <code>Object.prototype</code> in a smart way that simply works!</p>
+
+<p>This means, <em>as soon as we use one of those methods, objects become lazily Event Targets</em> so we can use them as such.</p>
+
+<p>As summary, <a href="https://twitter.com/WebReflection/status/354958592601899008">this is the philosophy behind this module</a></p>
+
+<blockquote>
+<p>eddy.js is a very pragmatic approach, back those days where developers enriched native prototypes to do more with less code ;-)</p>
+</blockquote>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="objectprototype-enriched-api" class="anchor" href="#objectprototype-enriched-api"><span class="octicon octicon-link"></span></a>Object.prototype Enriched API</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Here a list of methods you can use by default in an <code>eddy.js</code> environment.</p>
+
+<h4>
+<a name="objectontype-handler-capture" class="anchor" href="#objectontype-handler-capture"><span class="octicon octicon-link"></span></a>Object#on(type, handler[, capture])</h4>
+
+<p>Returns the object itself after adding an event handler.
+This is basically the equivalent of <code>addListener</code> or <code>addEventListener</code>, where duplicated handlers for the same event are not allowed.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">stopWatch</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">startTime</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+<span class="p">}.</span><span class="nx">on</span><span class="p">(</span>
+  <span class="s1">'change'</span><span class="p">,</span>
+  <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// log elapsed time per each change</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">stopWatch</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'change'</span><span class="p">);</span>
+<span class="p">},</span> <span class="mi">10</span><span class="p">);</span>
+
+<span class="c1">// or using the boundTo method</span>
+<span class="c1">// and the extra arguments accepted by setInterval</span>
+<span class="nx">setInterval</span><span class="p">(</span><span class="nx">stopWatch</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'emit'</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'change'</span><span class="p">);</span>
+</pre></div>
+
+<p>The <code>handler</code> can be either a function or an object as it is for <code>DOM</code> methods such <code>addEventListener</code> or <code>removeEventListener</code>.
+In this case the method <code>handleEvent</code> is invoked with the object itself as context as it is for the <a href="http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-EventListener">native DOM behavior</a>.</p>
+
+<p>The third boolean <code>capture</code> argument is useless with JS objects but might be used in some <code>DOM</code> specific case.
+By default, <code>capture</code> is false.</p>
+
+<h4>
+<a name="objectoncetype-handler-capture" class="anchor" href="#objectoncetype-handler-capture"><span class="octicon octicon-link"></span></a>Object#once(type, handler[, capture])</h4>
+
+<p>Same as <code>Object#on(type, handler[, capture])</code> except the event is triggered once and never again unless specified later on.</p>
+
+<div class="highlight"><pre><span class="c1">// on a generic HTML page inside a script tag...</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">'load'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'page fully loaded'</span><span class="p">);</span>
+  <span class="c1">// even if triggered manually</span>
+  <span class="c1">// this event won't fire anymore</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">'load'</span><span class="p">);</span>
+  <span class="c1">// nothing happened</span>
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="objectofftype-handler-capture" class="anchor" href="#objectofftype-handler-capture"><span class="octicon octicon-link"></span></a>Object#off(type, handler[, capture])</h4>
+
+<p>Returns the object itself after removing an event handler, if present.
+This is basically the equivalent of <code>removeListener</code> or <code>removeEventListener</code>.</p>
+
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">clearAllEntries</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">database</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'unload'</span><span class="p">,</span> <span class="nx">clearAllEntries</span><span class="p">);</span>
+<span class="nx">keepEntriesButton</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// drop the clear procedure</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">'unload'</span><span class="p">,</span> <span class="nx">clearAllEntries</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="objecttriggertype-data" class="anchor" href="#objecttriggertype-data"><span class="octicon octicon-link"></span></a>Object#trigger(type[, data])</h4>
+
+<p>Triggers / fires all handlers associated to the event <code>type</code> enriching the event with arbitrary <code>data</code>.
+If specified, <code>data</code> must be an object with one or more properties.
+<code>data</code> will be attached as event property too while properties will be copied over the event object.</p>
+
+<p>This method is more suitable for DOM events or those events based on a single argument parameter/object.</p>
+
+<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onresize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">manual</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="p">{</span><span class="nx">manual</span><span class="o">:</span><span class="kc">true</span><span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="objectemittype-arg1-argn" class="anchor" href="#objectemittype-arg1-argn"><span class="octicon octicon-link"></span></a>Object#emit(type[, arg1][, argN])</h4>
+
+<p>This method <a href="http://nodejs.org/api/events.html#events_emitter_emit_event_arg1_arg2">behaves like node.js</a> one, accepting one or more optional arguments after the type.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'modify'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'delete'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">delete</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+  <span class="p">})</span>
+<span class="p">;</span>
+<span class="nx">object</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'modify'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span> <span class="c1">// 0.3245979759376496</span>
+<span class="nx">object</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'delete'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span> <span class="c1">// undefined</span>
+</pre></div>
+
+<h4>
+<a name="objectboundtomethod" class="anchor" href="#objectboundtomethod"><span class="octicon octicon-link"></span></a>Object#boundTo(method)</h4>
+
+<p>This method creates a single bound version of the generic function or instance method.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
+<span class="p">);</span> <span class="c1">// true</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)();</span> <span class="c1">// true</span>
+</pre></div>
+
+<p>If the argument is <em>a function instead of a string</em> that function is used instead.</p>
+
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span>
+<span class="p">);</span> <span class="c1">// true</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)();</span> <span class="c1">// true</span>
+</pre></div>
+
+<p>Same thing if we pass the method itself as function instead of method name:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">test</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
+<span class="p">);</span> <span class="c1">// true</span>
+</pre></div>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="which-file-" class="anchor" href="#which-file-"><span class="octicon octicon-link"></span></a>Which File ?</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p><code>eddy.js</code> comes in different flavors but it operates on global, native, constructors.
+This means once you require or include or load <code>eddy.js</code> you need to manually <code>delete</code> polluted prototypes if needed.
+Anyway, here the list of files you need:</p>
+
+<ul>
+<li>
+<a href="build/eddy.js">browser</a>, meaning IE9+, every mobile browser included IE9 mobile, and all other browsers</li>
+<li>
+<a href="build/eddy.amd.js">AMD</a>, meaning IE9+, every mobile browser included IE9 mobile, and all other browsers</li>
+<li>
+<a href="build/eddy.node.js">node.js</a>, meaning ... node.js</li>
+</ul><p>You can install <code>eddy.js</code> directly via <code>npm install eddy</code> too and simply use <code>require('eddy')</code>.
+The version for node should work for Rhino too without problems ;-)</p>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="why-eddy-as-name-" class="anchor" href="#why-eddy-as-name-"><span class="octicon octicon-link"></span></a>Why Eddy As Name ?</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>Not only because of the " <em>Event Driven</em> sound check ", the definition I prefer is the following one:</p>
+
+<blockquote>
+<p>a current or trend, as of opinion or events, running counter to the main current.</p>
+</blockquote>
+
+<p>but <a href="http://dictionary.reference.com/browse/eddy">all other definitions</a> are somehow very metaphoric too ;-)</p>
+
+<h3>
+<a name="not-your-meal-" class="anchor" href="#not-your-meal-"><span class="octicon octicon-link"></span></a>Not Your Meal ?</h3>
+
+<p>If you are stuck in late 90s dogmas about JS and forbidden <code>Object.prototype</code> pollution, you can always go for <a href="https://github.com/WebReflection/event-target#event-target">EventTarget</a> mixin and use that with all your classes.</p>
+
+<p>What <code>eddy.js</code> gives you here, is the ability to forget all these problems and use emitters when you need them, if you need them, as easy as that.</p>
         </section>
 
         <footer>
