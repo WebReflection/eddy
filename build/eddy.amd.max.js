@@ -345,6 +345,7 @@ EventPrototype._active = true;
 EventPrototype.stopImmediatePropagation = function () {
   this._active = false;
 };
+
 // assign in the least obtrusive way eddy properties
 for (key in eddy) {
   if (hasOwnProperty.call(eddy, key)) {
@@ -360,5 +361,6 @@ for (key in eddy) {
     }
   }
 }
+
 
 }(Object));});

@@ -12,14 +12,19 @@ VAR = src/a.$(REPO).js\
 # make dom files
 DOM = src/a.$(REPO).js\
       src/$(REPO).js\
-      src/$(REPO).pollute.dom.js\
+      src/dominable.js\
+      src/$(REPO).pollute.dom.all.js\
+      src/z.$(REPO).js
+
+# make IE < 9 files
+IElt9 = src/a.$(REPO).js\
+      src/$(REPO).js\
+      src/dominable.js\
+      src/$(REPO).pollute.dom.ie.js\
       src/z.$(REPO).js
 
 # make node files
 NODE = $(VAR)
-
-# make node simulated? dom files
-MODE = $(DOM)
 
 # make amd files
 AMD = $(VAR)
@@ -33,13 +38,16 @@ AMDOM = $(DOM)
 # default build task
 build:
 	make clean
-	make dom
 	make var
+	make dom
+	make ie
 	make node
 	make amd
 	make test
 	make hint
 	make size
+	make domsize
+	make iesize
 
 # build generic version
 var:
@@ -54,12 +62,22 @@ var:
 # build generic version
 dom:
 	mkdir -p build
-	cat template/var.before $(DOM) template/var.after >build/no-copy.$(REPO).max.js
-	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).max.js >build/no-copy.$(REPO).js
-	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).max.js >build/$(REPO).max.dom.js
-	cat template/copyright build/no-copy.$(REPO).js >build/$(REPO).dom.js
-	rm build/no-copy.$(REPO).max.js
-	rm build/no-copy.$(REPO).js
+	cat template/var.before $(DOM) template/var.after >build/no-copy.$(REPO).dom.max.js
+	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).dom.max.js >build/no-copy.$(REPO).dom.js
+	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).dom.max.js >build/$(REPO).dom.max.js
+	cat template/copyright build/no-copy.$(REPO).dom.js >build/$(REPO).dom.js
+	rm build/no-copy.$(REPO).dom.max.js
+	rm build/no-copy.$(REPO).dom.js
+
+# build IE version
+ie:
+	mkdir -p build
+	cat template/var.before $(IElt9) template/var.after >build/no-copy.$(REPO).ie.max.js
+	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).ie.max.js >build/no-copy.$(REPO).ie.js
+	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).ie.max.js >build/$(REPO).ie.max.js
+	cat template/copyright build/no-copy.$(REPO).ie.js >build/$(REPO).ie.js
+	rm build/no-copy.$(REPO).ie.max.js
+	rm build/no-copy.$(REPO).ie.js
 
 # build node.js version
 node:
@@ -69,21 +87,30 @@ node:
 # build AMD version
 amd:
 	mkdir -p build
-	cat template/amd.before $(AMD) template/amd.after >build/no-copy.$(REPO).max.amd.js
-	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).max.amd.js >build/no-copy.$(REPO).amd.js
-	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).max.amd.js >build/$(REPO).max.amd.js
+	cat template/amd.before $(AMD) template/amd.after >build/no-copy.$(REPO).amd.max.js
+	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).amd.max.js >build/no-copy.$(REPO).amd.js
+	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).amd.max.js >build/$(REPO).amd.max.js
 	cat template/copyright build/no-copy.$(REPO).amd.js >build/$(REPO).amd.js
-	rm build/no-copy.$(REPO).max.amd.js
+	rm build/no-copy.$(REPO).amd.max.js
 	rm build/no-copy.$(REPO).amd.js
 
 size:
 	wc -c build/$(REPO).max.js
 	gzip -c build/$(REPO).js | wc -c
 
+domsize:
+	wc -c build/$(REPO).dom.max.js
+	gzip -c build/$(REPO).dom.js | wc -c
+
+iesize:
+	wc -c build/$(REPO).ie.max.js
+	gzip -c build/$(REPO).ie.js | wc -c
+
 # hint built file
 hint:
 	node node_modules/jshint/bin/jshint build/$(REPO).max.js
-	node node_modules/jshint/bin/jshint build/$(REPO).max.dom.js
+	node node_modules/jshint/bin/jshint build/$(REPO).dom.max.js
+	node node_modules/jshint/bin/jshint build/$(REPO).ie.max.js
 
 # clean/remove build folder
 clean:
