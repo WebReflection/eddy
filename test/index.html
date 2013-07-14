@@ -11,7 +11,9 @@
         var TESTS = ["eddy"];
         </script>
         <script>// don't change code here
-        for(var i = 0; i < TESTS.length; ++i && document.write('<script src="build/' + TESTS + '.max.dom.js"><' + '/script>'));
+        for(var i = 0; i < TESTS.length; ++i && document.write('<script src="build/' + TESTS + '.' + (
+          'addEventListener' in window ? 'dom' : 'ie'
+        ) + '.max.js"><' + '/script>'));
         function wru(wru){
           var
             all = [],
