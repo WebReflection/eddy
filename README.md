@@ -155,9 +155,9 @@ console.log(
 This means once you require or include or load `eddy.js` you need to manually `delete` polluted prototypes if needed.
 Anyway, here the list of files you need:
 
- * [browser](build/eddy.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
- * [AMD](build/eddy.amd.js), meaning IE9+, every mobile browser included IE9 mobile, and all other browsers
- * [node.js](build/eddy.node.js), meaning ... node.js
+ * [browser](build/eddy.js), meaning down to IE6 baby, fear not!
+ * [AMD](build/eddy.amd.js), meaning down to IE6 baby, fear not!
+ * [node.js](build/eddy.node.js), meaning ... node.js, and Rhino too, why not ;-)
 
 You can install `eddy.js` directly via `npm install eddy` too and simply use `require('eddy')`.
 The version for node should work for Rhino too without problems ;-)

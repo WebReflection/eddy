@@ -1,9 +1,18 @@
 {
-  "version": "0.1.3",
+  "version": "0.2.0",
   "name": "eddy",
-  "description": "Event Driven JS - KISS & YAGNI Environment",
+  "description": "Event Driven JS - Now In Core!",
   "homepage": "https://github.com/WebReflection/eddy",
-  "keywords": [],
+  "keywords": [
+    "event",
+    "driven",
+    "standard",
+    "ES3", "ES5", "ES6",
+    "node",
+    "rhino",
+    "browser",
+    "IE"
+  ],
   "author": {
     "name": "Andrea Giammarchi",
     "web": "http://webreflection.blogspot.com/"

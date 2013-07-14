@@ -4,13 +4,28 @@
 REPO = eddy
 
 # make var files
-VAR = src/$(REPO).js
+VAR = src/a.$(REPO).js\
+      src/$(REPO).js\
+      src/$(REPO).pollute.js\
+      src/z.$(REPO).js
+
+# make dom files
+DOM = src/a.$(REPO).js\
+      src/$(REPO).js\
+      src/$(REPO).pollute.dom.js\
+      src/z.$(REPO).js
 
 # make node files
 NODE = $(VAR)
 
+# make node simulated? dom files
+MODE = $(DOM)
+
 # make amd files
 AMD = $(VAR)
+
+# make amd dom files
+AMDOM = $(DOM)
 
 # README constant
 
@@ -18,6 +33,7 @@ AMD = $(VAR)
 # default build task
 build:
 	make clean
+	make dom
 	make var
 	make node
 	make amd
@@ -32,6 +48,16 @@ var:
 	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).max.js >build/no-copy.$(REPO).js
 	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).max.js >build/$(REPO).max.js
 	cat template/copyright build/no-copy.$(REPO).js >build/$(REPO).js
+	rm build/no-copy.$(REPO).max.js
+	rm build/no-copy.$(REPO).js
+
+# build generic version
+dom:
+	mkdir -p build
+	cat template/var.before $(DOM) template/var.after >build/no-copy.$(REPO).max.js
+	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).max.js >build/no-copy.$(REPO).js
+	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).max.js >build/$(REPO).max.dom.js
+	cat template/copyright build/no-copy.$(REPO).js >build/$(REPO).dom.js
 	rm build/no-copy.$(REPO).max.js
 	rm build/no-copy.$(REPO).js
 

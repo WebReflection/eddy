@@ -20,316 +20,344 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-(function(global){
+(function (Object) {
   'use strict';
-  if (global.eddy) return;
-  /*! (C) Andrea Giammarchi Mit Style License */
-  var
-    uid = '_@eddy:' + Math.random(),
-    Object = global.Object,
-    create = Object.create,
-    defineProperty = Object.defineProperty,
-    defineProperties = Object.defineProperties,
-    slice = Array.prototype.slice,
-    DOM = global.Node || global.Element || global.HTMLElement,
-    hasDOM = !!DOM,
-    once = commonDescriptor(
-      function once(type, handler, capture) {
-        var self = this;
-        return self.on(type, function once() {
-          self.off(type, once, capture);
-          triggerEvent(handler, self, arguments);
-        }, capture);
-      }
-    ),
-    DOMDescriptor = {
-      boundTo: commonDescriptor(function(method){
-        return boundTo(
-          this,
-          DOMWM.get(this) || (
-            DOMWM.set(this, create(null)),
-            DOMWM.get(this)
-          ),
-          method
-        );
-      }),
-      emit: commonDescriptor(
-        function DOMemit(type) {
-          return this.trigger(
-            type,
-            {
-              data: slice.call(arguments, 1)
-            }
-          );
-        }
-      ),
-      off: commonDescriptor(
-        function DOMOff(type, handler, capture) {
-          this.removeEventListener(type, handler, !!capture);
-          return this;
-        }
-      ),
-      on: commonDescriptor(
-        function DOMOn(type, handler, capture) {
-          this.addEventListener(type, handler, !!capture);
-          return this;
-        }
-      ),
-      once: once,
-      trigger: commonDescriptor(
-        function DOMTrigger(evt, data) {
-          var
-            stringEvent = typeof evt === 'string',
-            type = stringEvent ? evt : (data = evt).type,
-            e = (
-              this.ownerDocument || this.document || global.document
-            ).createEvent('Event');
-          e.initEvent(
-            type,
-            data && data.bubbles || 1,
-            data && data.cancelable || 1
-          );
-          initEvent(e, this, type, stringEvent && data);
-          return this.dispatchEvent(e);
-        }
-      )
-    },
-    JSDescriptor = {
-      boundTo: commonDescriptor(function(method){
-        return boundTo(this, this[uid], method);
-      }),
-      emit: commonDescriptor(
-        function JSemit(type) {
-          var array = this[uid][type],
-              emitted = !!array;
-          if (emitted) {
-            array.forEach(
-              emitJS,
-              {
-                arguments: (
-                  array.shift.call(arguments),
-                  arguments
-                ),
-                context: this
-              }
-            );
-          }
-          return emitted;
-        }
-      ),
-      off: commonDescriptor(
-        function JSOff(type, handler) {
-          var
-            listeners = this[uid],
-            array = listeners[type],
-            i;
-          if (array) {
-            i = array.indexOf(handler);
-            if (-1 < i) {
-              array.splice(i, 1);
-              if (!array.length) {
-                delete listeners[type];
-              }
-            }
-          }
-          return this;
-        }
-      ),
-      on: commonDescriptor(
-        function JSOn(type, handler) {
-          var
-            listeners = this[uid],
-            array = listeners[type] || (listeners[type] = []);
-          if (array.indexOf(handler) < 0) {
-            array.push(handler);
-          }
-          return this;
-        }
-      ),
-      once: once,
-      trigger: commonDescriptor(
-        function JSTrigger(evt, data) {
-          var
-            listeners = this[uid],
-            isNotEvent = typeof evt === 'string',
-            array = listeners[isNotEvent ? evt : evt.type];
-          return array ?   array.every(
-            triggerJS,
-            {
-              arguments: [isNotEvent ?
-                new Event(this, evt, data) :
-                (evt instanceof Event ?
-                  evt : injectActiveStatus(evt))],
-              context: this
-            }
-          ) : true;
-        }
-      )
-    },
-    stoppedPropagation = {
-      value: false
-    },
-    WM = global.WeakMap,
-    DOMWM
-  ;
-  function Event(target, type, data) {
-    initEvent(this, target, type, data);
-  }
-  function _stopImmediatePropagation() {
-    /*jshint validthis:true */
-    stopImmediatePropagation.call(this);
-    this._stopImmediatePropagation();
-  }
-  function commonDescriptor(value) {
-    return {
-      enumerable: false,
-      writable: true,
-      configurable: true,
-      value: value
-    };
-  }
-  function boundTo(self, listeners, method) {
-    var
-      bound = listeners[uid] || (
-        listeners[uid] = {
-          m: [],
-          b: []
-        }
-      ),
-      fn = typeof method === 'string' ?
-        self[method] : method,
-      i = bound.m.indexOf(fn);
-    return i < 0 ?
-      bound.b[bound.m.push(fn) - 1] = fn.bind(self) :
-      bound.b[i];
-  }
-  function defineCommonMethod(name) {
-    return function () {
-      /*jshint validthis:true */
-      return defineProperties(
-        this,
-        hasDOM && ('dispatchEvent' in this) ?
-          DOMDescriptor :
-          JSDescriptor
-      )[name].apply(this, arguments);
-    };
-  }
-  function ifNotPresent(e, key, value) {
-    if (!(key in e)) e[key] = value;
-  }
-  function initEvent(e, target, type, data) {
-    ifNotPresent(e, 'timeStamp', Date.now());
-    for(var key in data) ifNotPresent(e, key, data[key]);
-    ifNotPresent(e, 'type', type);
-    ifNotPresent(e, 'target', target);
-    if (data) ifNotPresent(e, 'data', data);
-  }
-  function injectActiveStatus(evt) {
-    evt._active = true;
-    evt._stopImmediatePropagation = evt.stopImmediatePropagation;
-    evt.stopImmediatePropagation = _stopImmediatePropagation;
-    return evt;
-  }
-  function stopImmediatePropagation() {
-    /*jshint validthis:true */
-    defineProperty(
-      this,
-      '_active',
-      stoppedPropagation
-    );
-  }
-  function triggerEvent(handler, context, args) {
-    if (typeof handler == 'function') {
-      handler.apply(context, args);
-    } else {
-      handler.handleEvent.apply(handler, args);
-    }
-  }
-  function triggerAny(handler, context, e) {
-    if (typeof handler == 'function') {
-      handler.call(context, e);
-    } else {
-      handler.handleEvent(e);
-    }
-  }
-  function emitJS(handler) {
-    /*jshint validthis:true */
-    triggerEvent(handler, this.context, this.arguments);
-  }
-  function triggerJS(handler) {
-    /*jshint validthis:true */
-    emitJS.call(this, handler);
-    return this.arguments[0]._active;
-  }
-  if (hasDOM) {
-    DOMWM = WM ? new WM() : {
-      get: function (node) {
-        return node[uid];
+  // probably the very first script you want to load in any project
+  // do not redefine same stuff twice anyway
+  if (Object.eddy) return;
+  Object.eddy = true;
+
+// all private variables
+var /*! (C) Andrea Giammarchi Mit Style License */
+  ArrayPrototype = Array.prototype,
+  ObjectPrototype = Object.prototype,
+  EventPrototype = Event.prototype,
+  defineProperty = Object.defineProperty,
+  hasOwnProperty = ObjectPrototype.hasOwnProperty,
+  push = ArrayPrototype.push,
+  slice = ArrayPrototype.slice,
+  unshift = ArrayPrototype.unshift,
+  // IE < 9 hs this problem which makes
+  // eddy.js able to implement its features!
+  // this would not have been possible in other
+  // non ES5 compatible browsers so ... thanks IE!
+  IE_WONT_ENUMERATE_THIS = 'toLocaleString',
+  SECRET = {toLocaleString:1}.propertyIsEnumerable(
+    IE_WONT_ENUMERATE_THIS
+  ) ? '_@eddy' + Math.random() : IE_WONT_ENUMERATE_THIS,
+  IE = SECRET === IE_WONT_ENUMERATE_THIS,
+  // used in all ES5 compatible browsers (all but IE < 9)
+  commonDescriptor =  IE || (Object.create || Object)(null),
+  setAndGet = IE ?
+      function (self) {
+        self[SECRET] = createSecret();
+        return self[SECRET];
+      } :
+      function (self) {
+        var value = createSecret();
+        commonDescriptor.value = value;
+        defineProperty(self, SECRET, commonDescriptor);
+        commonDescriptor.value = null;
+        return value;
       },
-      set: function (node, value) {
-        defineProperty(
-          node,
-          uid,
-          commonDescriptor(value)
-        );
-      }
+  bind = Object.bind || function (context) {
+    // this is not a fully specd replacemenet for Function#bind
+    // but works specifically for this use case like a charm
+    var self = this;
+    return function () {
+      return self.apply(context, arguments);
     };
-  }
-  defineProperties(
-    Event.prototype,
-    {
-      _active: commonDescriptor(true),
-      stopImmediatePropagation: commonDescriptor(stopImmediatePropagation)
-    }
-  );
-  // this property is used as
-  // defineProperties descriptor
-  // for all JS objects
-  // In order to grant a fresh new
-  // object as event handler
-  // and without leaks
-  // a new descriptor is returned
-  // per each call
-  defineProperty(
-    JSDescriptor,
-    uid,
-    {
-      enumerable: true,
-      get: function get() {
-        return {
-          value: create(null)
-        };
+  },
+  indexOf = ArrayPrototype.indexOf || function (value) {
+    // if you want more standard indexOf use a proper polyfill
+    // and include it before eddy.js
+    var i = this.length;
+    while (i-- && this[i] !== value) {}
+    return i;
+  },
+  // every triggered even has a timeStamp
+  now = Date.now ?
+      function () {
+        return Date.now();
+      } :
+      function () {
+        return new Date().getTime();
+      },
+  // for ES3+ and JScript native Objects
+  // no hosted objects are considered here
+  // see eddy.dom.js for that
+  eddy = {
+    /**
+     * Returns a bound version of the specified method.
+     * If called again with same method, the initial bound
+     * object will be returned instead of creating a new one.
+     * This will make the following assertion always true:
+     *
+     * @example
+     *  obj.boundTo('method') === obj.boundTo('method')
+     *  // same as
+     *  obj.boundTo(obj.method) === obj.boundTo(obj.method)
+     *  // same as
+     *  obj.boundTo('method') === obj.boundTo(obj.method)
+     *
+     * Bear in mind no arguments can be bound once, only the context.
+     * Method could be either a function or a string.
+     * In latter case, be aware Google Closure Compiler
+     * might change methods name if compiled with
+     * ADVANCED_OPTION resulting in a broken code.
+     * Use methods instead of strings if you use such option.
+     * @param   method  string|Function   the method name to bind
+     * @return  Object  the callable bound function/method.
+     */
+    boundTo: function boundTo(method) {
+      var
+        all = hasOwnProperty.call(this, SECRET) ?
+              this[SECRET] : setAndGet(this),
+        m = all.m,
+        b = all.b,
+        fn = typeof method === 'string' ? this[method] : method,
+        i = indexOf.call(m, fn);
+      return i < 0 ?
+          (b[push.call(m, fn) - 1] = bind.call(fn, this)) :
+          b[i];
+    },
+    /**
+     * Borrowed from node.js, it does exactly what node.js does.
+     * 
+     * @example
+     *  {}.on('evt', function(arg1, arg2, argN){
+     *    console.log(arg1, arg2, argN);
+     *  }).emit('evt', 1, 2, 3);
+     *  // {'0': 1, '1': 2, '2': 3}
+     *
+     * @param   type  string  the event name to emit
+     * @param   [any=any]     one or more arguments to pass through
+     * @return  boolean       true if the event was emitted
+     */
+    emit: function emit(type) {
+      var
+        has = hasOwnProperty.call(this, SECRET),
+        listeners = has && this[SECRET].l,
+        loop = has && hasOwnProperty.call(listeners, type),
+        array = loop && listeners[type],
+        args = loop && slice.call(arguments, 1),
+        i = 0,
+        length = loop ? array.length : i;
+      while (i < length) {
+        triggerEvent(this, array[i++], args);
       }
+      return loop;
+    },
+    /**
+     * Counter part of `.on(type, handler)`
+     * The equivalent of `removeListener` or `removeEventListener`.
+     * It removes an event if already added and return same object
+     *
+     * @example
+     *  var obj = {}.on('evt', console.boundTo('log'));
+     *  obj.emit('evt', 'OK'); // "OK" true
+     *  obj
+     *    .off('evt', console.boundTo('log'))
+     *    .emit('evt')
+     *  ; // false
+     *
+     * @param   type  string  the event name to emit
+     * @param   handler Function|Object   the handler used initially
+     * @return  Object  the chained object that called `.off()`
+     */
+    off: function off(type, handler) {
+      var
+        has = hasOwnProperty.call(this, SECRET),
+        listeners = has && this[SECRET].l,
+        array = has && hasOwnProperty.call(listeners, type) &&
+          listeners[type],
+        i
+      ;
+      if (array) {
+        i = indexOf.call(array, handler);
+        if (-1 < i) {
+          array.splice(i, 1);
+          if (!array.length) {
+            delete listeners[type];
+          }
+        }
+      }
+      return this;
+    },
+    /**
+     * The equivalent of `addListener` or `addEventListener`.
+     * It adds an event if not already added and return same object
+     *
+     * @example
+     *  var i = 0;
+     *  function genericEvent() {
+     *    console.log(++i);
+     *  }
+     *  var obj = {};
+     *  obj
+     *    .on('evt', genericEvent)
+     *    .on('evt', genericEvent)
+     *  ;
+     *  obj.emit('evt'); // 1
+     *
+     * @param   type  string  the event name to emit
+     * @param   handler Function|Object   the handler used initially
+     * @param   [optional, **reserved**] boolean  unshift instead of push
+     * @return  Object  the chained object that called `.on()`
+     */
+    on: function on(type, handler, capture) {
+      var
+        has = hasOwnProperty.call(this, SECRET),
+        listeners = (has ? this[SECRET] : setAndGet(this)).l,
+        array = has && hasOwnProperty.call(listeners, type) ?
+            listeners[type] : listeners[type] = []
+      ;
+      if (indexOf.call(array, handler) < 0) {
+        (capture ? unshift : push).call(array, handler);
+      }
+      return this;
+    },
+    /**
+     * Assigns an event that will be dropped the very first time
+     * it will be triggered/emitted/fired.
+     *
+     * @example
+     *  var i = 0;
+     *  var obj = {}.once('increment', function(){
+     *    console.log(++i);
+     *  });
+     *  obj.emit('increment'); // 1 true
+     *  obj.emit('increment'); // false
+     *
+     * @param   type  string  the event name to emit
+     * @param   handler Function|Object   the handler used initially
+     * @param   [optional, **reserved**] boolean  unshift instead of push
+     * @return  Object  the chained object that called `.once()`
+     */
+    once: function once(type, handler, capture) {
+      var self = this;
+      return self.on(type, function once(e) {
+        self.off(type, once, capture);
+        triggerEvent(self, handler, arguments);
+      }, capture);
+    },
+    /**
+     * Triggers an event in a *DOMish* way.
+     * The handler wil be invoked with a single object
+     * argument as event with at least a method called
+     * `stopImmediatePropagation()` able to break the
+     * method invocation loop.
+     *
+     * The event object will have always at least these properties:
+     *  type      string    the name of the event
+     *  timeStamp number    when the event has been triggered
+     *  target    object    the original object that triggered
+     *  data      [any]     optional argument passed through
+     *                      eventually copied over the event
+     * 
+     * @example
+     *  var o = {}.on('evt', function(e){
+     *    console.log(e.type);
+     *    console.log(e.data === RegExp);
+     *  });
+     *  o.trigger('evt', RegExp);
+     *  // "evt" true true
+     *
+     * @param   type  string  the event name to emit
+     * @param   [any=any]     optional data object to pass through
+     *                        and/or copy over the event object
+     * @return  boolean       true if the event was triggered
+     */
+    trigger: function trigger(evt, data) {
+      var
+        has = hasOwnProperty.call(this, SECRET),
+        listeners = has && this[SECRET].l,
+        isString = typeof evt == 'string',
+        type = isString ? evt : evt.type,
+        loop = has && hasOwnProperty.call(listeners, type),
+        array = loop && listeners[type],
+        event = isString ?
+            new Event(this, type, data) : evt,
+        args = [event],
+        i = 0,
+        length = loop ? array.length : i,
+        isNotAnEventInstance = !(event instanceof Event),
+        result,
+        current;
+      if (isNotAnEventInstance) {
+        event._active = true;
+        event.stopImmediatePropagation =
+          EventPrototype.stopImmediatePropagation;
+      }
+      while (event._active && i < length) {
+        triggerEvent(this, array[i++], args);
+      }
+      result = !!event._active;
+      if (isNotAnEventInstance) {
+        delete event._active;
+        delete event.stopImmediatePropagation;
+      }
+      return result;
     }
-  );
-  // all must be configurable
-  // so other prototypes can work too
-  defineProperties(
-    Object.prototype,
-    {
-      boundTo: commonDescriptor(
-        defineCommonMethod('boundTo')
-      ),
-      emit: commonDescriptor(
-        defineCommonMethod('emit')
-      ),
-      off: commonDescriptor(
-        defineCommonMethod('off')
-      ),
-      on: commonDescriptor(
-        defineCommonMethod('on')
-      ),
-      once: commonDescriptor(
-        defineCommonMethod('once')
-      ),
-      trigger: commonDescriptor(
-        defineCommonMethod('trigger')
-      )
+  },
+  key;
+
+/* eddy.js private helpers/shortcuts */
+// the object used to trap listeners and bound functions
+function createSecret() {
+  return {
+    l: {},
+    m: [],
+    b: []
+  };
+}
+// assign properties only if not there already
+function ifNotPresent(e, key, value) {
+  if (!hasOwnProperty.call(e, key)) {
+    e[key] = value;
+  }
+}
+// check if the handler is a function OR an object
+// in latter case invoke `handler.handleEvent(args)`
+// compatible with DOM event handlers
+function triggerEvent(context, handler, args) {
+  if (typeof handler == 'function') {
+    handler.apply(context, args);
+  } else {
+    handler.handleEvent.apply(handler, args);
+  }
+}
+
+/* the basic eddy.js Event class */
+function Event(target, type, data) {
+  ifNotPresent(this, 'timeStamp', now());
+  for (var key in data) {
+    if (hasOwnProperty.call(data, key)) {
+      ifNotPresent(this, key, data[key]);
     }
-  );
-  defineProperty(global, 'eddy', {
-    value: true
-  });
-}(
-  typeof global == 'undefined' ? window : global
-));
+  }
+  ifNotPresent(this, 'type', type);
+  ifNotPresent(this, 'target', target);
+  if (data) ifNotPresent(this, 'data', data);
+}
+EventPrototype._active = true;
+EventPrototype.stopImmediatePropagation = function () {
+  this._active = false;
+};
+// assign in the least obtrusive way eddy properties
+for (key in eddy) {
+  if (hasOwnProperty.call(eddy, key)) {
+    if (IE) {
+      ObjectPrototype[key] = eddy[key];
+    } else {
+      defineProperty(ObjectPrototype, key, {
+        enumerable: false,
+        configurable: true,
+        writable: true,
+        value: eddy[key]
+      });
+    }
+  }
+}
+
+}(Object));
