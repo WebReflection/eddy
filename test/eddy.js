@@ -8,7 +8,7 @@ wru.test([
   {
     name: "eddy",
     test: function () {
-      wru.assert(eddy); // global eddy
+      wru.assert(Object.eddy || typeof eddy !== 'undefined' && eddy); // global eddy
     }
   }, {
     name: 'boundTo',
