@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
+define(function(){
 (function (Object) {
   'use strict';
   // probably the very first script you want to load in any project
@@ -362,4 +363,4 @@ for (key in eddy) {
 }
 
 
-}(Object));
+}(Object));});
