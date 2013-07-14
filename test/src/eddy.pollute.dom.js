@@ -1,4 +1,4 @@
-(function(key){
+(function(){
 
   var
     oldIE = !('addEventListener' in window),
@@ -24,7 +24,7 @@
     dom = {
       boundTo: eddy.boundTo,
       emit: function emit(type) {
-        return dispatchEvent(createEvent(type));
+        return dispatchEvent(this, createEvent(type));
       },
       off: oldIE ?
         function (type, handler, capture) {
@@ -64,8 +64,8 @@
           type = isString ? evt : evt.type,
           e = createEvent(type)
         ;
-        Event.call(e, data);
-        return dispatchEvent(e);
+        Event.call(e, this, type, isString && data);
+        return dispatchEvent(this, e);
       }
     }
   ;
@@ -87,7 +87,7 @@
       handler.boundTo(handler.handleEvent);
   }
 
-  for (key in eddy) {
+  for (var key in eddy) {
     if (hasOwnProperty.call(eddy, key)) {
       if (IE) {
         ObjectPrototype[key] = dominable(key);
@@ -102,4 +102,4 @@
     }
   }
 
-}(key));
+}());
