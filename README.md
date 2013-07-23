@@ -156,10 +156,9 @@ This means once you require or include or load `eddy.js` you need to manually `d
 Anyway, here the list of files you need:
 
  * [browser without DOM](build/eddy.js), for *browsers* meaning down to IE6 baby, fear not!
- * [browser with DOM](build/eddy.dom.js), for *browsers* meaning IE9 mobile or Desktop plus all other mobiles or desktops
- * [IE with DOM](build/eddy.ie.js), work in progress, should provide same DOM functionality in IE8 and lower
- * [AMD without DOM](build/eddy.amd.js), same as `eddy.js`, working for all browsers but no DOM native events fired
- * [node.js](build/eddy.node.js), meaning ... node.js, and Rhino too, why not ;-)
+ * [browser with DOM](build/eddy.dom.js), for *browsers* meaning IE8, using [ie8 file](https://github.com/WebReflection/ie8#ie8) plus all modern mobile and desktop browsers
+ * [AMD including DOM](build/eddy.amd.js), same as `eddy.js`, working for all browsers but no DOM native events fired
+ * [node.js](build/eddy.node.js), meaning node.js and other server side engines since no export is used/needed
 
 You can install `eddy.js` directly via `npm install eddy` too and simply use `require('eddy')`.
 The version for node should work for Rhino too without problems ;-)

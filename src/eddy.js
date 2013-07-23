@@ -3,12 +3,11 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   ArrayPrototype = Array.prototype,
   ObjectPrototype = Object.prototype,
   EventPrototype = Event.prototype,
-  defineProperty = Object.defineProperty,
   hasOwnProperty = ObjectPrototype.hasOwnProperty,
   push = ArrayPrototype.push,
   slice = ArrayPrototype.slice,
   unshift = ArrayPrototype.unshift,
-  // IE < 9 hs this problem which makes
+  // IE < 9 has this problem which makes
   // eddy.js able to implement its features!
   // this would not have been possible in other
   // non ES5 compatible browsers so ... thanks IE!
@@ -18,25 +17,19 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   ) ? '_@eddy' + Math.random() : IE_WONT_ENUMERATE_THIS,
   IE = SECRET === IE_WONT_ENUMERATE_THIS,
   // used in all ES5 compatible browsers (all but IE < 9)
-  commonDescriptor =  IE || (Object.create || Object)(null),
-  setAndGet = IE ?
-      function (self) {
-        self[SECRET] = createSecret();
-        return self[SECRET];
-      } :
-      function (self) {
-        var value = createSecret();
-        commonDescriptor.value = value;
-        defineProperty(self, SECRET, commonDescriptor);
-        commonDescriptor.value = null;
-        return value;
-      },
-  bind = Object.bind || function (context) {
+  commonDescriptor =  (Object.create || Object)(null),
+  defineProperty = IE ?
+    function (self, property, descriptor) {
+      self[property] = descriptor.value;
+    } :
+    Object.defineProperty,
+  // http://jsperf.com/bind-no-args bind is still freaking slow so...
+  bind = /* Object.bind || */ function (context) {
     // this is not a fully specd replacemenet for Function#bind
     // but works specifically for this use case like a charm
-    var self = this;
+    var fn = this;
     return function () {
-      return self.apply(context, arguments);
+      return fn.apply(context, arguments);
     };
   },
   indexOf = ArrayPrototype.indexOf || function (value) {
@@ -47,13 +40,9 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     return i;
   },
   // every triggered even has a timeStamp
-  now = Date.now ?
-      function () {
-        return Date.now();
-      } :
-      function () {
-        return new Date().getTime();
-      },
+  now = Date.now || function () {
+    return new Date().getTime();
+  },
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -132,7 +121,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *    .emit('evt')
      *  ; // false
      *
-     * @param   type  string  the event name to emit
+     * @param   type  string  the event name to un-listen to
      * @param   handler Function|Object   the handler used initially
      * @return  Object  the chained object that called `.off()`
      */
@@ -171,7 +160,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *  ;
      *  obj.emit('evt'); // 1
      *
-     * @param   type  string  the event name to emit
+     * @param   type  string  the event name to listen to
      * @param   handler Function|Object   the handler used initially
      * @param   [optional, **reserved**] boolean  unshift instead of push
      * @return  Object  the chained object that called `.on()`
@@ -260,6 +249,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         event.stopImmediatePropagation =
           EventPrototype.stopImmediatePropagation;
       }
+      event.currentTarget = this;
       while (event._active && i < length) {
         triggerEvent(this, array[i++], args);
       }
@@ -288,6 +278,15 @@ function ifNotPresent(e, key, value) {
     e[key] = value;
   }
 }
+
+function setAndGet(self) {
+  var value = createSecret();
+  commonDescriptor.value = value;
+  defineProperty(self, SECRET, commonDescriptor);
+  commonDescriptor.value = null;
+  return value;
+}
+
 // check if the handler is a function OR an object
 // in latter case invoke `handler.handleEvent(args)`
 // compatible with DOM event handlers

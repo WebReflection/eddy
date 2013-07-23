@@ -6,31 +6,22 @@ REPO = eddy
 # make var files
 VAR = src/a.$(REPO).js\
       src/$(REPO).js\
-      src/$(REPO).pollute.js\
+      src/pollute.js\
       src/z.$(REPO).js
 
 # make dom files
 DOM = src/a.$(REPO).js\
       src/$(REPO).js\
-      src/dominable.js\
-      src/$(REPO).pollute.dom.all.js\
-      src/z.$(REPO).js
-
-# make IE < 9 files
-IElt9 = src/a.$(REPO).js\
-      src/$(REPO).js\
-      src/dominable.js\
-      src/$(REPO).pollute.dom.ie.js\
+      src/pollute.js\
+      src/pollute.dom.all.js\
+      src/pollute.dom.js\
       src/z.$(REPO).js
 
 # make node files
 NODE = $(VAR)
 
 # make amd files
-AMD = $(VAR)
-
-# make amd dom files
-AMDOM = $(DOM)
+AMD = $(DOM)
 
 # README constant
 
@@ -40,14 +31,12 @@ build:
 	make clean
 	make var
 	make dom
-	make ie
 	make node
 	make amd
 	make test
 	make hint
 	make size
 	make domsize
-	make iesize
 
 # build generic version
 var:
@@ -68,16 +57,6 @@ dom:
 	cat template/copyright build/no-copy.$(REPO).dom.js >build/$(REPO).dom.js
 	rm build/no-copy.$(REPO).dom.max.js
 	rm build/no-copy.$(REPO).dom.js
-
-# build IE version
-ie:
-	mkdir -p build
-	cat template/var.before $(IElt9) template/var.after >build/no-copy.$(REPO).ie.max.js
-	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).ie.max.js >build/no-copy.$(REPO).ie.js
-	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).ie.max.js >build/$(REPO).ie.max.js
-	cat template/copyright build/no-copy.$(REPO).ie.js >build/$(REPO).ie.js
-	rm build/no-copy.$(REPO).ie.max.js
-	rm build/no-copy.$(REPO).ie.js
 
 # build node.js version
 node:
@@ -102,15 +81,10 @@ domsize:
 	wc -c build/$(REPO).dom.max.js
 	gzip -c build/$(REPO).dom.js | wc -c
 
-iesize:
-	wc -c build/$(REPO).ie.max.js
-	gzip -c build/$(REPO).ie.js | wc -c
-
 # hint built file
 hint:
 	node node_modules/jshint/bin/jshint build/$(REPO).max.js
 	node node_modules/jshint/bin/jshint build/$(REPO).dom.max.js
-	node node_modules/jshint/bin/jshint build/$(REPO).ie.max.js
 
 # clean/remove build folder
 clean:
