@@ -14,13 +14,7 @@ var dom = {
     this.addEventListener(type, handler, capture);
     return this;
   },
-  once: function once(type, handler, capture) {
-    var self = this;
-    return self.on(type, function once(e) {
-      self.off(type, once, capture);
-      triggerEvent(self, handler, arguments);
-    }, capture);
-  },
+  once: eddy.once,
   trigger: function trigger(evt, data) {
     var
       isString = typeof evt == 'string',

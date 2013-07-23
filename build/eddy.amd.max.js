@@ -225,11 +225,16 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @return  Object  the chained object that called `.once()`
      */
     once: function once(type, handler, capture) {
-      var self = this;
-      return self.on(type, function once(e) {
-        self.off(type, once, capture);
-        triggerEvent(self, handler, arguments);
-      }, capture);
+      var
+        // IE8 has duplicated expression/declaration bug
+        // could not self.on(type, function once(){}, ...);
+        cb = function(e) {
+          self.off(type, cb, capture);
+          triggerEvent(self, handler, arguments);
+        },
+        self = this
+      ;
+      return self.on(type, cb, capture);
     },
     /**
      * Triggers an event in a *DOMish* way.
@@ -265,7 +270,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         isString = typeof evt == 'string',
         type = isString ? evt : evt.type,
         loop = has && hasOwnProperty.call(listeners, type),
-        array = loop && listeners[type],
+        array = loop && listeners[type].slice(0),
         event = isString ?
             new Event(this, type, data) : evt,
         args = [event],
@@ -372,13 +377,7 @@ var dom = {
     this.addEventListener(type, handler, capture);
     return this;
   },
-  once: function once(type, handler, capture) {
-    var self = this;
-    return self.on(type, function once(e) {
-      self.off(type, once, capture);
-      triggerEvent(self, handler, arguments);
-    }, capture);
-  },
+  once: eddy.once,
   trigger: function trigger(evt, data) {
     var
       isString = typeof evt == 'string',
