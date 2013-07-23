@@ -1,4 +1,4 @@
-.PHONY: build var node amd size hint clean test web preview pages dependencies
+.PHONY: build var node dom bench amd size hint clean test web preview pages dependencies
 
 # repository name
 REPO = eddy
@@ -37,6 +37,7 @@ build:
 	make hint
 	make size
 	make domsize
+	make bench
 
 # build generic version
 var:
@@ -96,6 +97,16 @@ clean:
 test:
 	npm test
 
+# tests, as usual and of course
+bench:
+	node ./benchmark/eddy.js
+
+rebench:
+	rm benchmark/score.json
+	make bench
+
+
+
 # launch polpetta (ctrl+click to open the page)
 web:
 	node node_modules/polpetta/build/polpetta ./
@@ -110,7 +121,7 @@ preview:
 
 pages:
 	git pull --rebase
-	make var
+	make dom
 	mkdir -p ~/tmp
 	mkdir -p ~/tmp/$(REPO)
 	cp -rf src ~/tmp/$(REPO)
