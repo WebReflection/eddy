@@ -57,6 +57,7 @@ dom:
 	cat template/copyright build/no-copy.$(REPO).dom.js >build/$(REPO).dom.js
 	rm build/no-copy.$(REPO).dom.max.js
 	rm build/no-copy.$(REPO).dom.js
+	cp ie8/build/ie8.js build/ie8.js
 
 # build node.js version
 node:
@@ -72,6 +73,7 @@ amd:
 	cat template/copyright build/no-copy.$(REPO).amd.js >build/$(REPO).amd.js
 	rm build/no-copy.$(REPO).amd.max.js
 	rm build/no-copy.$(REPO).amd.js
+	cp ie8/build/ie8.js build/ie8.js
 
 size:
 	wc -c build/$(REPO).max.js
