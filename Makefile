@@ -37,7 +37,7 @@ build:
 	make hint
 	make size
 	make domsize
-	make bench
+#	make bench
 
 # build generic version
 var:

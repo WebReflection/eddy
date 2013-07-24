@@ -56,6 +56,23 @@ var fs = require('fs'),
         showAndSave(key, 0xFFFF);
       }
       ,
+      'EventEmitter#on(typeN)': function (key) {
+        time.start(key);
+        for (var o = new EventEmitter, i = 0, fn = function(){return true}, result = []; i < 0xFFFF; i++) {
+          o.on('test' + i, fn);
+        }
+        time.end(key);
+        showAndSave(key, 0xFFFF);
+      },
+      'Object#on(typeN)': function (key) {
+        time.start(key);
+        for (var o = {}, i = 0, fn = function(){return true}, result = []; i < 0xFFFF; i++) {
+          o.on('test' + i, fn);
+        }
+        time.end(key);
+        showAndSave(key, 0xFFFF);
+      }
+      ,
       'EventEmitter#on(multiple)': function (key) {
         time.start(key);
         for (var i = 0, fn = function(){return true}, result = []; i < 0xFFFF; i++) {
@@ -81,6 +98,30 @@ var fs = require('fs'),
         showAndSave(key, 0xFFFF);
       }
       ,
+      'EventEmitter#on(multipleN)': function (key) {
+        time.start(key);
+        for (var i = 0, fn = function(){return true}, result = []; i < 0xFFF; i++) {
+          result[i] = (
+            (new EventEmitter).on('test', function(){})
+              .on('test' + i, function(){})
+              .on('test' + i, function(){})
+          );
+        }
+        time.end(key);
+        showAndSave(key, 0xFFF);
+      },
+      'Object#on(multipleN)': function (key) {
+        time.start(key);
+        for (var i = 0, fn = function(){return true}, result = []; i < 0xFFF; i++) {
+          result[i] = (
+            {}.on('test', function(){})
+              .on('test' + i, function(){})
+              .on('test' + i, function(){})
+          );
+        }
+        time.end(key);
+        showAndSave(key, 0xFFF);
+      },
       'EventEmitter#emit(single)': function (key) {
         for (var i = 0, fn = function(){return true}, result = []; i < 0xFFFF; i++) {
           result[i] = ((new EventEmitter).on('test', fn));
@@ -134,6 +175,40 @@ var fs = require('fs'),
         }
         time.end(key);
         showAndSave(key, 0xFFFF);
+      },
+      'EventEmitter#emit(multipleN)': function (key) {
+        for (var i = 0, result = []; i < 0xFFF; i++) {
+          result[i] = (
+            (new EventEmitter).on('test', function(){})
+              .on('test' + i, function(){})
+              .on('test' + i + 1, function(){})
+          );
+        }
+        time.start(key);
+        for (i = 0; i < 0xFFF; i++) {
+          result[i].emit('test', null, i);
+          result[i].emit('test' + i, null, i);
+          result[i].emit('test' + i + 1, null, i);
+        }
+        time.end(key);
+        showAndSave(key, 0xFFF);
+      },
+      'Object#emit(multipleN)': function (key) {
+        for (var i = 0, result = []; i < 0xFFF; i++) {
+          result[i] = (
+            {}.on('test', function(){})
+              .on('test' + i, function(){})
+              .on('test' + i + 1, function(){})
+          );
+        }
+        time.start(key);
+        for (i = 0; i < 0xFFF; i++) {
+          result[i].emit('test', null, i);
+          result[i].emit('test' + i, null, i);
+          result[i].emit('test' + i + 1, null, i);
+        }
+        time.end(key);
+        showAndSave(key, 0xFFF);
       },
       'EventEmitter#off(single)': function (key) {
         for (var i = 0, fn = function(){return true}, result = []; i < 0xFFFF; i++) {
@@ -207,7 +282,7 @@ var fs = require('fs'),
     };
 
 Object.keys(tests).forEach(function(key, i){
-  if (!!(i % 2))
+  //if (!!(i % 2))
   this[key](key);
 }, tests);
 
