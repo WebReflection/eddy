@@ -157,7 +157,7 @@ Anyway, here the list of files you need:
 
  * [browser without DOM](build/eddy.js), for *browsers* meaning down to IE6 baby, fear not!
  * [browser with DOM](build/eddy.dom.js), for *browsers* meaning IE8, using [ie8 file](https://github.com/WebReflection/ie8#ie8) plus all modern mobile and desktop browsers
- * [AMD including DOM](build/eddy.amd.js), same as `eddy.js`, working for all browsers but no DOM native events fired
+ * [AMD including DOM](build/eddy.amd.js), same as `eddy.dom.js` inside the require AMD logic
  * [node.js](build/eddy.node.js), meaning node.js and other server side engines since no export is used/needed
 
 You can install `eddy.js` directly via `npm install eddy` too and simply use `require('eddy')`.
