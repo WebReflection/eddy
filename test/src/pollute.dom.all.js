@@ -6,6 +6,9 @@ var dom = {
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
+  listeners: function listeners(type) {
+    return [];
+  },
   off: function (type, handler, capture) {
     this.removeEventListener(type, handler, capture);
     return this;

@@ -169,6 +169,23 @@ wru.test([
       })).emit('emit', err, data)));
     }
   },{
+    name: 'listeners',
+    test: function () {
+      function handler1() {}
+      function handler2() {}
+      var o = {}.on('event', handler1).on('event', handler2),
+          listeners = o.listeners('event');
+      wru.assert('two listeners', listeners.length === 2);    
+      wru.assert('right listeners', listeners[0] === handler1 && listeners[1] === handler2);
+      wru.assert('no listeners', !o.listeners('somethingelse').length);
+      wru.assert('no all listeners', !o.listeners().length);
+      if (hasDOM) {
+        var div = document.createElement('div');
+        div.on('event', handler1).on('event', handler2);
+        wru.assert('DOM has never reachable listeners', !div.listeners('event').length);
+      }
+    }
+  },{
     name: 'inherited and lazily assigned',
     test: function () {
       var st, ST = function () {

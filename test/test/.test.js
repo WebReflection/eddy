@@ -28,7 +28,7 @@ function exit($code) {
 }
 
 fs.readdirSync(__dirname).filter(function(file){
-  if (ext.test(file) && fs.existsSync(path.join(__dirname, '..', 'src', file))) {
+  if (ext.test(file) && (fs.existsSync || path.existsSync)(path.join(__dirname, '..', 'src', file))) {
     ++many;
     tests.push(file.replace(ext, ''));
     spawn(
