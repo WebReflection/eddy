@@ -139,6 +139,20 @@ var /*! (C) Andrea Giammarchi Mit Style License */
       return loop;
     },
     /**
+     * Borrowed from node.js, it does exactly what node.js does.
+     *
+     * @example
+     *  {}.on('evt', function a(){}).listeners('evt');
+     *  // [ function a(){} ]
+     *
+     * @param   type  string  the optional event name to emit
+     */
+    listeners: function listeners(type) {
+      return  hasOwnProperty.call(this, SECRET) &&
+              hasOwnProperty.call(this[SECRET].l, type) &&
+              this[SECRET].l[type].slice() || [];
+    },
+    /**
      * Counter part of `.on(type, handler)`
      * The equivalent of `removeListener` or `removeEventListener`.
      * It removes an event if already added and return same object
@@ -368,6 +382,9 @@ var dom = {
     var e = createEvent(type, false, false);
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
+  },
+  listeners: function listeners(type) {
+    return [];
   },
   off: function (type, handler, capture) {
     this.removeEventListener(type, handler, capture);

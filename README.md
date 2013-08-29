@@ -5,10 +5,12 @@ a not so obtrusive and *highly optimized* attempt to make JavaScript more awesom
 
 [![build status](https://secure.travis-ci.org/WebReflection/eddy.png)](http://travis-ci.org/WebReflection/eddy)
 
+[![NPM](https://nodei.co/npm/eddy.png?downloads=true)](https://nodei.co/npm/eddy/)
+
 ### The eddy.js Philosophy
 It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.
 
-I am talking about all *de-facto standards API* such `.on(type, handler)`, `.once(type, handler)`, `.off(type, handler)` together with `.emit(type, arg1, argN)` or `.trigger(type, data)` to deal with DOM nodes.
+I am talking about all *de-facto standards API* such `.on(type, handler)`, `.once(type, handler)`, `.off(type, handler)` together with `.emit(type, arg1, argN)` and `.listeners(type)` or `.trigger(type, data)` to deal with DOM nodes.
 
 `eddy.js` aim is to harmonize all these API at core level polluting in a **non enumerable** way the `Object.prototype` in a smart way that simply works!
 
@@ -111,6 +113,19 @@ console.log(object.key); // 0.3245979759376496
 object.emit('delete', 'key');
 console.log(object.key); // undefined
 ```
+
+
+#### Object#listeners(type)
+This method [behaves like node.js](http://nodejs.org/api/events.html#events_emitter_listeners_event) one but on DOM object it will always return an empty array-like object.
+
+```javascript
+function handler() {}
+var obj = {}.on('event', handler);
+var listeners = obj.listeners('event');
+
+console.log(listeners[0] === handler); // true
+```
+In the DOM world there's no way to retrieve back nodes and it has never been a real problem but for _node.js_ or generic _JS business logic_ the possibility to understand already added listeners might be handy (I needed this in [dblite](https://github.com/WebReflection/dblite#dblite) and I've realized it is a very handy method!)
 
 
 #### Object#boundTo(method)
