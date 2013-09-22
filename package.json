@@ -1,7 +1,7 @@
 {
-  "version": "0.2.2",
+  "version": "0.3.0",
   "name": "eddy",
-  "description": "Event Driven JS - Now In Core!",
+  "description": "Event Driven JS",
   "homepage": "https://github.com/WebReflection/eddy",
   "keywords": [
     "event",

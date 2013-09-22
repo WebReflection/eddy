@@ -165,6 +165,24 @@ console.log(
 ```
 
 
+### Array.prototype Enriched API
+New in version `0.3`, all `Array.prototype` methods but `boundTo` and `listeners` have been made smart enough to perform the same call inside each item of the array.
+
+This approach simplifies a very common pattern with collections, specially in the DOM world, so that we can add or remove events to many objects at once.
+
+```javascript
+function query(CSS, parentNode) {
+  return Array.prototype.slice.call(
+    (parentNode || document).querySelectorAll(CSS)
+  );
+}
+
+// later on ...
+query('ul > li').on('click', doStuff);
+```
+The assumption is that collections are commonly used like that.
+
+
 ### Which File ?
 `eddy.js` comes in different flavors but it operates on global, native, constructors.
 This means once you require or include or load `eddy.js` you need to manually `delete` polluted prototypes if needed.

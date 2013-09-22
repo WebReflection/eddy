@@ -7,12 +7,14 @@ REPO = eddy
 VAR = src/a.$(REPO).js\
       src/$(REPO).js\
       src/pollute.js\
+      src/pollute.array.js\
       src/z.$(REPO).js
 
 # make dom files
 DOM = src/a.$(REPO).js\
       src/$(REPO).js\
       src/pollute.js\
+      src/pollute.array.js\
       src/pollute.dom.all.js\
       src/pollute.dom.js\
       src/z.$(REPO).js
