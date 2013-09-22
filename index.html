@@ -38,12 +38,14 @@
 
 <p><a href="http://travis-ci.org/WebReflection/eddy"><img src="https://secure.travis-ci.org/WebReflection/eddy.png" alt="build status"></a></p>
 
+<p><a href="https://nodei.co/npm/eddy/"><img src="https://nodei.co/npm/eddy.png?downloads=true" alt="NPM"></a></p>
+
 <h3>
 <a name="the-eddyjs-philosophy" class="anchor" href="#the-eddyjs-philosophy"><span class="octicon octicon-link"></span></a>The eddy.js Philosophy</h3>
 
 <p>It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.</p>
 
-<p>I am talking about all <em>de-facto standards API</em> such <code>.on(type, handler)</code>, <code>.once(type, handler)</code>, <code>.off(type, handler)</code> together with <code>.emit(type, arg1, argN)</code> or <code>.trigger(type, data)</code> to deal with DOM nodes.</p>
+<p>I am talking about all <em>de-facto standards API</em> such <code>.on(type, handler)</code>, <code>.once(type, handler)</code>, <code>.off(type, handler)</code> together with <code>.emit(type, arg1, argN)</code> and <code>.listeners(type)</code> or <code>.trigger(type, data)</code> to deal with DOM nodes.</p>
 
 <p><code>eddy.js</code> aim is to harmonize all these API at core level polluting in a <strong>non enumerable</strong> way the <code>Object.prototype</code> in a smart way that simply works!</p>
 
@@ -66,7 +68,7 @@
 <p>Returns the object itself after adding an event handler.
 This is basically the equivalent of <code>addListener</code> or <code>addEventListener</code>, where duplicated handlers for the same event are not allowed.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">stopWatch</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">stopWatch</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">startTime</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
 <span class="p">}.</span><span class="nx">on</span><span class="p">(</span>
   <span class="s1">'change'</span><span class="p">,</span>
@@ -96,7 +98,7 @@ By default, <code>capture</code> is false.</p>
 
 <p>Same as <code>Object#on(type, handler[, capture])</code> except the event is triggered once and never again unless specified later on.</p>
 
-<div class="highlight"><pre><span class="c1">// on a generic HTML page inside a script tag...</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// on a generic HTML page inside a script tag...</span>
 <span class="k">this</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">'load'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'page fully loaded'</span><span class="p">);</span>
   <span class="c1">// even if triggered manually</span>
@@ -112,7 +114,7 @@ By default, <code>capture</code> is false.</p>
 <p>Returns the object itself after removing an event handler, if present.
 This is basically the equivalent of <code>removeListener</code> or <code>removeEventListener</code>.</p>
 
-<div class="highlight"><pre><span class="kd">function</span> <span class="nx">clearAllEntries</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">clearAllEntries</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">database</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
 <span class="p">}</span>
 <span class="nb">window</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'unload'</span><span class="p">,</span> <span class="nx">clearAllEntries</span><span class="p">);</span>
@@ -131,7 +133,7 @@ If specified, <code>data</code> must be an object with one or more properties.
 
 <p>This method is more suitable for DOM events or those events based on a single argument parameter/object.</p>
 
-<div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onresize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onresize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">manual</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nb">window</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="p">{</span><span class="nx">manual</span><span class="o">:</span><span class="kc">true</span><span class="p">});</span>
@@ -142,7 +144,7 @@ If specified, <code>data</code> must be an object with one or more properties.
 
 <p>This method <a href="http://nodejs.org/api/events.html#events_emitter_emit_event_arg1_arg2">behaves like node.js</a> one, accepting one or more optional arguments after the type.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'modify'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
   <span class="p">})</span>
@@ -157,11 +159,25 @@ If specified, <code>data</code> must be an object with one or more properties.
 </pre></div>
 
 <h4>
+<a name="objectlistenerstype" class="anchor" href="#objectlistenerstype"><span class="octicon octicon-link"></span></a>Object#listeners(type)</h4>
+
+<p>This method <a href="http://nodejs.org/api/events.html#events_emitter_listeners_event">behaves like node.js</a> one but on DOM object it will always return an empty array-like object.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">handler</span><span class="p">()</span> <span class="p">{}</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'event'</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">listeners</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">listeners</span><span class="p">(</span><span class="s1">'event'</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">listeners</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">handler</span><span class="p">);</span> <span class="c1">// true</span>
+</pre></div>
+
+<p>In the DOM world there's no way to retrieve back nodes and it has never been a real problem but for <em>node.js</em> or generic <em>JS business logic</em> the possibility to understand already added listeners might be handy (I needed this in <a href="https://github.com/WebReflection/dblite#dblite">dblite</a> and I've realized it is a very handy method!)</p>
+
+<h4>
 <a name="objectboundtomethod" class="anchor" href="#objectboundtomethod"><span class="octicon octicon-link"></span></a>Object#boundTo(method)</h4>
 
 <p>This method creates a single bound version of the generic function or instance method.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
   <span class="p">}</span>
@@ -174,7 +190,7 @@ If specified, <code>data</code> must be an object with one or more properties.
 
 <p>If the argument is <em>a function instead of a string</em> that function is used instead.</p>
 
-<div class="highlight"><pre><span class="kd">function</span> <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
@@ -186,7 +202,7 @@ If specified, <code>data</code> must be an object with one or more properties.
 
 <p>Same thing if we pass the method itself as function instead of method name:</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
   <span class="p">}</span>
@@ -205,11 +221,13 @@ Anyway, here the list of files you need:</p>
 
 <ul>
 <li>
-<a href="build/eddy.js">browser</a>, meaning IE9+, every mobile browser included IE9 mobile, and all other browsers</li>
+<a href="build/eddy.js">browser without DOM</a>, for <em>browsers</em> meaning down to IE6 baby, fear not!</li>
 <li>
-<a href="build/eddy.amd.js">AMD</a>, meaning IE9+, every mobile browser included IE9 mobile, and all other browsers</li>
+<a href="build/eddy.dom.js">browser with DOM</a>, for <em>browsers</em> meaning IE8, using <a href="https://github.com/WebReflection/ie8#ie8">ie8 file</a> plus all modern mobile and desktop browsers</li>
 <li>
-<a href="build/eddy.node.js">node.js</a>, meaning ... node.js</li>
+<a href="build/eddy.amd.js">AMD including DOM</a>, same as <code>eddy.dom.js</code> inside the require AMD logic</li>
+<li>
+<a href="build/eddy.node.js">node.js</a>, meaning node.js and other server side engines since no export is used/needed</li>
 </ul><p>You can install <code>eddy.js</code> directly via <code>npm install eddy</code> too and simply use <code>require('eddy')</code>.
 The version for node should work for Rhino too without problems ;-)</p>
 
