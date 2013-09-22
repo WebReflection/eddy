@@ -267,6 +267,18 @@ wru.test([
         })
       }).emit('handle-event'));
     }
+  },
+  {
+    name: 'collections',
+    test: function () {
+      var i = 0,
+          list = [{}, {}].on('check', function () {
+            if (i === 0 && this === list[0]) i++;
+            else if(i === 1 && this === list[1]) i++;
+          });
+      list.emit('check');
+      wru.assert('per each obejct, one invocation', i === 2);
+    }
   }
   /*
   ,{
