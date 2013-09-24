@@ -231,7 +231,7 @@ wru.test([
       if (hasDOM) {
         o = document.createElement('div');
         o.on('event', function(e){
-          e.stopImmediatePropagation();
+          e.stopPropagation();
           if (e.preventDefault) e.preventDefault();
         });
         o.on('pass', Object);
