@@ -58,6 +58,27 @@
 </blockquote>
 
 <h3>
+<a name="compatibility" class="anchor" href="#compatibility"><span class="octicon octicon-link"></span></a>Compatibility</h3>
+
+<p><code>eddy.js</code> is compatible with the following <strong>mobile platforms</strong></p>
+
+<ul>
+<li>iOS 5, 6, 7+</li>
+<li>Android 2.2+, 3, 4.0, 4.1, 4.2, 4.3+</li>
+<li>Windows Phone 7, 8+</li>
+<li>FirefoxOS 0.X, 1+</li>
+<li>Blackberry 10 (probably older too, haven't tested yet)</li>
+<li>webOS 2+</li>
+<li>Nokia Asha and Nokia Xpress browser</li>
+</ul><p>eddy is also compatible with the following <strong>desktop browsers</strong></p>
+
+<ul>
+<li>Chrome, Canary, and Chromium channel</li>
+<li>Safari 5+ and Webkit Nightly</li>
+<li>Internet Explorer 8, 9, 10, 11+</li>
+<li>Firefox, Aurora, and Nightly channel</li>
+<li>Opera</li>
+</ul><h3>
 <a name="objectprototype-enriched-api" class="anchor" href="#objectprototype-enriched-api"><span class="octicon octicon-link"></span></a>Object.prototype Enriched API</h3>
 
 <p>Here a list of methods you can use by default in an <code>eddy.js</code> environment.</p>
@@ -211,6 +232,25 @@ If specified, <code>data</code> must be an object with one or more properties.
   <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">test</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
 <span class="p">);</span> <span class="c1">// true</span>
 </pre></div>
+
+<h3>
+<a name="arrayprototype-enriched-api" class="anchor" href="#arrayprototype-enriched-api"><span class="octicon octicon-link"></span></a>Array.prototype Enriched API</h3>
+
+<p>New in version <code>0.3</code>, all <code>Array.prototype</code> methods but <code>boundTo</code> and <code>listeners</code> have been made smart enough to perform the same call inside each item of the array.</p>
+
+<p>This approach simplifies a very common pattern with collections, specially in the DOM world, so that we can add or remove events to many objects at once.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">CSS</span><span class="p">,</span> <span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span>
+    <span class="p">(</span><span class="nx">parentNode</span> <span class="o">||</span> <span class="nb">document</span><span class="p">).</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="nx">CSS</span><span class="p">)</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// later on ...</span>
+<span class="nx">query</span><span class="p">(</span><span class="s1">'ul &gt; li'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="nx">doStuff</span><span class="p">);</span>
+</pre></div>
+
+<p>The assumption is that collections are commonly used like that.</p>
 
 <h3>
 <a name="which-file-" class="anchor" href="#which-file-"><span class="octicon octicon-link"></span></a>Which File ?</h3>
