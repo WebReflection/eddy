@@ -30,6 +30,7 @@ As summary, [this is the philosophy behind this module](https://twitter.com/WebR
   * Windows Phone 7, 8+
   * FirefoxOS 0.X, 1+
   * Blackberry 10 (probably older too, haven't tested yet)
+  * Opera Mini, Opera Mobile, and Opera Mobile Beta
   * webOS 2+
   * Nokia Asha and Nokia Xpress browser
 
