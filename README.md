@@ -42,6 +42,8 @@ eddy is also compatible with the following **desktop browsers**
   * Firefox, Aurora, and Nightly channel
   * Opera
 
+In order to verify your browser too please [visit the test page](http://webreflection.github.io/eddy/test/).
+
 
 ### Object.prototype Enriched API
 Here a list of methods you can use by default in an `eddy.js` environment.
