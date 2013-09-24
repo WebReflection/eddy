@@ -309,6 +309,8 @@ var /*! (C) Andrea Giammarchi Mit Style License */
       return result;
     }
   },
+  WTF = false,
+  ifNotPresent,
   key;
 
 /* eddy.js private helpers/shortcuts */
@@ -320,11 +322,24 @@ function createSecret() {
     b: []
   };
 }
+
 // assign properties only if not there already
-function ifNotPresent(e, key, value) {
-  if (!hasOwnProperty.call(e, key)) {
-    e[key] = value;
-  }
+try {
+  document.createEvent('Event').target = document;
+  ifNotPresent = function(e, key, value) {
+    if (!hasOwnProperty.call(e, key)) {
+      e[key] = value;
+    }
+  };
+} catch(Nokia_Xpress) {
+  WTF = true;
+  ifNotPresent = function(e, key, value) {
+    if (!hasOwnProperty.call(e, key)) {
+      try {
+        e[key] = value;
+      } catch(Nokia_Xpress) {}
+    }
+  };
 }
 
 function setAndGet(self) {
