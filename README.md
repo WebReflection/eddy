@@ -44,6 +44,13 @@ eddy is also compatible with the following **desktop browsers**
 
 In order to verify your browser too please [visit the test page](http://webreflection.github.io/eddy/test/).
 
+Last, but not least, `eddy.js` has been used and tested in the following **server side** platforms
+
+  * node.js
+  * rhino
+
+If you clone the repo, just `make test` for node or be sure you have a stable rhino jar and `java -jar /path/to/that/jar/js.jar testrhino.js`.
+
 
 ### Object.prototype Enriched API
 Here a list of methods you can use by default in an `eddy.js` environment.

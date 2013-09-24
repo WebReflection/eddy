@@ -1,4 +1,4 @@
-.PHONY: build var node dom bench amd size hint clean test web preview pages dependencies
+.PHONY: build var node dom bench amd size hint clean test web preview pages dependencies rhino
 
 # repository name
 REPO = eddy
@@ -98,6 +98,15 @@ clean:
 # tests, as usual and of course
 test:
 	npm test
+
+# create tests for rhino (requires proper file in the upper wru folder)
+rhino:
+	echo '' > testrhino.js
+	echo 'load(new java.io.File(".").getCanonicalPath()+"/node_modules/wru/build/wru.console.js");' >> testrhino.js
+	echo 'load(new java.io.File(".").getCanonicalPath()+"/build/eddy.node.js");' >> testrhino.js
+	echo 'function require(){}' >> testrhino.js
+	cat 'test/eddy.js' >> testrhino.js
+	java -jar ../wru/builder/jar/js.jar testrhino.js
 
 # tests, as usual and of course
 bench:
