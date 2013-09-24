@@ -21,6 +21,27 @@ As summary, [this is the philosophy behind this module](https://twitter.com/WebR
 > eddy.js is a very pragmatic approach, back those days where developers enriched native prototypes to do more with less code ;-)
 
 
+### Compatibility
+
+`eddy.js` is compatible with the following **mobile platforms**
+
+  * iOS 5, 6, 7+
+  * Android 2.2+, 3, 4.0, 4.1, 4.2, 4.3+
+  * Windows Phone 7, 8+
+  * FirefoxOS 0.X, 1+
+  * Blackberry 10 (probably older too, haven't tested yet)
+  * webOS 2+
+  * Nokia Asha and Nokia Xpress browser
+
+eddy is also compatible with the following **desktop browsers**
+
+  * Chrome, Canary, and Chromium channel
+  * Safari 5+ and Webkit Nightly
+  * Internet Explorer 8, 9, 10, 11+
+  * Firefox, Aurora, and Nightly channel
+  * Opera
+
+
 ### Object.prototype Enriched API
 Here a list of methods you can use by default in an `eddy.js` environment.
 
