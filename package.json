@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "name": "eddy",
   "description": "Event Driven JS",
   "homepage": "https://github.com/WebReflection/eddy",
@@ -24,8 +24,5 @@
   "main": "./build/eddy.node.js",
   "scripts": {
     "test": "node test/.test.js"
-  },
-  "dependencies": {
-    "wru": ">= 0.0.0"
   }
 }
