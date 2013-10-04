@@ -10,11 +10,11 @@ a not so obtrusive and *highly optimized* attempt to make JavaScript more awesom
 ### The eddy.js Philosophy
 It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.
 
-I am talking about all *de-facto standards API* such `.on(type, handler)`, `.once(type, handler)`, `.off(type, handler)` together with `.emit(type, arg1, argN)` and `.listeners(type)` or `.trigger(type, data)` to deal with DOM nodes.
+I am talking about all *de-facto standards API* such `.on(type, handler)`, `.once(type, handler)`, `.off(type, handler)` together with `.emit(type, arg1, argN)` and `.listeners(type)` or `.trigger(type, detail)` to deal with DOM nodes.
 
 `eddy.js` aim is to harmonize all these API at core level polluting in a **non enumerable** way the `Object.prototype` in a smart way that simply works!
 
-This means, *as soon as we use one of those methods, objects become lazily Event Targets* so we can use them as such.
+This means no worries at all for any `for/in` loop you might have in there, even in IE.
 
 As summary, [this is the philosophy behind this module](https://twitter.com/WebReflection/status/354958592601899008)
 
@@ -23,7 +23,7 @@ As summary, [this is the philosophy behind this module](https://twitter.com/WebR
 
 ### Compatibility
 
-`eddy.js` is compatible with the following **mobile platforms**
+`eddy.js` is tested and compatible with the following **mobile platforms**
 
   * iOS 5, 6, 7+
   * Android 2.2+, 3, 4.0, 4.1, 4.2, 4.3+
@@ -114,18 +114,19 @@ keepEntriesButton.on('click', function () {
 ```
 
 
-#### Object#trigger(type[, data])
-Triggers / fires all handlers associated to the event `type` enriching the event with arbitrary `data`.
-If specified, `data` must be an object with one or more properties.
-`data` will be attached as event property too while properties will be copied over the event object.
+#### Object#trigger(type[, detail])
+Triggers / fires all handlers associated to the event `type` enriching the event with arbitrary `detail` simulating what `CustomEvent` does in DOM Level 4 specifications.
 
 This method is more suitable for DOM events or those events based on a single argument parameter/object.
 ```javascript
 window.onresize = function (e) {
-  alert(e.manual);
+  alert(e.detail); // object {any:'detail'}
 };
-window.trigger('resize', {manual:true});
+window.trigger('resize', {any:'detail'});
 ```
+In the DOM world, it is possible to use directly `.trigger(new CustomEvent(type, {cancelable:true, bubbles: true, detail: anyData}))`.
+
+This method will return `false` if any listener called `event.preventDefault()` since by default all triggered events will be cancelable.
 
 
 #### Object#emit(type[, arg1][, argN])
@@ -144,6 +145,8 @@ console.log(object.key); // 0.3245979759376496
 object.emit('delete', 'key');
 console.log(object.key); // undefined
 ```
+
+In the DOM world this method will dispatch an event with specified type and an `arguments` property for interoperability purpose. Such property will contain optional extra arguments used to `.emit(type, a1, aN)` in first place.
 
 
 #### Object#listeners(type)
@@ -220,8 +223,8 @@ This means once you require or include or load `eddy.js` you need to manually `d
 Anyway, here the list of files you need:
 
  * [browser without DOM](build/eddy.js), for *browsers* meaning down to IE6 baby, fear not!
- * [browser with DOM](build/eddy.dom.js), for *browsers* meaning IE8, using [ie8 file](https://github.com/WebReflection/ie8#ie8) plus all modern mobile and desktop browsers
- * [AMD including DOM](build/eddy.amd.js), same as `eddy.dom.js` inside the require AMD logic
+ * [browser with DOM](build/eddy.dom.js), for *browsers* meaning IE8, using [ie8 file](https://github.com/WebReflection/ie8#ie8) plus all modern mobile and desktop browsers. In order to have an almost fully standard and updated DOM environment, please add [dom4](https://github.com/WebReflection/dom4#dom4) after `ie8` as done as example in the [test page](http://webreflection.github.io/eddy/test/).
+ * [AMD including DOM](build/eddy.amd.js), same as `eddy.dom.js` inside the require AMD logic. Both `ie8` and `dom4` are strongly suggested here too.
  * [node.js](build/eddy.node.js), meaning node.js and other server side engines since no export is used/needed
 
 You can install `eddy.js` directly via `npm install eddy` too and simply use `require('eddy')`.
