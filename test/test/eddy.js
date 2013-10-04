@@ -129,12 +129,11 @@ wru.test([
         someProperty: Math.random()
       };
       ({}.on('data', function (e) {
-        wru.assert('properties copied', e.someProperty === data.someProperty);
-        wru.assert('data copied too', e.data === data);
+        wru.assert('properties copied', e.detail === data);
       }).trigger('data', data));
       if (hasDOM) {
         (document.createElement('div').on('data', function (e) {
-          wru.assert('DOM properties copied', e.someProperty === data.someProperty);
+          wru.assert('DOM properties copied', e.detail === data);
           // wru.assert('DOM data copied too', e.data === data);
           // IE8 does not support data property in an event
         }).trigger('data', data));
@@ -148,7 +147,7 @@ wru.test([
         (document.createElement('div').on(data.type, wru.async(function (e) {
           wru.assert('DOM event has data type', e.type === data.type);
           wru.assert('DOM has no data property', !e.data);
-        })).trigger(data, data));
+        })).trigger(new CustomEvent(data.type)), data);
       }
     }
   },{
@@ -221,7 +220,7 @@ wru.test([
     test: function () {
       var o = {};
       o.on('event', function(e){
-        e.stopImmediatePropagation();
+        e.preventDefault();
       });
       o.on('event', Object);
       o.on('pass', Object);
@@ -231,8 +230,7 @@ wru.test([
       if (hasDOM) {
         o = document.createElement('div');
         o.on('event', function(e){
-          e.stopPropagation();
-          if (e.preventDefault) e.preventDefault();
+          e.preventDefault();
         });
         o.on('pass', Object);
         wru.assert('DOM was not stopped', o.trigger('pass') === true);
