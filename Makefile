@@ -61,6 +61,7 @@ dom:
 	rm build/no-copy.$(REPO).dom.max.js
 	rm build/no-copy.$(REPO).dom.js
 	cp ie8/build/ie8.js build/ie8.js
+	cp dom4/build/dom4.js build/dom4.js
 
 # build node.js version
 node:
@@ -77,6 +78,7 @@ amd:
 	rm build/no-copy.$(REPO).amd.max.js
 	rm build/no-copy.$(REPO).amd.js
 	cp ie8/build/ie8.js build/ie8.js
+	cp dom4/build/dom4.js build/dom4.js
 
 size:
 	wc -c build/$(REPO).max.js

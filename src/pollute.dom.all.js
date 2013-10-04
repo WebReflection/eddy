@@ -2,7 +2,7 @@
 var dom = {
   boundTo: eddy.boundTo,
   emit: function emit(type) {
-    var e = createEvent(type, false, false);
+    var e = new CustomEvent(type);
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
@@ -18,26 +18,37 @@ var dom = {
     return this;
   },
   once: eddy.once,
-  trigger: function trigger(evt, data) {
+  trigger: function trigger(evt, detail) {
     var
       isString = typeof evt == 'string',
       type = isString ? evt : evt.type,
-      opt = isString ? (data || isString) : evt,
-      e = createEvent(
+      e = isString ? new CustomEvent(
         type,
-        hasOwnProperty.call(opt, 'bubbles') ?
-          opt.bubbles : true,
-        hasOwnProperty.call(opt, 'cancelable') ?
-          opt.cancelable : true
-      )
+        (
+          commonDescriptor.detail = detail,
+          commonDescriptor
+        )
+      ) : evt
     ;
-    Event.call(e, this, type, isString && data);
+    commonDescriptor.detail = null;
+    Event.call(e, this, type);
     return this.dispatchEvent(e);
   }
 };
 
-function createEvent(type, bubbles, cancelable) {
-  var e = document.createEvent('Event');
-  e.initEvent(type, bubbles, cancelable);
-  return e;
+commonDescriptor.cancelable = true;
+commonDescriptor.bubbles = true;
+
+// assign properties only if not there already
+try {
+  document.createEvent('Event').target = document;
+} catch(Nokia_Xpress) {
+  WTF = true;
+  ifNotPresent = function(e, key, value) {
+    if (!hasOwnProperty.call(e, key)) {
+      try {
+        e[key] = value;
+      } catch(Nokia_Xpress) {}
+    }
+  };
 }

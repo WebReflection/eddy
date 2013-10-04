@@ -48,6 +48,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   IE = SECRET === IE_WONT_ENUMERATE_THIS,
   // used in all ES5 compatible browsers (all but IE < 9)
   commonDescriptor =  (Object.create || Object)(null),
+  recycledArguments = [],
   defineProperty = IE ?
     function (self, property, descriptor) {
       self[property] = descriptor.value;
@@ -252,32 +253,33 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     },
     /**
      * Triggers an event in a *DOMish* way.
-     * The handler wil be invoked with a single object
+     * The handler will be invoked with a single object
      * argument as event with at least a method called
      * `stopImmediatePropagation()` able to break the
      * method invocation loop.
      *
      * The event object will have always at least these properties:
-     *  type      string    the name of the event
-     *  timeStamp number    when the event has been triggered
-     *  target    object    the original object that triggered
-     *  data      [any]     optional argument passed through
-     *                      eventually copied over the event
+     *  type          string    the name of the event
+     *  timeStamp     number    when the event has been triggered
+     *  currentTarget object    the original object that triggered
+     *  target        object    same as DOMish currentTarget
+     *  detail        [any]     optional argument passed through
+     *                          eventually assigned to the event
      * 
      * @example
      *  var o = {}.on('evt', function(e){
      *    console.log(e.type);
-     *    console.log(e.data === RegExp);
+     *    console.log(e.detail === RegExp);
      *  });
      *  o.trigger('evt', RegExp);
-     *  // "evt" true true
+     *  // "evt" true
      *
      * @param   type  string  the event name to emit
-     * @param   [any=any]     optional data object to pass through
-     *                        and/or copy over the event object
+     * @param   [any=any]     optional detail data
+     *                          used as Event.detail property
      * @return  boolean       true if the event was triggered
      */
-    trigger: function trigger(evt, data) {
+    trigger: function trigger(evt, detail) {
       var
         has = hasOwnProperty.call(this, SECRET),
         listeners = has && this[SECRET].l,
@@ -286,32 +288,33 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         loop = has && hasOwnProperty.call(listeners, type),
         array = loop && listeners[type].slice(0),
         event = isString ?
-            new Event(this, type, data) : evt,
-        args = [event],
+            new Event(this, type, detail) : evt,
         i = 0,
         length = loop ? array.length : i,
-        isNotAnEventInstance = !(event instanceof Event),
-        result,
-        current;
+        isNotAnEventInstance = !(event instanceof Event);
       if (isNotAnEventInstance) {
         event._active = true;
         event.stopImmediatePropagation =
           EventPrototype.stopImmediatePropagation;
       }
       event.currentTarget = this;
+      recycledArguments[0] = event;
       while (event._active && i < length) {
-        triggerEvent(this, array[i++], args);
+        triggerEvent(this, array[i++], recycledArguments);
       }
-      result = !!event._active;
       if (isNotAnEventInstance) {
         delete event._active;
         delete event.stopImmediatePropagation;
       }
-      return result;
+      return !event.defaultPrevented;
+    }
+  },
+  ifNotPresent = function(e, key, value) {
+    if (!hasOwnProperty.call(e, key)) {
+      e[key] = value;
     }
   },
   WTF = false,
-  ifNotPresent,
   key;
 
 /* eddy.js private helpers/shortcuts */
@@ -321,25 +324,6 @@ function createSecret() {
     l: {},
     m: [],
     b: []
-  };
-}
-
-// assign properties only if not there already
-try {
-  document.createEvent('Event').target = document;
-  ifNotPresent = function(e, key, value) {
-    if (!hasOwnProperty.call(e, key)) {
-      e[key] = value;
-    }
-  };
-} catch(Nokia_Xpress) {
-  WTF = true;
-  ifNotPresent = function(e, key, value) {
-    if (!hasOwnProperty.call(e, key)) {
-      try {
-        e[key] = value;
-      } catch(Nokia_Xpress) {}
-    }
   };
 }
 
@@ -363,18 +347,19 @@ function triggerEvent(context, handler, args) {
 }
 
 /* the basic eddy.js Event class */
-function Event(target, type, data) {
-  ifNotPresent(this, 'timeStamp', now());
-  for (var key in data) {
-    if (hasOwnProperty.call(data, key)) {
-      ifNotPresent(this, key, data[key]);
-    }
+function Event(target, type, detail) {
+  if (detail) {
+    ifNotPresent(this, 'detail', detail);
   }
   ifNotPresent(this, 'type', type);
   ifNotPresent(this, 'target', target);
-  if (data) ifNotPresent(this, 'data', data);
+  ifNotPresent(this, 'timeStamp', now());
 }
-EventPrototype._active = true;
+EventPrototype.defaultPrevented = false;
+EventPrototype._active = EventPrototype.cancelable = true;
+EventPrototype.preventDefault = function () {
+  this.defaultPrevented = true;
+};
 EventPrototype.stopImmediatePropagation = function () {
   this._active = false;
 };
@@ -422,7 +407,7 @@ for (key in eddy) {
 var dom = {
   boundTo: eddy.boundTo,
   emit: function emit(type) {
-    var e = createEvent(type, false, false);
+    var e = new CustomEvent(type);
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
@@ -438,28 +423,39 @@ var dom = {
     return this;
   },
   once: eddy.once,
-  trigger: function trigger(evt, data) {
+  trigger: function trigger(evt, detail) {
     var
       isString = typeof evt == 'string',
       type = isString ? evt : evt.type,
-      opt = isString ? (data || isString) : evt,
-      e = createEvent(
+      e = isString ? new CustomEvent(
         type,
-        hasOwnProperty.call(opt, 'bubbles') ?
-          opt.bubbles : true,
-        hasOwnProperty.call(opt, 'cancelable') ?
-          opt.cancelable : true
-      )
+        (
+          commonDescriptor.detail = detail,
+          commonDescriptor
+        )
+      ) : evt
     ;
-    Event.call(e, this, type, isString && data);
+    commonDescriptor.detail = null;
+    Event.call(e, this, type);
     return this.dispatchEvent(e);
   }
 };
 
-function createEvent(type, bubbles, cancelable) {
-  var e = document.createEvent('Event');
-  e.initEvent(type, bubbles, cancelable);
-  return e;
+commonDescriptor.cancelable = true;
+commonDescriptor.bubbles = true;
+
+// assign properties only if not there already
+try {
+  document.createEvent('Event').target = document;
+} catch(Nokia_Xpress) {
+  WTF = true;
+  ifNotPresent = function(e, key, value) {
+    if (!hasOwnProperty.call(e, key)) {
+      try {
+        e[key] = value;
+      } catch(Nokia_Xpress) {}
+    }
+  };
 }
 (function(window){
   var
