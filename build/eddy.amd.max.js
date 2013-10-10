@@ -406,6 +406,42 @@ for (key in eddy) {
 }(ArrayPrototype.forEach));
 var dom = {
   boundTo: eddy.boundTo,
+  data: function data(key, value) {
+    /*jshint eqnull:true */
+    var hasDataset = 'dataset' in this;
+    if (arguments.length < 2) {
+      return hasDataset ?
+        this.dataset[key] :
+        (value = this.getAttribute(
+          'data-' + key.replace(
+            data.gre || (data.gre = /-[a-z]/g),
+            data.gplace || (data.gplace = function(m, c) {
+              return c.toUpperCase();
+            })
+          )
+        )) == null ? void 0 : value
+      ;
+    }
+    if (hasDataset) {
+      if (value == null) {
+        return delete this.dataset[key];
+      }
+      this.dataset[key] = value;
+      return value;
+    } else {
+      if (!data.sre) {
+        data.sre = /([a-z])([A-Z])/g;
+        data.splace = function(m, l, U) {
+          return l + '-' + U.toLowerCase();
+        };
+      }
+      key = 'data-' + key.replace(data.sre, data.splace);
+      if (value == null) {
+        return !this.removeAttribute(key);
+      }
+      return this.setAttribute(key, value), value;
+    }
+  },
   emit: function emit(type) {
     var e = new CustomEvent(type);
     e.arguments = ArrayPrototype.slice.call(arguments, 1);

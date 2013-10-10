@@ -198,6 +198,20 @@ console.log(
 ); // true
 ```
 
+### DOM Only
+In order to make life easier on DOM world too, there are few extra methods on top of regular `eddy` stuff.
+
+#### DOM#data(key[, value])
+This method is a normalizer for the `dataset` magic attributes behavior with one exception: you can simply assign `null` or `undefined` to remove the attribute when and if not needed anymore.
+```javascript
+var div = document.createElement('div');
+div.data('key', 'value');
+div.hasAttribute('data-key'); // true
+div.data('key'); // 'value'
+div.data('key', null);
+div.hasAttribute('data-key'); // false
+```
+
 
 ### Array.prototype Enriched API
 New in version `0.3`, all `Array.prototype` methods but `boundTo` and `listeners` have been made smart enough to perform the same call inside each item of the array.

@@ -277,6 +277,19 @@ wru.test([
       list.emit('check');
       wru.assert('per each obejct, one invocation', i === 2);
     }
+  },{
+    name: 'DOM#dataset',
+    test: function () {
+      if (hasDOM) {
+        var o = document.createElement('div');
+        wru.assert('return the value', o.data('key', 123) === 123);
+        wru.assert('the attribute data-key exists', o.hasAttribute('data-key'));
+        wru.assert('the attribute data-key has value', o.getAttribute('data-key') === '123');
+        wru.assert('the attribute is accessible via API', o.data('key') === '123');
+        wru.assert('true on remove', true === o.data('key', null));
+        wru.assert('returns undefined', o.data('key') === undefined);
+      }
+    }
   }
   /*
   ,{
