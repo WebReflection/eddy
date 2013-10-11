@@ -502,6 +502,9 @@ try {
     DocumentPrototype = (
       window.Document || window.HTMLDocument
     ).prototype,
+    XMLHttpRequestPrototype = (
+      window.XMLHttpRequest || function(){}
+    ).prototype,
     key,
     current
   ;
@@ -522,6 +525,11 @@ try {
       defineProperty(
         DocumentPrototype, key, current
       );
+      if (key !== 'data') {
+        defineProperty(
+          XMLHttpRequestPrototype, key, current
+        );
+      }
     }
   }
 }(window));

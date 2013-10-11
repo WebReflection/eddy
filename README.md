@@ -199,7 +199,7 @@ console.log(
 ```
 
 ### DOM Only
-In order to make life easier on DOM world too, there are few extra methods on top of regular `eddy` stuff.
+In order to make life easier on DOM world too, there are few extra methods on top of regular `eddy` stuff, including same behavior for `XMLHttpRequest`.
 
 #### DOM#data(key[, value])
 This method is a normalizer for the `dataset` magic attributes behavior with one exception: you can simply assign `null` or `undefined` to remove the attribute when and if not needed anymore.

@@ -290,6 +290,24 @@ wru.test([
         wru.assert('returns undefined', o.data('key') === undefined);
       }
     }
+  },{
+    name: 'XMLHttpRequest#on',
+    test: function () {
+      if (hasDOM && window.XMLHttpRequest) {
+        var
+          xhr = new XMLHttpRequest,
+          OK = wru.assert(function(ok){
+            wru.assert('everything OK', ok);
+          })
+        ;
+        xhr.open('get', '?', true);
+        xhr.on('readystatechange', function () {
+          if (this.readyState === 4) {
+            OK(this === xhr);
+          }
+        }).send(null);
+      }
+    }
   }
   /*
   ,{
