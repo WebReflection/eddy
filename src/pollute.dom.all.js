@@ -3,10 +3,11 @@ var dom = {
   boundTo: eddy.boundTo,
   data: function data(key, value) {
     /*jshint eqnull:true */
-    var hasDataset = 'dataset' in this;
+    var hasDataset = 'dataset' in this,
+        void0;
     if (arguments.length < 2) {
       return hasDataset ?
-        this.dataset[key] :
+        (key in this.dataset ? this.dataset[key] : void0) :
         (value = this.getAttribute(
           'data-' + key.replace(
             data.gre || (data.gre = /-[a-z]/g),
@@ -14,7 +15,7 @@ var dom = {
               return c.toUpperCase();
             })
           )
-        )) == null ? void 0 : value
+        )) == null ? void0 : value
       ;
     }
     if (hasDataset) {
