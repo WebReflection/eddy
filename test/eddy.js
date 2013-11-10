@@ -123,7 +123,7 @@ wru.test([
       })).trigger(type));
     }
   }, {
-    name: 'trigger data',
+    name: 'trigger detail',
     test: function () {
       var data = {
         someProperty: Math.random()
@@ -149,6 +149,16 @@ wru.test([
           wru.assert('DOM has no data property', !e.data);
         })).trigger(new CustomEvent(data.type)), data);
       }
+    }
+  },{
+    name: 'trigger falsy details',
+    test: function () {
+      ({}
+        .on('event', wru.async(function (e) {
+          wru.assert(e.detail === false);
+        }))
+        .trigger('event', false)
+      );
     }
   },{
     name: 'emit data',

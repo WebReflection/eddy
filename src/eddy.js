@@ -318,7 +318,7 @@ function triggerEvent(context, handler, args) {
 
 /* the basic eddy.js Event class */
 function Event(target, type, detail) {
-  if (detail) {
+  if (detail !== void 0) {
     ifNotPresent(this, 'detail', detail);
   }
   ifNotPresent(this, 'type', type);
