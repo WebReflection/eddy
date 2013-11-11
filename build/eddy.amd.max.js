@@ -519,15 +519,15 @@ try {
         value: dom[key]
       };
       defineProperty(
-        WindowPrototype, key, current
-      );
-      defineProperty(
         ElementPrototype, key, current
       );
-      defineProperty(
-        DocumentPrototype, key, current
-      );
       if (key !== 'data') {
+        defineProperty(
+          WindowPrototype, key, current
+        );
+        defineProperty(
+          DocumentPrototype, key, current
+        );
         defineProperty(
           XMLHttpRequestPrototype, key, current
         );
