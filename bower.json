@@ -7,6 +7,10 @@
         "test",
         ".jshintrc",
         ".travis.yml",
+        ".TO_LOCALE.md",
+        ".gitignore",
+        ".gitmodules",
+        ".npmignore",
         "benchmark",
         "dom4",
         "ie8",
@@ -14,6 +18,7 @@
         "template",
         "package.json",
         "index.html",
+        "testrhino.js",
         "Makefile"
     ]
 }
