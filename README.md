@@ -33,6 +33,7 @@ As summary, [this is the philosophy behind this module](https://twitter.com/WebR
   * Opera Mini, Opera Mobile, and Opera Mobile Beta
   * webOS 2+
   * Nokia Asha and Nokia Xpress browser
+  * UC Browser for Android 2.X or higher
 
 eddy is also compatible with the following **desktop browsers**
 

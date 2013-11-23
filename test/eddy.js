@@ -26,6 +26,7 @@ wru.test([
         var node = document.createElement('div');
         wru.assert('inherits methods', node.on);
         wru.assert('DOM bound once', node.boundTo(o.method) === node.boundTo(method));
+        wru.assert('DOM bound is defined', typeof node.boundTo(method) != 'undefined');
         wru.assert('DOM it\'s bound', node.boundTo(method)() === node);
       }
     }

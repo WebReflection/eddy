@@ -1,6 +1,16 @@
 
 var dom = {
-  boundTo: eddy.boundTo,
+  boundTo: function(boundTo){
+    // UC Browser might not support Object.defineProperty on DOM nodes
+    try {
+      boundTo.call(document.createElement('div'), function(){});
+    } catch(o_O) {
+      setAndGet = function (self) {
+        return (self[SECRET] = createSecret());
+      }
+    }
+    return boundTo;
+  }(eddy.boundTo),
   data: function data(key, value) {
     /*jshint eqnull:true */
     var hasDataset = 'dataset' in this,

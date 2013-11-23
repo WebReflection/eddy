@@ -73,6 +73,13 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   now = Date.now || function () {
     return new Date().getTime();
   },
+  setAndGet = function (self) {
+    var value = createSecret();
+    commonDescriptor.value = value;
+    defineProperty(self, SECRET, commonDescriptor);
+    commonDescriptor.value = null;
+    return value;
+  },
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -324,14 +331,6 @@ function createSecret() {
     m: [],
     b: []
   };
-}
-
-function setAndGet(self) {
-  var value = createSecret();
-  commonDescriptor.value = value;
-  defineProperty(self, SECRET, commonDescriptor);
-  commonDescriptor.value = null;
-  return value;
 }
 
 // check if the handler is a function OR an object

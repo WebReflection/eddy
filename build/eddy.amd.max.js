@@ -74,6 +74,13 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   now = Date.now || function () {
     return new Date().getTime();
   },
+  setAndGet = function (self) {
+    var value = createSecret();
+    commonDescriptor.value = value;
+    defineProperty(self, SECRET, commonDescriptor);
+    commonDescriptor.value = null;
+    return value;
+  },
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -327,14 +334,6 @@ function createSecret() {
   };
 }
 
-function setAndGet(self) {
-  var value = createSecret();
-  commonDescriptor.value = value;
-  defineProperty(self, SECRET, commonDescriptor);
-  commonDescriptor.value = null;
-  return value;
-}
-
 // check if the handler is a function OR an object
 // in latter case invoke `handler.handleEvent(args)`
 // compatible with DOM event handlers
@@ -405,7 +404,17 @@ for (key in eddy) {
   }
 }(ArrayPrototype.forEach));
 var dom = {
-  boundTo: eddy.boundTo,
+  boundTo: function(boundTo){
+    // UC Browser might not support Object.defineProperty on DOM nodes
+    try {
+      boundTo.call(document.createElement('div'), function(){});
+    } catch(o_O) {
+      setAndGet = function (self) {
+        return (self[SECRET] = createSecret());
+      }
+    }
+    return boundTo;
+  }(eddy.boundTo),
   data: function data(key, value) {
     /*jshint eqnull:true */
     var hasDataset = 'dataset' in this,
