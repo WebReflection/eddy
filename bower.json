@@ -1,0 +1,19 @@
+{
+    "name": "eddy-js",
+    "description": "Event Driven JS",
+    "version": "0.4.6",
+    "main": "build/eddy.dom.js",
+    "ignore": [
+        "test",
+        ".jshintrc",
+        ".travis.yml",
+        "benchmark",
+        "dom4",
+        "ie8",
+        "src",
+        "template",
+        "package.json",
+        "index.html",
+        "Makefile"
+    ]
+}
