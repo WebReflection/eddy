@@ -218,7 +218,7 @@ navigator.geolocation.getCurrentPosition(
 
 
 // wait to retrieve initial position
-window.when('geocurrentposition', function(err, pos) {
+myApp.when('geocurrentposition', function(err, pos) {
   if (err) {
     console.error('' + err);
   } else {
