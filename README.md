@@ -199,6 +199,55 @@ console.log(
 ); // true
 ```
 
+
+#### Object#when(type, handler)
+This method simply provides a way to retrieve some data the very first time it has been triggered.
+
+Please note this is not an equivalent to [Promises/A+](http://promises-aplus.github.io/promises-spec/), the one implemented in next version of JavaScript, neither [when](https://github.com/cujojs/when#whenjs) library, this is just meant to simplify few common cases in an Event_ish_ way.
+```javascript
+// async, who knows if and when it will happen
+// will be asked only once in any case (not a watchPosition)
+navigator.geolocation.getCurrentPosition(
+  function(info) {
+    myApp.emit('geocurrentposition', null, info);
+  },
+  function(err) {
+    myApp.emit('geocurrentposition', err || 'unknown', null);
+  }
+);
+
+
+// wait to retrieve initial position
+window.when('geocurrentposition', function(err, pos) {
+  if (err) {
+    console.error('' + err);
+  } else {
+    console.log(pos.coords);
+  }
+});
+
+// any other object could listen even if resolved
+// it wan't ask again for the position
+```
+Above example could be extended to database access request or any other classic user operation that should not be asked more than once, decoupling different requests independently.
+
+```javascript
+// the very first one that will listen to it
+// should be before this event happens regardless
+document.when('DOMContentLoaded', function(e){
+  console.log('we are ready to go');
+});
+
+// later, even loaded asynchronously and without AMD
+document.when('DOMContentLoaded', initLibrary);
+```
+Above code can be simplified just putting this script after `eddy.dom.js`
+```javascript
+document.when('DOMContentLoaded', Object);
+```
+This will ensure that the event will be available whenever a script will ask to listen for the `DOMContentLoaded` event.
+
+
 ### DOM Only
 In order to make life easier on DOM world too, there are few extra methods on top of regular `eddy` stuff, including same behavior for `XMLHttpRequest`.
 

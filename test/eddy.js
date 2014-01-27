@@ -196,6 +196,51 @@ wru.test([
       }
     }
   },{
+    name: 'when',
+    test: function() {
+      var
+        i = 0,
+        o = {}.when('any:event', function () {
+          ++i;
+        }),
+        anyValue = Math.random(),
+        tmp
+      ;
+      wru.assert('not fired yet', i === 0);
+      setTimeout(wru.async(function() {
+        o.emit('any:event', anyValue);
+        wru.assert('fired once', i === 1);
+        o.when('any:event', function(value) {
+          tmp = value;
+        });
+        wru.assert('previous event not fired', i === 1);
+        wru.assert('previous value passed', tmp === anyValue);
+        setTimeout(wru.async(function(){
+          o.when('any:event', function(value) {
+            i++;
+            anyValue = value;
+          });
+          wru.assert('once again, instantly fired', i === 2);
+          wru.assert('initial value still passed', tmp === anyValue);
+        }), 100);
+      }), 100);
+    }
+  },{
+    name: 'when("DOMContentLoaded")',
+    test: function () {
+      var i = 0, evt;
+      if (hasDOM) {
+        document.when('DOMContentLoaded', function(e) {
+          ++i;
+          evt = e;
+        });
+        wru.assert('function called', i === 1);
+        wru.assert('event was the right one', evt.type === 'DOMContentLoaded');
+      } else {
+        wru.assert('nothing to do here');
+      }
+    }
+  },{
     name: 'inherited and lazily assigned',
     test: function () {
       var st, ST = function () {

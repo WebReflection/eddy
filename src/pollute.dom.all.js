@@ -6,8 +6,9 @@ var dom = {
       boundTo.call(document.createElement('div'), function(){});
     } catch(o_O) {
       setAndGet = function (self) {
-        return (self[SECRET] = createSecret());
-      }
+        self[SECRET] = createSecret();
+        return self[SECRET];
+      };
     }
     return boundTo;
   }(eddy.boundTo),
@@ -80,7 +81,8 @@ var dom = {
     commonDescriptor.detail = null;
     Event.call(e, this, type);
     return this.dispatchEvent(e);
-  }
+  },
+  when: eddy.when
 };
 
 commonDescriptor.cancelable = true;
