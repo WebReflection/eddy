@@ -26,6 +26,7 @@ wru.test([
         var node = document.createElement('div');
         wru.assert('inherits methods', node.on);
         wru.assert('DOM bound once', node.boundTo(o.method) === node.boundTo(method));
+        wru.assert('DOM bound is defined', typeof node.boundTo(method) != 'undefined');
         wru.assert('DOM it\'s bound', node.boundTo(method)() === node);
       }
     }
@@ -123,7 +124,7 @@ wru.test([
       })).trigger(type));
     }
   }, {
-    name: 'trigger data',
+    name: 'trigger detail',
     test: function () {
       var data = {
         someProperty: Math.random()
@@ -149,6 +150,16 @@ wru.test([
           wru.assert('DOM has no data property', !e.data);
         })).trigger(new CustomEvent(data.type)), data);
       }
+    }
+  },{
+    name: 'trigger falsy details',
+    test: function () {
+      ({}
+        .on('event', wru.async(function (e) {
+          wru.assert(e.detail === false);
+        }))
+        .trigger('event', false)
+      );
     }
   },{
     name: 'emit data',
@@ -182,6 +193,51 @@ wru.test([
         var div = document.createElement('div');
         div.on('event', handler1).on('event', handler2);
         wru.assert('DOM has never reachable listeners', !div.listeners('event').length);
+      }
+    }
+  },{
+    name: 'when',
+    test: function() {
+      var
+        i = 0,
+        o = {}.when('any:event', function () {
+          ++i;
+        }),
+        anyValue = Math.random(),
+        tmp
+      ;
+      wru.assert('not fired yet', i === 0);
+      setTimeout(wru.async(function() {
+        o.emit('any:event', anyValue);
+        wru.assert('fired once', i === 1);
+        o.when('any:event', function(value) {
+          tmp = value;
+        });
+        wru.assert('previous event not fired', i === 1);
+        wru.assert('previous value passed', tmp === anyValue);
+        setTimeout(wru.async(function(){
+          o.when('any:event', function(value) {
+            i++;
+            anyValue = value;
+          });
+          wru.assert('once again, instantly fired', i === 2);
+          wru.assert('initial value still passed', tmp === anyValue);
+        }), 100);
+      }), 100);
+    }
+  },{
+    name: 'when("DOMContentLoaded")',
+    test: function () {
+      var i = 0, evt;
+      if (hasDOM) {
+        document.when('DOMContentLoaded', function(e) {
+          ++i;
+          evt = e;
+        });
+        wru.assert('function called', i === 1);
+        wru.assert('event was the right one', evt.type === 'DOMContentLoaded');
+      } else {
+        wru.assert('nothing to do here');
       }
     }
   },{

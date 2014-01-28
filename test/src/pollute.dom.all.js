@@ -1,6 +1,17 @@
 
 var dom = {
-  boundTo: eddy.boundTo,
+  boundTo: function(boundTo){
+    // UC Browser might not support Object.defineProperty on DOM nodes
+    try {
+      boundTo.call(document.createElement('div'), function(){});
+    } catch(o_O) {
+      setAndGet = function (self) {
+        self[SECRET] = createSecret();
+        return self[SECRET];
+      };
+    }
+    return boundTo;
+  }(eddy.boundTo),
   data: function data(key, value) {
     /*jshint eqnull:true */
     var hasDataset = 'dataset' in this,
@@ -70,7 +81,8 @@ var dom = {
     commonDescriptor.detail = null;
     Event.call(e, this, type);
     return this.dispatchEvent(e);
-  }
+  },
+  when: eddy.when
 };
 
 commonDescriptor.cancelable = true;

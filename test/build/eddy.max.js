@@ -73,6 +73,13 @@ var /*! (C) Andrea Giammarchi Mit Style License */
   now = Date.now || function () {
     return new Date().getTime();
   },
+  setAndGet = function (self) {
+    var value = createSecret();
+    commonDescriptor.value = value;
+    defineProperty(self, SECRET, commonDescriptor);
+    commonDescriptor.value = null;
+    return value;
+  },
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -129,7 +136,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         has = hasOwnProperty.call(this, SECRET),
         listeners = has && this[SECRET].l,
         loop = has && hasOwnProperty.call(listeners, type),
-        array = loop && listeners[type],
+        array = loop && listeners[type].slice(0),
         args = loop && slice.call(arguments, 1),
         i = 0,
         length = loop ? array.length : i;
@@ -233,7 +240,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *  obj.emit('increment'); // 1 true
      *  obj.emit('increment'); // false
      *
-     * @param   type  string  the event name to emit
+     * @param   type  string  the event name to listen to
      * @param   handler Function|Object   the handler used initially
      * @param   [optional, **reserved**] boolean  unshift instead of push
      * @return  Object  the chained object that called `.once()`
@@ -306,6 +313,53 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         delete event.stopImmediatePropagation;
       }
       return !event.defaultPrevented;
+    },
+    /**
+     * Attach an event in a Promise_ish_ way.
+     * The handler will be invoked instantly
+     * if the event has fired already, it will
+     * listen once otherwise.
+     *
+     * @example
+     *  // DOM example
+     *  window.when('DOMContentLoaded', initApp);
+     *
+     *  // JS example
+     *  user.when('authenticated', function(info) {
+     *    alert('Hello ' + info.name);
+     *  });
+     *  app.once('login', function(info) {
+     *    user.emit('authenticated', info);
+     *  });
+     *
+     * @param   type  string  the event name to listen to
+     * @param   handler Function|Object   the handler used initially
+     * @return  Object  the chained object that called `.when()`
+     */
+    when: function(type, handler) {
+      var
+        has = hasOwnProperty.call(this, SECRET),
+        listeners = (has ? this[SECRET] : setAndGet(this)).w,
+        triggered = has && hasOwnProperty.call(listeners, type)
+      ;
+      return triggered ? (
+        // instantly resolved with first-time args
+        triggerEvent(this, handler, listeners[type]),
+        this
+      ) : this.
+        once(type, function() {
+          // only the first time this gets called
+          if (!hasOwnProperty.call(listeners, type)) {
+            // store the very first time arguments are retrieved
+            // through the when .. it could be either DOM
+            // events or custom emit()
+            listeners[type] = arguments;
+          }
+          // a new callback each time is not optimal
+          // however, this solves pretty quickly so
+          // no real side effects should be introduced
+        }, true).
+        once(type, handler);
     }
   },
   ifNotPresent = function(e, key, value) {
@@ -320,18 +374,11 @@ var /*! (C) Andrea Giammarchi Mit Style License */
 // the object used to trap listeners and bound functions
 function createSecret() {
   return {
+    w: {},
     l: {},
     m: [],
     b: []
   };
-}
-
-function setAndGet(self) {
-  var value = createSecret();
-  commonDescriptor.value = value;
-  defineProperty(self, SECRET, commonDescriptor);
-  commonDescriptor.value = null;
-  return value;
 }
 
 // check if the handler is a function OR an object
@@ -347,7 +394,7 @@ function triggerEvent(context, handler, args) {
 
 /* the basic eddy.js Event class */
 function Event(target, type, detail) {
-  if (detail) {
+  if (detail !== void 0) {
     ifNotPresent(this, 'detail', detail);
   }
   ifNotPresent(this, 'type', type);
