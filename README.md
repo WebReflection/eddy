@@ -231,21 +231,23 @@ myApp.when('geocurrentposition', function(err, pos) {
 ```
 Above example could be extended to database access request or any other classic user operation that should not be asked more than once, decoupling different requests independently.
 
+#### document.when("ready", callback)
+This is a very special case featured directly in core.
+Inspired by the most famous `$(document).ready(callback)` behavior, `document.when("ready", callback)` acts exactly the same way.
+
+If you load `eddy.dom.js` lazily, this should work in any case even after the `DOMContentLoaded` and for all supported browsers.
+
 ```javascript
-// the very first one that will listen to it
-// should be before this event happens regardless
-document.when('DOMContentLoaded', function(e){
+// even if lazily loaded
+document.when('ready', function(e){
   console.log('we are ready to go');
 });
 
 // later, even loaded asynchronously and without AMD
-document.when('DOMContentLoaded', initLibrary);
+document.when('ready', initLibrary);
 ```
-Above code can be simplified just putting this script after `eddy.dom.js`
-```javascript
-document.when('DOMContentLoaded', Object);
-```
-This will ensure that the event will be available whenever a script will ask to listen for the `DOMContentLoaded` event.
+
+This will ensure that the event will be available whenever a script will ask to listen for the `ready` event.
 
 
 ### DOM Only
