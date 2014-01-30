@@ -334,6 +334,15 @@ wru.test([
       wru.assert('per each obejct, one invocation', i === 2);
     }
   },{
+    name: 'document#when(ready)',
+    test: function () {
+      if (hasDOM) {
+        document.when('ready', wru.async(function () {
+          wru.assert('it worked!');
+        }));
+      }
+    }
+  },{
     name: 'DOM#dataset',
     test: function () {
       if (hasDOM) {

@@ -12,6 +12,10 @@
     XMLHttpRequestPrototype = (
       window.XMLHttpRequest || function(){}
     ).prototype,
+    ready = function() {
+      document.trigger('ready');
+    },
+    document = window.document,
     key,
     current
   ;
@@ -38,5 +42,11 @@
         );
       }
     }
+  }
+  document.when('ready', Object);
+  if (/loaded|complete/.test(document.readyState)) {
+    ready();
+  } else {
+    document.once('DOMContentLoaded', ready, true);
   }
 }(window));
