@@ -261,6 +261,8 @@ document.when('ready', initLibrary);
 
 This will ensure that the event will be available whenever a script will ask to listen for the `ready` event.
 
+Please note that if the document is already ready, this will be fired asynchronously and ASAP but never inline.
+
 
 ### DOM Only
 In order to make life easier on DOM world too, there are few extra methods on top of regular `eddy` stuff, including same behavior for `XMLHttpRequest`.
