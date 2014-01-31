@@ -31,6 +31,25 @@ wru.test([
       }
     }
   }, {
+    name: 'boundTo V2',
+    test: function () {
+      var o = {},
+          f = o.boundTo('method', function hiIamMethod() {
+            return this;
+          });
+      wru.assert('method is now own property', o.hasOwnProperty('method'));
+      wru.assert('if reassigned, it is the same',
+        f === o.boundTo('method', function hiIamMethod() {
+          return this;
+        })
+      );
+      wru.assert('if invoked, returns obj as context', f() === o);
+      wru.assert('if invoked through obj, returns obj', o.method() === o);
+      wru.assert('but if invoked indirectly, it does not',
+        (o.method).call(Object) === Object
+      );
+    }
+  },{
     name: 'off',
     test: function () {
       var

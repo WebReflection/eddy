@@ -200,6 +200,18 @@ console.log(
 ```
 
 
+#### since version 0.5.2
+The `boundTo` method now is able to set, if not already present, a method to a generic object.
+```javascript
+var fn = function(){return this};
+obj.boundTo('test', fn) === obj.boundTo('test', function(){})
+obj.boundTo('test', fn)() === obj
+obj.test === fn
+```
+This can be very useful for runtime, in scope, function addressing as example for DOM handlers.
+
+
+
 #### Object#when(type, handler)
 This method simply provides a way to retrieve some data the very first time it has been triggered.
 
