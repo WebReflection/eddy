@@ -613,7 +613,7 @@ try {
   }
   document.when('ready', Object);
   if (/loaded|complete/.test(document.readyState)) {
-    ready();
+    (window.setImmediate || setTimeout)(ready);
   } else {
     document.once('DOMContentLoaded', ready, true);
   }
