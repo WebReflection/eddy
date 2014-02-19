@@ -97,6 +97,16 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *  // same as
      *  obj.boundTo('method') === obj.boundTo(obj.method)
      *
+     * It is also able to set once a method at runtime and
+     * always return the initial one, if any.
+     * This will make the following assertion always true:
+     *
+     * @example
+     *  var fn = function(){return this};
+     *  obj.boundTo('test', fn) === obj.boundTo('test', function(){})
+     *  obj.boundTo('test', fn)() === obj
+     *  obj.test === fn
+     *
      * Bear in mind no arguments can be bound once, only the context.
      * Method could be either a function or a string.
      * In latter case, be aware Google Closure Compiler
@@ -106,13 +116,18 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @param   method  string|Function   the method name to bind
      * @return  Object  the callable bound function/method.
      */
-    boundTo: function boundTo(method) {
+    boundTo: function boundTo(method, callback) {
       var
         all = hasOwnProperty.call(this, SECRET) ?
               this[SECRET] : setAndGet(this),
         m = all.m,
         b = all.b,
-        fn = typeof method === 'string' ? this[method] : method,
+        fn = typeof method === 'string' ? (
+          typeof callback === void 0 ||
+          hasOwnProperty.call(this, method) ?
+            this[method] : (this[method] = callback)
+          ) :
+          method,
         i = indexOf.call(m, fn);
       return i < 0 ?
           (b[push.call(m, fn) - 1] = bind.call(fn, this)) :
