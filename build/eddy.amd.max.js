@@ -124,8 +124,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         m = all.m,
         b = all.b,
         fn = typeof method === 'string' ? (
-          typeof callback === void 0 ||
-          hasOwnProperty.call(this, method) ?
+          (callback == null || hasOwnProperty.call(this, method)) ?
             this[method] : (this[method] = callback)
           ) :
           method,

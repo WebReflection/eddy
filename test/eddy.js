@@ -263,7 +263,7 @@ wru.test([
     name: 'inherited and lazily assigned',
     test: function () {
       var st, ST = function () {
-        return st = {boundTo:function(){}};
+        return st = {};
       };
       wru.assert('trigger', ST().trigger('whatever') === true);
       //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
