@@ -44,7 +44,7 @@ var dom = {
       }
       key = 'data-' + key.replace(data.sre, data.splace);
       if (value == null) {
-        return !this.removeAttribute(key);
+        return (this.removeAttribute(key), true);
       }
       return this.setAttribute(key, value), value;
     }

@@ -26,4 +26,12 @@
       );
     }
   }
-}(ArrayPrototype.forEach));
+}(ArrayPrototype.forEach || function (callback, self) {
+  var array = this, i = 0;
+  while (i < array.length) {
+    if (i in array) {
+      callback.call(self, array[i], i, array);
+    }
+    i++;
+  }
+}));

@@ -88,6 +88,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @return  Object  the callable bound function/method.
      */
     boundTo: function boundTo(method, callback) {
+      /*jshint eqnull:true */
       var
         all = hasOwnProperty.call(this, SECRET) ?
               this[SECRET] : setAndGet(this),
