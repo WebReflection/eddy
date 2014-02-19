@@ -88,14 +88,14 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @return  Object  the callable bound function/method.
      */
     boundTo: function boundTo(method, callback) {
+      /*jshint eqnull:true */
       var
         all = hasOwnProperty.call(this, SECRET) ?
               this[SECRET] : setAndGet(this),
         m = all.m,
         b = all.b,
         fn = typeof method === 'string' ? (
-          typeof callback === void 0 ||
-          hasOwnProperty.call(this, method) ?
+          (callback == null || hasOwnProperty.call(this, method)) ?
             this[method] : (this[method] = callback)
           ) :
           method,

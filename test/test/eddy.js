@@ -263,7 +263,7 @@ wru.test([
     name: 'inherited and lazily assigned',
     test: function () {
       var st, ST = function () {
-        return st = {boundTo:function(){}};
+        return st = {};
       };
       wru.assert('trigger', ST().trigger('whatever') === true);
       //wru.assert('handleEvent', ST().handleEvent('whatever') === st);
@@ -380,7 +380,7 @@ wru.test([
       if (hasDOM && window.XMLHttpRequest) {
         var
           xhr = new XMLHttpRequest,
-          OK = wru.assert(function(ok){
+          OK = wru.async(function(ok){
             wru.assert('everything OK', ok);
           })
         ;

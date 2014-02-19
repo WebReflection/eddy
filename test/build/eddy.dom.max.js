@@ -117,14 +117,14 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @return  Object  the callable bound function/method.
      */
     boundTo: function boundTo(method, callback) {
+      /*jshint eqnull:true */
       var
         all = hasOwnProperty.call(this, SECRET) ?
               this[SECRET] : setAndGet(this),
         m = all.m,
         b = all.b,
         fn = typeof method === 'string' ? (
-          typeof callback === void 0 ||
-          hasOwnProperty.call(this, method) ?
+          (callback == null || hasOwnProperty.call(this, method)) ?
             this[method] : (this[method] = callback)
           ) :
           method,
@@ -464,7 +464,15 @@ for (key in eddy) {
       );
     }
   }
-}(ArrayPrototype.forEach));
+}(ArrayPrototype.forEach || function (callback, self) {
+  var array = this, i = 0;
+  while (i < array.length) {
+    if (i in array) {
+      callback.call(self, array[i], i, array);
+    }
+    i++;
+  }
+}));
 var dom = {
   boundTo: function(boundTo){
     // UC Browser might not support Object.defineProperty on DOM nodes
@@ -510,7 +518,7 @@ var dom = {
       }
       key = 'data-' + key.replace(data.sre, data.splace);
       if (value == null) {
-        return !this.removeAttribute(key);
+        return (this.removeAttribute(key), true);
       }
       return this.setAttribute(key, value), value;
     }
