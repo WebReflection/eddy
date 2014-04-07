@@ -620,6 +620,51 @@ try {
       }
     }
   }
+  // Opera Mini
+  if (!XMLHttpRequestPrototype.addEventListener) {
+    XMLHttpRequestPrototype.addEventListener =
+      function addEventListener(type, handler) {
+      var
+        self = this,
+        handlers = self['_' + type] || (self['_' + type] = [])
+      ;
+      if (indexOf.call(handlers, handler) < 0) {
+        handlers.push(handler);
+        if (!self['on' + type]) {
+          self['on' + type] = function (e) {
+            for (var
+              evt = e || {
+                currentTarget: self,
+                type: type
+              },
+              i = 0,
+              current;
+              i < handlers.length;
+              i++
+            ) {
+              current = handlers[i];
+              if (typeof current === 'function') {
+                current.call(self, evt);
+              } else {
+                current.handleEvent(evt);
+              }
+            }
+          };
+        }
+      }
+    };
+    XMLHttpRequestPrototype.removeEventListener =
+      function removeEventListener(type, handler) {
+      var handlers = self['_' + type] || [],
+          i = indexOf.call(handlers, handler);
+      if (-1 < i) {
+        handlers.splice(i, 1);
+        if (!handlers.length) {
+          self['on' + type] = null;
+        }
+      }
+    };
+  }
   document.when('ready', Object);
   if (/loaded|complete/.test(document.readyState)) {
     (window.setImmediate || setTimeout)(ready);
