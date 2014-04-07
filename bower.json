@@ -1,7 +1,7 @@
 {
     "name": "eddy-js",
     "description": "Event Driven JS",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "main": "build/eddy.dom.js",
     "ignore": [
         "test",
