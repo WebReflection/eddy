@@ -21,7 +21,7 @@ var dom = {
         (key in this.dataset ? this.dataset[key] : void0) :
         (value = this.getAttribute(
           'data-' + key.replace(
-            data.gre || (data.gre = /-[a-z]/g),
+            data.gre || (data.gre = /-([a-z])/g),
             data.gplace || (data.gplace = function(m, c) {
               return c.toUpperCase();
             })
