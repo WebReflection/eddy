@@ -372,6 +372,12 @@ wru.test([
         wru.assert('the attribute is accessible via API', o.data('key') === '123');
         wru.assert('true on remove', true === o.data('key', null));
         wru.assert('returns undefined', o.data('key') === undefined);
+        wru.assert('return the value', o.data('another-key', 123) === 123);
+        wru.assert('the attribute data-key exists', o.hasAttribute('data-another-key'));
+        wru.assert('the attribute data-key has value', o.getAttribute('data-another-key') === '123');
+        wru.assert('the attribute is accessible via API', o.data('another-key') === '123');
+        wru.assert('true on remove', true === o.data('another-key', null));
+        wru.assert('returns undefined', o.data('another-key') === undefined);
       }
     }
   },{
