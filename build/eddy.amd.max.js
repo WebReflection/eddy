@@ -516,7 +516,7 @@ var dom = {
         return value;
       } :
       function data(key, value) {
-        key = transform(key);
+        key = 'data-' + transform(key);
         if (arguments.length < 2) {
           value = this.getAttribute(key);
           return value == null ? void 0 : value;
