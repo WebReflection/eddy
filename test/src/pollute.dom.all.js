@@ -12,43 +12,47 @@ var dom = {
     }
     return boundTo;
   }(eddy.boundTo),
-  data: function data(key, value) {
-    /*jshint eqnull:true */
-    var hasDataset = 'dataset' in this,
-        void0;
-    if (arguments.length < 2) {
-      return hasDataset ?
-        (key in this.dataset ? this.dataset[key] : void0) :
-        (value = this.getAttribute(
-          'data-' + key.replace(
-            data.gre || (data.gre = /-([a-z])/g),
-            data.gplace || (data.gplace = function(m, c) {
-              return c.toUpperCase();
-            })
-          )
-        )) == null ? void0 : value
-      ;
-    }
-    if (hasDataset) {
-      if (value == null) {
-        return delete this.dataset[key];
-      }
-      this.dataset[key] = value;
-      return value;
-    } else {
-      if (!data.sre) {
-        data.sre = /([a-z])([A-Z])/g;
-        data.splace = function(m, l, U) {
+  data: function (hasDataset) {
+    var
+      dash = hasDataset ?
+        /-([a-z])/g :
+        /([a-z])([A-Z])/g,
+      camel = hasDataset ?
+        function (m, c) {
+          return c.toUpperCase();
+        } :
+        function (m, l, U) {
           return l + '-' + U.toLowerCase();
-        };
-      }
-      key = 'data-' + key.replace(data.sre, data.splace);
-      if (value == null) {
-        return (this.removeAttribute(key), true);
-      }
-      return this.setAttribute(key, value), value;
+        }
+    ;
+    function transform(key) {
+      return key.replace(dash, camel);
     }
-  },
+    return hasDataset ?
+      function data(key, value) {
+        key = transform(key);
+        if (arguments.length < 2) {
+          return this.dataset[key];
+        }
+        if (value == null) {
+          return delete this.dataset[key];
+        }
+        this.dataset[key] = value;
+        return value;
+      } :
+      function data(key, value) {
+        key = transform(key);
+        if (arguments.length < 2) {
+          value = this.getAttribute(key);
+          return value == null ? void 0 : value;
+        }
+        if (value == null) {
+          return (this.removeAttribute(key), true);
+        }
+        return this.setAttribute(key, value), value;
+      }
+    ;
+  }('dataset' in document.documentElement),
   emit: function emit(type) {
     var e = new CustomEvent(type);
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
