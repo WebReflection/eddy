@@ -285,14 +285,18 @@ New in version `0.3`, all `Array.prototype` methods but `boundTo` and `listeners
 This approach simplifies a very common pattern with collections, specially in the DOM world, so that we can add or remove events to many objects at once.
 
 ```javascript
-function query(CSS, parentNode) {
-  return Array.prototype.slice.call(
-    (parentNode || document).querySelectorAll(CSS)
-  );
+function $(CSS, parentNode) {'use strict';
+    var el = parentNode || this || document;
+    return CSS.lastIndexOf(':first') === CSS.length - 6 ?
+        [el.querySelector(CSS.slice(0, -6))] :
+        Array.prototype.slice.call(
+            el.querySelectorAll(CSS)
+        )
+    ;
 }
 
 // later on ...
-query('ul > li').on('click', doStuff);
+$('ul > li').on('click', doStuff);
 ```
 The assumption is that collections are commonly used like that.
 
