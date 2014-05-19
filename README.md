@@ -286,6 +286,7 @@ This approach simplifies a very common pattern with collections, specially in th
 
 ```javascript
 function $(CSS, parentNode) {'use strict';
+    /*! (C) Andrea Giammarchi - Mit Style License */
     var el = parentNode || this || document;
     return CSS.lastIndexOf(':first') === CSS.length - 6 ?
         [el.querySelector(CSS.slice(0, -6))] :
