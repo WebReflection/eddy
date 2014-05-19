@@ -1,4 +1,4 @@
-.PHONY: build var node dom bench amd size hint clean test web preview pages dependencies rhino
+.PHONY: build duk var node dom bench amd size hint clean test web preview pages dependencies rhino
 
 # repository name
 REPO = eddy
@@ -40,6 +40,18 @@ build:
 	make size
 	make domsize
 #	make bench
+
+# build self executable for duktape
+duk:
+	node -e 'var fs=require("fs");\
+          fs.writeFileSync(\
+            "test/duk.js",\
+            fs.readFileSync("node_modules/wru/build/wru.console.js") +\
+            "\n" +\
+            fs.readFileSync("build/$(REPO).js") +\
+            "\n" +\
+            fs.readFileSync("test/$(REPO).js").toString().replace(/^[^\x00]+?\/\/:remove\s*/,"")\
+          );'
 
 # build generic version
 var:
