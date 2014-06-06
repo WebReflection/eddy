@@ -1,3 +1,4 @@
+/*jshint eqnull:true */
 (function (Object) {
   'use strict';
   // probably the very first script you want to load in any project

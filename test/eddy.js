@@ -398,6 +398,22 @@ wru.test([
         }).send(null);
       }
     }
+  }, {
+    name: 'window.$',
+    test: function () {
+      if (hasDOM) {
+        var div = document.createElement('div'),
+            p;
+        div.innerHTML = '<p>a</p><p>b</p><p>c</p>';
+        p = div.getElementsByTagName('p')[0];
+        wru.assert(':first is an Array anyway', $('p:first', div) instanceof Array);
+        wru.assert(':first returns an Array of length 1', $('p:first', div).length === 1);
+        wru.assert(':first returns first', $('p:first', div)[0] === p);
+        wru.assert('$() is an Array', $('p', div) instanceof Array);
+        wru.assert('$() returns an Array of length 3', $('p', div).length === 3);
+        wru.assert('$() can be used without second argument too', $('body:first')[0] === document.body);
+      }
+    }
   }
   /*
   ,{

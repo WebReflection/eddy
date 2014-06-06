@@ -17,6 +17,7 @@ DOM = src/a.$(REPO).js\
       src/pollute.array.js\
       src/pollute.dom.all.js\
       src/pollute.dom.js\
+      src/pollute.window.query.js\
       src/z.$(REPO).js
 
 # make node files
