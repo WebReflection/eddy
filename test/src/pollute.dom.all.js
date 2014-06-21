@@ -32,7 +32,8 @@ var dom = {
       function data(key, value) {
         key = transform(key);
         if (arguments.length < 2) {
-          return this.dataset[key];
+          return hasOwnProperty.call(this.dataset, key) ?
+            this.dataset[key] : void 0;
         }
         if (value == null) {
           return delete this.dataset[key];
