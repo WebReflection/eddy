@@ -59,6 +59,7 @@ var dom = {
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
+  expect: eddy.expect,
   listeners: function listeners(type) {
     return [];
   },

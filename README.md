@@ -211,6 +211,36 @@ obj.test === fn
 This can be very useful for runtime, in scope, function addressing as example for DOM handlers.
 
 
+#### Object#expect(type1, ..., typeN)
+Prepares upfront the generic object to accept later on `when` calls so that it's not needed to `when` with empty listeners anymore but just declare through this method what might be emitted/dispatched/triggered later on.
+
+```js
+var myApp = new MyApp().expect(
+  'geolocation',
+  'filePermission',
+  'fullScreen'
+);
+
+navigator.geolocation.getCurrentPosition(
+  function(info) {
+    myApp.emit('geolocation', info);
+  }
+);
+
+// ... later on ...
+myApp
+  .when('geolocation', function (info) {
+    // map it
+  })
+  .when('filePermission', function (file) {
+    // upload it
+  })
+  .when('fullScreen', function (err, ok) {
+    if (ok) ;// show it!
+  })
+;
+````
+
 
 #### Object#when(type, handler)
 This method simply provides a way to retrieve some data the very first time it has been triggered.

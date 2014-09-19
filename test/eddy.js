@@ -414,6 +414,55 @@ wru.test([
         wru.assert('$() can be used without second argument too', $('body:first')[0] === document.body);
       }
     }
+  }, {
+    name: '.expect(type1, typeN)',
+    test: function () {
+      var
+        a, b, c,
+        i = 0,
+        o = {}
+          .expect(
+            'a', 'b', 'c'
+          )
+          .when('a', function (value) {
+            a = value;
+            ++i;
+          })
+      ;
+      wru.assert('never called', i === 0);
+      o.emit('a', 456);
+      wru.assert('listener called', i === 1);
+      wru.assert('event a fired', a === 456);
+      o.emit('b', 123);
+      wru.assert('another listener not called', i === 1);
+      o.when('b', function (value) {
+        ++i;
+        b = value;
+      });
+      o.when('c', function (value) {
+        ++i;
+        c = value;
+      });
+      o.emit('c', 789);
+      wru.assert('event b fired', b === 123);
+      wru.assert('b listener called', i === 3);
+      wru.assert('event c fired', c === 789);
+      o.emit('a', Math.random());
+      o.emit('b', Math.random());
+      o.emit('c', Math.random());
+      o.when('a', function (value) {
+        a = value;
+      });
+      o.when('b', function (value) {
+        b = value;
+      });
+      o.when('c', function (value) {
+        c = value;
+      });
+      wru.assert('a value still the same', a === 456);
+      wru.assert('b value still the same', b === 123);
+      wru.assert('c value still the same', c === 789);
+    }
   }
   /*
   ,{

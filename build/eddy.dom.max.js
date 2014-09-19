@@ -81,6 +81,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     commonDescriptor.value = null;
     return value;
   },
+  empty = function (e) {},
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -160,6 +161,29 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         triggerEvent(this, array[i++], args);
       }
       return loop;
+    },
+    /**
+     * Prepare the object to trigger a `obj.when(type, handler)`
+     *
+     * @example
+     *  // DOM example
+     *  document.expect(
+     *    'geoposition',
+     *    'scrollableElementDetected',
+     *    'filePermissionGranted'
+     *  );
+     *
+     *  // JS example
+     *  user.expect('login', 'logout');
+     *
+     * @params  String  one or more event names/types to expect
+     * @return  Object  the chained object that called `.expect()`
+     */
+    expect: function () {
+      for (var i = 0; i < arguments.length; i++) {
+        this.when(arguments[i], empty);
+      }
+      return this;
     },
     /**
      * Borrowed from node.js, it does exactly what node.js does.
@@ -338,7 +362,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *
      * @example
      *  // DOM example
-     *  window.when('DOMContentLoaded', initApp);
+     *  document.when('DOMContentLoaded', initApp);
      *
      *  // JS example
      *  user.when('authenticated', function(info) {
@@ -534,6 +558,7 @@ var dom = {
     e.arguments = ArrayPrototype.slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
+  expect: eddy.expect,
   listeners: function listeners(type) {
     return [];
   },
@@ -670,7 +695,7 @@ try {
       }
     };
   }
-  document.when('ready', Object);
+  document.expect('ready', 'DOMContentLoaded');
   if (/loaded|complete/.test(document.readyState)) {
     (window.setImmediate || setTimeout)(ready);
   } else {
