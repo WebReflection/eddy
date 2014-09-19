@@ -1,6 +1,6 @@
 {
-  "version": "0.6.1",
   "name": "eddy",
+  "version": "0.6.1",
   "description": "Event Driven JS",
   "homepage": "https://github.com/WebReflection/eddy",
   "keywords": [
@@ -24,8 +24,12 @@
     "type": "git",
     "url": "git://github.com/WebReflection/eddy.git"
   },
-  "main": "./build/eddy.node.js",
-  "scripts": {
-    "test": "node test/.test.js"
-  }
+  "filename": "eddy.dom.js",
+  "npmName": "eddy",
+  "npmFileMap": [{
+    "basePath": "/build/",
+    "files": [
+      "eddy*.js"
+    ]
+  }]
 }
