@@ -153,6 +153,8 @@ pages:
 	cp -rf src ~/tmp/$(REPO)
 	cp -rf build ~/tmp/$(REPO)
 	cp -rf test ~/tmp/$(REPO)
+	cp -rf ie8 ~/tmp/$(REPO)
+	cp -rf dom4 ~/tmp/$(REPO)
 	cp index.html ~/tmp/$(REPO)
 	git checkout gh-pages
 	mkdir -p test
