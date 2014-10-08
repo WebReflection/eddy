@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -45,11 +45,11 @@
 
 <p>It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.</p>
 
-<p>I am talking about all <em>de-facto standards API</em> such <code>.on(type, handler)</code>, <code>.once(type, handler)</code>, <code>.off(type, handler)</code> together with <code>.emit(type, arg1, argN)</code> and <code>.listeners(type)</code> or <code>.trigger(type, data)</code> to deal with DOM nodes.</p>
+<p>I am talking about all <em>de-facto standards API</em> such <code>.on(type, handler)</code>, <code>.once(type, handler)</code>, <code>.off(type, handler)</code> together with <code>.emit(type, arg1, argN)</code> and <code>.listeners(type)</code> or <code>.trigger(type, detail)</code> to deal with DOM nodes.</p>
 
 <p><code>eddy.js</code> aim is to harmonize all these API at core level polluting in a <strong>non enumerable</strong> way the <code>Object.prototype</code> in a smart way that simply works!</p>
 
-<p>This means, <em>as soon as we use one of those methods, objects become lazily Event Targets</em> so we can use them as such.</p>
+<p>This means no worries at all for any <code>for/in</code> loop you might have in there, even in IE.</p>
 
 <p>As summary, <a href="https://twitter.com/WebReflection/status/354958592601899008">this is the philosophy behind this module</a></p>
 
@@ -60,7 +60,7 @@
 <h3>
 <a name="compatibility" class="anchor" href="#compatibility"><span class="octicon octicon-link"></span></a>Compatibility</h3>
 
-<p><code>eddy.js</code> is compatible with the following <strong>mobile platforms</strong></p>
+<p><code>eddy.js</code> is tested and compatible with the following <strong>mobile platforms</strong></p>
 
 <ul>
 <li>iOS 5, 6, 7+</li>
@@ -71,6 +71,7 @@
 <li>Opera Mini, Opera Mobile, and Opera Mobile Beta</li>
 <li>webOS 2+</li>
 <li>Nokia Asha and Nokia Xpress browser</li>
+<li>UC Browser for Android 2.X or higher</li>
 </ul><p>eddy is also compatible with the following <strong>desktop browsers</strong></p>
 
 <ul>
@@ -156,19 +157,21 @@ This is basically the equivalent of <code>removeListener</code> or <code>removeE
 </pre></div>
 
 <h4>
-<a name="objecttriggertype-data" class="anchor" href="#objecttriggertype-data"><span class="octicon octicon-link"></span></a>Object#trigger(type[, data])</h4>
+<a name="objecttriggertype-detail" class="anchor" href="#objecttriggertype-detail"><span class="octicon octicon-link"></span></a>Object#trigger(type[, detail])</h4>
 
-<p>Triggers / fires all handlers associated to the event <code>type</code> enriching the event with arbitrary <code>data</code>.
-If specified, <code>data</code> must be an object with one or more properties.
-<code>data</code> will be attached as event property too while properties will be copied over the event object.</p>
+<p>Triggers / fires all handlers associated to the event <code>type</code> enriching the event with arbitrary <code>detail</code> simulating what <code>CustomEvent</code> does in DOM Level 4 specifications.</p>
 
 <p>This method is more suitable for DOM events or those events based on a single argument parameter/object.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onresize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">manual</span><span class="p">);</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">);</span> <span class="c1">// object {any:'detail'}</span>
 <span class="p">};</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="p">{</span><span class="nx">manual</span><span class="o">:</span><span class="kc">true</span><span class="p">});</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="p">{</span><span class="nx">any</span><span class="o">:</span><span class="s1">'detail'</span><span class="p">});</span>
 </pre></div>
+
+<p>In the DOM world, it is possible to use directly <code>.trigger(new CustomEvent(type, {cancelable:true, bubbles: true, detail: anyData}))</code>.</p>
+
+<p>This method will return <code>false</code> if any listener called <code>event.preventDefault()</code> since by default all triggered events will be cancelable.</p>
 
 <h4>
 <a name="objectemittype-arg1-argn" class="anchor" href="#objectemittype-arg1-argn"><span class="octicon octicon-link"></span></a>Object#emit(type[, arg1][, argN])</h4>
@@ -188,6 +191,8 @@ If specified, <code>data</code> must be an object with one or more properties.
 <span class="nx">object</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'delete'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">);</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span> <span class="c1">// undefined</span>
 </pre></div>
+
+<p>In the DOM world this method will dispatch an event with specified type and an <code>arguments</code> property for interoperability purpose. Such property will contain optional extra arguments used to <code>.emit(type, a1, aN)</code> in first place.</p>
 
 <h4>
 <a name="objectlistenerstype" class="anchor" href="#objectlistenerstype"><span class="octicon octicon-link"></span></a>Object#listeners(type)</h4>
@@ -243,6 +248,123 @@ If specified, <code>data</code> must be an object with one or more properties.
 <span class="p">);</span> <span class="c1">// true</span>
 </pre></div>
 
+<h4>
+<a name="since-version-052" class="anchor" href="#since-version-052"><span class="octicon octicon-link"></span></a>since version 0.5.2</h4>
+
+<p>The <code>boundTo</code> method now is able to set, if not already present, a method to a generic object.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="k">this</span><span class="p">};</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){})</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)()</span> <span class="o">===</span> <span class="nx">obj</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">test</span> <span class="o">===</span> <span class="nx">fn</span>
+</pre></div>
+
+<p>This can be very useful for runtime, in scope, function addressing as example for DOM handlers.</p>
+
+<h4>
+<a name="objectexpecttype1--typen" class="anchor" href="#objectexpecttype1--typen"><span class="octicon octicon-link"></span></a>Object#expect(type1, ..., typeN)</h4>
+
+<p>Prepares upfront the generic object to accept later on <code>when</code> calls so that it's not needed to <code>when</code> with empty listeners anymore but just declare through this method what might be emitted/dispatched/triggered later on.</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">myApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyApp</span><span class="p">().</span><span class="nx">expect</span><span class="p">(</span>
+  <span class="s1">'geolocation'</span><span class="p">,</span>
+  <span class="s1">'filePermission'</span><span class="p">,</span>
+  <span class="s1">'fullScreen'</span>
+<span class="p">);</span>
+
+<span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="p">(</span>
+  <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geolocation'</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="c1">// ... later on ...</span>
+<span class="nx">myApp</span>
+  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'geolocation'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// map it</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'filePermission'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// upload it</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'fullScreen'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ok</span><span class="p">)</span> <span class="p">;</span><span class="c1">// show it!</span>
+  <span class="p">})</span>
+<span class="p">;</span>
+</pre></div>
+
+<h4>
+<a name="objectwhentype-handler" class="anchor" href="#objectwhentype-handler"><span class="octicon octicon-link"></span></a>Object#when(type, handler)</h4>
+
+<p>This method simply provides a way to retrieve some data the very first time it has been triggered.</p>
+
+<p>Please note this is not an equivalent to <a href="http://promises-aplus.github.io/promises-spec/">Promises/A+</a>, the one implemented in next version of JavaScript, neither <a href="https://github.com/cujojs/when#whenjs">when</a> library, this is just meant to simplify few common cases in an Event_ish_ way.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// async, who knows if and when it will happen</span>
+<span class="c1">// will be asked only once in any case (not a watchPosition)</span>
+<span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="p">(</span>
+  <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">||</span> <span class="s1">'unknown'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+
+
+<span class="c1">// wait to retrieve initial position</span>
+<span class="nx">myApp</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pos</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">''</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pos</span><span class="p">.</span><span class="nx">coords</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// any other object could listen even if resolved</span>
+<span class="c1">// it wan't ask again for the position</span>
+</pre></div>
+
+<p>Above example could be extended to database access request or any other classic user operation that should not be asked more than once, decoupling different requests independently.</p>
+
+<h4>
+<a name="documentwhenready-callback" class="anchor" href="#documentwhenready-callback"><span class="octicon octicon-link"></span></a>document.when("ready", callback)</h4>
+
+<p>This is a very special case featured directly in core.
+Inspired by the most famous <code>$(document).ready(callback)</code> behavior, <code>document.when("ready", callback)</code> acts exactly the same way.</p>
+
+<p>If you load <code>eddy.dom.js</code> lazily, this should work in any case even after the <code>DOMContentLoaded</code> and for all supported browsers.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// even if lazily loaded</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'we are ready to go'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// later, even loaded asynchronously and without AMD</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="nx">initLibrary</span><span class="p">);</span>
+</pre></div>
+
+<p>This will ensure that the event will be available whenever a script will ask to listen for the <code>ready</code> event.</p>
+
+<p>Please note that if the document is already ready, this will be fired asynchronously and ASAP but never inline.</p>
+
+<h3>
+<a name="dom-only" class="anchor" href="#dom-only"><span class="octicon octicon-link"></span></a>DOM Only</h3>
+
+<p>In order to make life easier on DOM world too, there are few extra methods on top of regular <code>eddy</code> stuff, including same behavior for <code>XMLHttpRequest</code>.</p>
+
+<h4>
+<a name="domdatakey-value" class="anchor" href="#domdatakey-value"><span class="octicon octicon-link"></span></a>DOM#data(key[, value])</h4>
+
+<p>This method is a normalizer for the <code>dataset</code> magic attributes behavior with one exception: you can simply assign <code>null</code> or <code>undefined</code> to remove the attribute when and if not needed anymore.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="s1">'value'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="s1">'data-key'</span><span class="p">);</span> <span class="c1">// true</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">);</span> <span class="c1">// 'value'</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="s1">'data-key'</span><span class="p">);</span> <span class="c1">// false</span>
+</pre></div>
+
 <h3>
 <a name="arrayprototype-enriched-api" class="anchor" href="#arrayprototype-enriched-api"><span class="octicon octicon-link"></span></a>Array.prototype Enriched API</h3>
 
@@ -250,14 +372,20 @@ If specified, <code>data</code> must be an object with one or more properties.
 
 <p>This approach simplifies a very common pattern with collections, specially in the DOM world, so that we can add or remove events to many objects at once.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">query</span><span class="p">(</span><span class="nx">CSS</span><span class="p">,</span> <span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span>
-    <span class="p">(</span><span class="nx">parentNode</span> <span class="o">||</span> <span class="nb">document</span><span class="p">).</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="nx">CSS</span><span class="p">)</span>
-  <span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">$</span><span class="p">(</span><span class="nx">CSS</span><span class="p">,</span> <span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// @link http://webreflection.blogspot.com/2014/05/134-bytes-for-optimized-and-very-basic.html</span>
+  <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">parentNode</span> <span class="o">||</span> <span class="nb">document</span><span class="p">,</span>
+      <span class="nx">first</span> <span class="o">=</span> <span class="nx">CSS</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">':first'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">CSS</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">6</span><span class="p">,</span>
+      <span class="nx">query</span> <span class="o">=</span> <span class="nx">first</span> <span class="o">?</span>
+        <span class="nx">el</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">CSS</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">))</span> <span class="o">:</span>
+        <span class="nx">el</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="nx">CSS</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">first</span> <span class="o">?</span>
+    <span class="p">(</span><span class="nx">query</span> <span class="o">?</span> <span class="p">[</span><span class="nx">query</span><span class="p">]</span> <span class="o">:</span> <span class="p">[])</span> <span class="o">:</span>
+    <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="c1">// later on ...</span>
-<span class="nx">query</span><span class="p">(</span><span class="s1">'ul &gt; li'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="nx">doStuff</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'ul &gt; li'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="nx">doStuff</span><span class="p">);</span>
 </pre></div>
 
 <p>The assumption is that collections are commonly used like that.</p>
@@ -273,9 +401,9 @@ Anyway, here the list of files you need:</p>
 <li>
 <a href="build/eddy.js">browser without DOM</a>, for <em>browsers</em> meaning down to IE6 baby, fear not!</li>
 <li>
-<a href="build/eddy.dom.js">browser with DOM</a>, for <em>browsers</em> meaning IE8, using <a href="https://github.com/WebReflection/ie8#ie8">ie8 file</a> plus all modern mobile and desktop browsers</li>
+<a href="build/eddy.dom.js">browser with DOM</a>, for <em>browsers</em> meaning IE8, using <a href="https://github.com/WebReflection/ie8#ie8">ie8 file</a> plus all modern mobile and desktop browsers. In order to have an almost fully standard and updated DOM environment, please add <a href="https://github.com/WebReflection/dom4#dom4">dom4</a> after <code>ie8</code> as done as example in the <a href="http://webreflection.github.io/eddy/test/">test page</a>.</li>
 <li>
-<a href="build/eddy.amd.js">AMD including DOM</a>, same as <code>eddy.dom.js</code> inside the require AMD logic</li>
+<a href="build/eddy.amd.js">AMD including DOM</a>, same as <code>eddy.dom.js</code> inside the require AMD logic. Both <code>ie8</code> and <code>dom4</code> are strongly suggested here too.</li>
 <li>
 <a href="build/eddy.node.js">node.js</a>, meaning node.js and other server side engines since no export is used/needed</li>
 </ul><p>You can install <code>eddy.js</code> directly via <code>npm install eddy</code> too and simply use <code>require('eddy')</code>.
