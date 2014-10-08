@@ -26,8 +26,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
       while (i--) a[i] = this[i];
       return a;
     } :
-    slice
-  ,
+    slice,
   // used in all ES5 compatible browsers (all but IE < 9)
   commonDescriptor =  (Object.create || Object)(null),
   recycledArguments = [],
