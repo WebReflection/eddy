@@ -3,4 +3,4 @@
 	url = https://github.com/WebReflection/ie8.git
 [submodule "dom4"]
 	path = dom4
-	url = git://github.com/WebReflection/dom4
+	url = https://github.com/WebReflection/dom4.git
