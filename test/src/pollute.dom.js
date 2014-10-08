@@ -88,7 +88,7 @@
       }
     };
   }
-  document.when('ready', Object);
+  document.expect('ready', 'DOMContentLoaded');
   if (/loaded|complete/.test(document.readyState)) {
     (window.setImmediate || setTimeout)(ready);
   } else {

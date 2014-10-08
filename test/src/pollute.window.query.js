@@ -1,4 +1,3 @@
-
 if (!('$' in window)) defineProperty(window, '$', {
   enumerable: false,
   configurable: true,
@@ -7,12 +6,12 @@ if (!('$' in window)) defineProperty(window, '$', {
   value: function $(CSS, parentNode) {
     var el = parentNode || document,
         length = CSS.length - 6,
-        first = CSS.lastIndexOf(':first') === length,
+        first = CSS.lastIndexOf(':first') === length && 0 < length,
         query = first ?
           el.querySelector(CSS.slice(0, length)) :
           el.querySelectorAll(CSS);
     return first ?
       (query ? [query] : []) :
-      ArrayPrototype.slice.call(query);
+      toArray.call(query);
   }
 });

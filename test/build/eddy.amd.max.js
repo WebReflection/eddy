@@ -47,6 +47,18 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     IE_WONT_ENUMERATE_THIS
   ) ? '_@eddy' + Math.random() : IE_WONT_ENUMERATE_THIS,
   IE = SECRET === IE_WONT_ENUMERATE_THIS,
+  // IE < 9 does not convert NodeList instances via slice.call
+  toArray = IE ?
+    function() {
+      var
+        a = [],
+        i = this.length
+      ;
+      while (i--) a[i] = this[i];
+      return a;
+    } :
+    slice
+  ,
   // used in all ES5 compatible browsers (all but IE < 9)
   commonDescriptor =  (Object.create || Object)(null),
   recycledArguments = [],
@@ -82,6 +94,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     commonDescriptor.value = null;
     return value;
   },
+  empty = function (e) {},
   // for ES3+ and JScript native Objects
   // no hosted objects are considered here
   // see eddy.dom.js for that
@@ -161,6 +174,29 @@ var /*! (C) Andrea Giammarchi Mit Style License */
         triggerEvent(this, array[i++], args);
       }
       return loop;
+    },
+    /**
+     * Prepare the object to trigger a `obj.when(type, handler)`
+     *
+     * @example
+     *  // DOM example
+     *  document.expect(
+     *    'geoposition',
+     *    'scrollableElementDetected',
+     *    'filePermissionGranted'
+     *  );
+     *
+     *  // JS example
+     *  user.expect('login', 'logout');
+     *
+     * @params  String  one or more event names/types to expect
+     * @return  Object  the chained object that called `.expect()`
+     */
+    expect: function () {
+      for (var i = 0; i < arguments.length; i++) {
+        this.when(arguments[i], empty);
+      }
+      return this;
     },
     /**
      * Borrowed from node.js, it does exactly what node.js does.
@@ -339,7 +375,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      *
      * @example
      *  // DOM example
-     *  window.when('DOMContentLoaded', initApp);
+     *  document.when('DOMContentLoaded', initApp);
      *
      *  // JS example
      *  user.when('authenticated', function(info) {
@@ -532,9 +568,10 @@ var dom = {
   }('dataset' in document.documentElement),
   emit: function emit(type) {
     var e = new CustomEvent(type);
-    e.arguments = ArrayPrototype.slice.call(arguments, 1);
+    e.arguments = slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
+  expect: eddy.expect,
   listeners: function listeners(type) {
     return [];
   },
@@ -671,14 +708,13 @@ try {
       }
     };
   }
-  document.when('ready', Object);
+  document.expect('ready', 'DOMContentLoaded');
   if (/loaded|complete/.test(document.readyState)) {
     (window.setImmediate || setTimeout)(ready);
   } else {
     document.once('DOMContentLoaded', ready, true);
   }
 }(window));
-
 if (!('$' in window)) defineProperty(window, '$', {
   enumerable: false,
   configurable: true,
@@ -687,13 +723,13 @@ if (!('$' in window)) defineProperty(window, '$', {
   value: function $(CSS, parentNode) {
     var el = parentNode || document,
         length = CSS.length - 6,
-        first = CSS.lastIndexOf(':first') === length,
+        first = CSS.lastIndexOf(':first') === length && 0 < length,
         query = first ?
           el.querySelector(CSS.slice(0, length)) :
           el.querySelectorAll(CSS);
     return first ?
       (query ? [query] : []) :
-      ArrayPrototype.slice.call(query);
+      toArray.call(query);
   }
 });
 
