@@ -46,6 +46,18 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     IE_WONT_ENUMERATE_THIS
   ) ? '_@eddy' + Math.random() : IE_WONT_ENUMERATE_THIS,
   IE = SECRET === IE_WONT_ENUMERATE_THIS,
+  // IE < 9 does not convert NodeList instances via slice.call
+  toArray = IE ?
+    function() {
+      var
+        a = [],
+        i = this.length
+      ;
+      while (i--) a[i] = this[i];
+      return a;
+    } :
+    slice
+  ,
   // used in all ES5 compatible browsers (all but IE < 9)
   commonDescriptor =  (Object.create || Object)(null),
   recycledArguments = [],

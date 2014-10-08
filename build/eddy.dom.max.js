@@ -46,6 +46,18 @@ var /*! (C) Andrea Giammarchi Mit Style License */
     IE_WONT_ENUMERATE_THIS
   ) ? '_@eddy' + Math.random() : IE_WONT_ENUMERATE_THIS,
   IE = SECRET === IE_WONT_ENUMERATE_THIS,
+  // IE < 9 does not convert NodeList instances via slice.call
+  toArray = IE ?
+    function() {
+      var
+        a = [],
+        i = this.length
+      ;
+      while (i--) a[i] = this[i];
+      return a;
+    } :
+    slice
+  ,
   // used in all ES5 compatible browsers (all but IE < 9)
   commonDescriptor =  (Object.create || Object)(null),
   recycledArguments = [],
@@ -555,7 +567,7 @@ var dom = {
   }('dataset' in document.documentElement),
   emit: function emit(type) {
     var e = new CustomEvent(type);
-    e.arguments = ArrayPrototype.slice.call(arguments, 1);
+    e.arguments = slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
   expect: eddy.expect,
@@ -702,7 +714,6 @@ try {
     document.once('DOMContentLoaded', ready, true);
   }
 }(window));
-
 if (!('$' in window)) defineProperty(window, '$', {
   enumerable: false,
   configurable: true,
@@ -711,13 +722,13 @@ if (!('$' in window)) defineProperty(window, '$', {
   value: function $(CSS, parentNode) {
     var el = parentNode || document,
         length = CSS.length - 6,
-        first = CSS.lastIndexOf(':first') === length,
+        first = CSS.lastIndexOf(':first') === length && 0 < length,
         query = first ?
           el.querySelector(CSS.slice(0, length)) :
           el.querySelectorAll(CSS);
     return first ?
       (query ? [query] : []) :
-      ArrayPrototype.slice.call(query);
+      toArray.call(query);
   }
 });
 

@@ -56,7 +56,7 @@ var dom = {
   }('dataset' in document.documentElement),
   emit: function emit(type) {
     var e = new CustomEvent(type);
-    e.arguments = ArrayPrototype.slice.call(arguments, 1);
+    e.arguments = slice.call(arguments, 1);
     return this.dispatchEvent(e);
   },
   expect: eddy.expect,
