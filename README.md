@@ -7,6 +7,29 @@ a not so obtrusive and *highly optimized* attempt to make JavaScript more awesom
 
 [![NPM](https://nodei.co/npm/eddy.png?downloads=true)](https://nodei.co/npm/eddy/)
 
+
+#### Now in cdnJS
+Many thanks to [cdnjs](http://www.cdnjs.com) for hosting this script. Following an example on how to include it.
+```html
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/eddy/0.6.3/eddy.dom.js"
+>/* eddy.js */</script>
+```
+
+In order to have a fully patched environment for older browser too, we could include these scripts too:
+```html
+<!--[if IE 8]><script
+  src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.3/ie8.js"
+></script><![endif]-->
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/dom4/1.0.1/dom4.js"
+>/* DOM4 */</script>
+<script
+  src="//cdnjs.cloudflare.com/ajax/libs/eddy/0.6.3/eddy.dom.js"
+>/* eddy.js */</script>
+```
+
+
 ### The eddy.js Philosophy
 It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.
 

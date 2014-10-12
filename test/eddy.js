@@ -463,6 +463,55 @@ wru.test([
       wru.assert('b value still the same', b === 123);
       wru.assert('c value still the same', c === 789);
     }
+  }, {
+    name: 'Array#expect(type1, typeN)',
+    test: function () {
+      var
+        a, b, c,
+        i = 0,
+        o = {},
+        z = [o].expect(
+          'a', 'b', 'c'
+        )
+        .when('a', function (value) {
+          a = value;
+          ++i;
+        })
+      ;
+      wru.assert('never called', i === 0);
+      z.emit('a', 456);
+      wru.assert('listener called', i === 1);
+      wru.assert('event a fired', a === 456);
+      z.emit('b', 123);
+      wru.assert('another listener not called', i === 1);
+      z.when('b', function (value) {
+        ++i;
+        b = value;
+      });
+      z.when('c', function (value) {
+        ++i;
+        c = value;
+      });
+      z.emit('c', 789);
+      wru.assert('event b fired', b === 123);
+      wru.assert('b listener called', i === 3);
+      wru.assert('event c fired', c === 789);
+      z.emit('a', Math.random());
+      z.emit('b', Math.random());
+      z.emit('c', Math.random());
+      o.when('a', function (value) {
+        a = value;
+      });
+      o.when('b', function (value) {
+        b = value;
+      });
+      o.when('c', function (value) {
+        c = value;
+      });
+      wru.assert('a value still the same', a === 456);
+      wru.assert('b value still the same', b === 123);
+      wru.assert('c value still the same', c === 789);
+    }
   }
   /*
   ,{
