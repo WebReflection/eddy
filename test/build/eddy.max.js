@@ -190,7 +190,7 @@ var /*! (C) Andrea Giammarchi Mit Style License */
      * @params  String  one or more event names/types to expect
      * @return  Object  the chained object that called `.expect()`
      */
-    expect: function () {
+    expect: function expect() {
       for (var i = 0; i < arguments.length; i++) {
         this.when(arguments[i], empty);
       }
