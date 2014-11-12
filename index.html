@@ -32,7 +32,7 @@
 
         <section id="main_content">
           <h1>
-<a name="event-driven-js" class="anchor" href="#event-driven-js"><span class="octicon octicon-link"></span></a>Event Driven JS</h1>
+<a id="event-driven-js" class="anchor" href="#event-driven-js" aria-hidden="true"><span class="octicon octicon-link"></span></a>Event Driven JS</h1>
 
 <p>a not so obtrusive and <em>highly optimized</em> attempt to make JavaScript more awesome than ever!</p>
 
@@ -40,8 +40,29 @@
 
 <p><a href="https://nodei.co/npm/eddy/"><img src="https://nodei.co/npm/eddy.png?downloads=true" alt="NPM"></a></p>
 
+<h4>
+<a id="now-in-cdnjs" class="anchor" href="#now-in-cdnjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Now in cdnJS</h4>
+
+<p>Many thanks to <a href="http://www.cdnjs.com">cdnjs</a> for hosting this script. Following an example on how to include it.</p>
+
+<div class="highlight highlight-html"><pre><span class="pl-s2">&lt;<span class="pl-ent">script</span></span>
+<span class="pl-s2">  <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>//cdnjs.cloudflare.com/ajax/libs/eddy/0.6.3/eddy.dom.js<span class="pl-pds">"</span></span></span>
+<span class="pl-s2">&gt;<span class="pl-c"><span class="pl-pdc">/*</span> eddy.js <span class="pl-pdc">*/</span></span>&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
+<p>In order to have a fully patched environment for older browser too, we could include these scripts too:</p>
+
+<div class="highlight highlight-html"><pre><span class="pl-c"><span class="pl-pdc">&lt;!--</span>[if IE 8]&gt;&lt;script</span>
+<span class="pl-c">  src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.3/ie8.js"</span>
+<span class="pl-c">&gt;&lt;/script&gt;&lt;![endif]<span class="pl-pdc">--&gt;</span></span>
+<span class="pl-s2">&lt;<span class="pl-ent">script</span></span>
+<span class="pl-s2">  <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>//cdnjs.cloudflare.com/ajax/libs/dom4/1.0.1/dom4.js<span class="pl-pds">"</span></span></span>
+<span class="pl-s2">&gt;<span class="pl-c"><span class="pl-pdc">/*</span> DOM4 <span class="pl-pdc">*/</span></span>&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2">&lt;<span class="pl-ent">script</span></span>
+<span class="pl-s2">  <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>//cdnjs.cloudflare.com/ajax/libs/eddy/0.6.3/eddy.dom.js<span class="pl-pds">"</span></span></span>
+<span class="pl-s2">&gt;<span class="pl-c"><span class="pl-pdc">/*</span> eddy.js <span class="pl-pdc">*/</span></span>&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
 <h3>
-<a name="the-eddyjs-philosophy" class="anchor" href="#the-eddyjs-philosophy"><span class="octicon octicon-link"></span></a>The eddy.js Philosophy</h3>
+<a id="the-eddyjs-philosophy" class="anchor" href="#the-eddyjs-philosophy" aria-hidden="true"><span class="octicon octicon-link"></span></a>The eddy.js Philosophy</h3>
 
 <p>It does not matter if you code client or server side, we all need the same thing and we keep using this or that library to obtain the same behavior.</p>
 
@@ -58,7 +79,7 @@
 </blockquote>
 
 <h3>
-<a name="compatibility" class="anchor" href="#compatibility"><span class="octicon octicon-link"></span></a>Compatibility</h3>
+<a id="compatibility" class="anchor" href="#compatibility" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compatibility</h3>
 
 <p><code>eddy.js</code> is tested and compatible with the following <strong>mobile platforms</strong></p>
 
@@ -72,7 +93,9 @@
 <li>webOS 2+</li>
 <li>Nokia Asha and Nokia Xpress browser</li>
 <li>UC Browser for Android 2.X or higher</li>
-</ul><p>eddy is also compatible with the following <strong>desktop browsers</strong></p>
+</ul>
+
+<p>eddy is also compatible with the following <strong>desktop browsers</strong></p>
 
 <ul>
 <li>Chrome, Canary, and Chromium channel</li>
@@ -80,44 +103,47 @@
 <li>Internet Explorer 8, 9, 10, 11+</li>
 <li>Firefox, Aurora, and Nightly channel</li>
 <li>Opera</li>
-</ul><p>In order to verify your browser too please <a href="http://webreflection.github.io/eddy/test/">visit the test page</a>.</p>
+</ul>
+
+<p>In order to verify your browser too please <a href="http://webreflection.github.io/eddy/test/">visit the test page</a>.</p>
 
 <p>Last, but not least, <code>eddy.js</code> has been used and tested in the following <strong>server side</strong> platforms</p>
 
 <ul>
 <li>node.js</li>
 <li>rhino</li>
-</ul><p>If you clone the repo, just <code>make test</code> for node or be sure you have a stable rhino jar and <code>java -jar /path/to/that/jar/js.jar testrhino.js</code>.</p>
+</ul>
+
+<p>If you clone the repo, just <code>make test</code> for node or be sure you have a stable rhino jar and <code>java -jar /path/to/that/jar/js.jar testrhino.js</code>.</p>
 
 <h3>
-<a name="objectprototype-enriched-api" class="anchor" href="#objectprototype-enriched-api"><span class="octicon octicon-link"></span></a>Object.prototype Enriched API</h3>
+<a id="objectprototype-enriched-api" class="anchor" href="#objectprototype-enriched-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object.prototype Enriched API</h3>
 
 <p>Here a list of methods you can use by default in an <code>eddy.js</code> environment.</p>
 
 <h4>
-<a name="objectontype-handler-capture" class="anchor" href="#objectontype-handler-capture"><span class="octicon octicon-link"></span></a>Object#on(type, handler[, capture])</h4>
+<a id="objectontype-handler-capture" class="anchor" href="#objectontype-handler-capture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#on(type, handler[, capture])</h4>
 
 <p>Returns the object itself after adding an event handler.
 This is basically the equivalent of <code>addListener</code> or <code>addEventListener</code>, where duplicated handlers for the same event are not allowed.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">stopWatch</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">startTime</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
-<span class="p">}.</span><span class="nx">on</span><span class="p">(</span>
-  <span class="s1">'change'</span><span class="p">,</span>
-  <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// log elapsed time per each change</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">startTime</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> stopWatch <span class="pl-ko">=</span> {
+  startTime<span class="pl-ko">:</span> <span class="pl-sc">Date</span>.now()
+}.on(
+  <span class="pl-s1"><span class="pl-pds">'</span>change<span class="pl-pds">'</span></span>,
+  <span class="pl-s">function</span> () {
+    <span class="pl-c"><span class="pl-pdc">//</span> log elapsed time per each change</span>
+    console<span class="pl-sf">.log</span>(<span class="pl-sc">Date</span>.now() <span class="pl-ko">-</span> <span class="pl-v">this</span>.startTime);
+  }
+);
 
-<span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">stopWatch</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'change'</span><span class="p">);</span>
-<span class="p">},</span> <span class="mi">10</span><span class="p">);</span>
+<span class="pl-sf">setInterval</span>(<span class="pl-s">function</span> () {
+  stopWatch.emit(<span class="pl-s1"><span class="pl-pds">'</span>change<span class="pl-pds">'</span></span>);
+}, <span class="pl-cn">10</span>);
 
-<span class="c1">// or using the boundTo method</span>
-<span class="c1">// and the extra arguments accepted by setInterval</span>
-<span class="nx">setInterval</span><span class="p">(</span><span class="nx">stopWatch</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'emit'</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">'change'</span><span class="p">);</span>
-</pre></div>
+<span class="pl-c"><span class="pl-pdc">//</span> or using the boundTo method</span>
+<span class="pl-c"><span class="pl-pdc">//</span> and the extra arguments accepted by setInterval</span>
+<span class="pl-sf">setInterval</span>(stopWatch.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>emit<span class="pl-pds">'</span></span>), <span class="pl-cn">10</span>, <span class="pl-s1"><span class="pl-pds">'</span>change<span class="pl-pds">'</span></span>);</pre></div>
 
 <p>The <code>handler</code> can be either a function or an object as it is for <code>DOM</code> methods such <code>addEventListener</code> or <code>removeEventListener</code>.
 In this case the method <code>handleEvent</code> is invoked with the object itself as context as it is for the <a href="http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-EventListener">native DOM behavior</a>.</p>
@@ -126,272 +152,258 @@ In this case the method <code>handleEvent</code> is invoked with the object itse
 By default, <code>capture</code> is false.</p>
 
 <h4>
-<a name="objectoncetype-handler-capture" class="anchor" href="#objectoncetype-handler-capture"><span class="octicon octicon-link"></span></a>Object#once(type, handler[, capture])</h4>
+<a id="objectoncetype-handler-capture" class="anchor" href="#objectoncetype-handler-capture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#once(type, handler[, capture])</h4>
 
 <p>Same as <code>Object#on(type, handler[, capture])</code> except the event is triggered once and never again unless specified later on.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="c1">// on a generic HTML page inside a script tag...</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">'load'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'page fully loaded'</span><span class="p">);</span>
-  <span class="c1">// even if triggered manually</span>
-  <span class="c1">// this event won't fire anymore</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">'load'</span><span class="p">);</span>
-  <span class="c1">// nothing happened</span>
-<span class="p">});</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-c"><span class="pl-pdc">//</span> on a generic HTML page inside a script tag...</span>
+<span class="pl-v">this</span>.once(<span class="pl-s1"><span class="pl-pds">'</span>load<span class="pl-pds">'</span></span>, <span class="pl-s">function</span>(<span class="pl-vpf">e</span>) {
+  console<span class="pl-sf">.log</span>(<span class="pl-s1"><span class="pl-pds">'</span>page fully loaded<span class="pl-pds">'</span></span>);
+  <span class="pl-c"><span class="pl-pdc">//</span> even if triggered manually</span>
+  <span class="pl-c"><span class="pl-pdc">//</span> this event won't fire anymore</span>
+  <span class="pl-v">this</span>.fire(<span class="pl-s1"><span class="pl-pds">'</span>load<span class="pl-pds">'</span></span>);
+  <span class="pl-c"><span class="pl-pdc">//</span> nothing happened</span>
+});</pre></div>
 
 <h4>
-<a name="objectofftype-handler-capture" class="anchor" href="#objectofftype-handler-capture"><span class="octicon octicon-link"></span></a>Object#off(type, handler[, capture])</h4>
+<a id="objectofftype-handler-capture" class="anchor" href="#objectofftype-handler-capture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#off(type, handler[, capture])</h4>
 
 <p>Returns the object itself after removing an event handler, if present.
 This is basically the equivalent of <code>removeListener</code> or <code>removeEventListener</code>.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">clearAllEntries</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">database</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-<span class="p">}</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'unload'</span><span class="p">,</span> <span class="nx">clearAllEntries</span><span class="p">);</span>
-<span class="nx">keepEntriesButton</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// drop the clear procedure</span>
-  <span class="nb">window</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span><span class="s1">'unload'</span><span class="p">,</span> <span class="nx">clearAllEntries</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">function</span> <span class="pl-enf">clearAllEntries</span>() {
+  database.<span class="pl-sf">clear</span>();
+}
+<span class="pl-sc">window</span>.on(<span class="pl-s1"><span class="pl-pds">'</span>unload<span class="pl-pds">'</span></span>, clearAllEntries);
+keepEntriesButton.on(<span class="pl-s1"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> () {
+  <span class="pl-c"><span class="pl-pdc">//</span> drop the clear procedure</span>
+  <span class="pl-sc">window</span>.off(<span class="pl-s1"><span class="pl-pds">'</span>unload<span class="pl-pds">'</span></span>, clearAllEntries);
+});</pre></div>
 
 <h4>
-<a name="objecttriggertype-detail" class="anchor" href="#objecttriggertype-detail"><span class="octicon octicon-link"></span></a>Object#trigger(type[, detail])</h4>
+<a id="objecttriggertype-detail" class="anchor" href="#objecttriggertype-detail" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#trigger(type[, detail])</h4>
 
 <p>Triggers / fires all handlers associated to the event <code>type</code> enriching the event with arbitrary <code>detail</code> simulating what <code>CustomEvent</code> does in DOM Level 4 specifications.</p>
 
 <p>This method is more suitable for DOM events or those events based on a single argument parameter/object.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nb">window</span><span class="p">.</span><span class="nx">onresize</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">);</span> <span class="c1">// object {any:'detail'}</span>
-<span class="p">};</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">'resize'</span><span class="p">,</span> <span class="p">{</span><span class="nx">any</span><span class="o">:</span><span class="s1">'detail'</span><span class="p">});</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-sc">window</span>.<span class="pl-enf">onresize</span> <span class="pl-ko">=</span> <span class="pl-s">function</span> (<span class="pl-vpf">e</span>) {
+  <span class="pl-sf">alert</span>(e.detail); <span class="pl-c"><span class="pl-pdc">//</span> object {any:'detail'}</span>
+};
+<span class="pl-sc">window</span>.trigger(<span class="pl-s1"><span class="pl-pds">'</span>resize<span class="pl-pds">'</span></span>, {any<span class="pl-ko">:</span><span class="pl-s1"><span class="pl-pds">'</span>detail<span class="pl-pds">'</span></span>});</pre></div>
 
 <p>In the DOM world, it is possible to use directly <code>.trigger(new CustomEvent(type, {cancelable:true, bubbles: true, detail: anyData}))</code>.</p>
 
 <p>This method will return <code>false</code> if any listener called <code>event.preventDefault()</code> since by default all triggered events will be cancelable.</p>
 
 <h4>
-<a name="objectemittype-arg1-argn" class="anchor" href="#objectemittype-arg1-argn"><span class="octicon octicon-link"></span></a>Object#emit(type[, arg1][, argN])</h4>
+<a id="objectemittype-arg1-argn" class="anchor" href="#objectemittype-arg1-argn" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#emit(type[, arg1][, argN])</h4>
 
 <p>This method <a href="http://nodejs.org/api/events.html#events_emitter_emit_event_arg1_arg2">behaves like node.js</a> one, accepting one or more optional arguments after the type.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{}</span>
-  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'modify'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'delete'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">delete</span> <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
-  <span class="p">})</span>
-<span class="p">;</span>
-<span class="nx">object</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'modify'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">());</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span> <span class="c1">// 0.3245979759376496</span>
-<span class="nx">object</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'delete'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">);</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span> <span class="c1">// undefined</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> object <span class="pl-ko">=</span> {}
+  .on(<span class="pl-s1"><span class="pl-pds">'</span>modify<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> (<span class="pl-vpf">key</span>, <span class="pl-vpf">value</span>) {
+    <span class="pl-v">this</span>[key] <span class="pl-ko">=</span> value;
+  })
+  .on(<span class="pl-s1"><span class="pl-pds">'</span>delete<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> (<span class="pl-vpf">key</span>) {
+    <span class="pl-ko">delete</span> <span class="pl-v">this</span>[key];
+  })
+;
+object.emit(<span class="pl-s1"><span class="pl-pds">'</span>modify<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>, <span class="pl-sc">Math</span>.<span class="pl-sf">random</span>());
+console<span class="pl-sf">.log</span>(object.key); <span class="pl-c"><span class="pl-pdc">//</span> 0.3245979759376496</span>
+object.emit(<span class="pl-s1"><span class="pl-pds">'</span>delete<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>);
+console<span class="pl-sf">.log</span>(object.key); <span class="pl-c"><span class="pl-pdc">//</span> undefined</span></pre></div>
 
 <p>In the DOM world this method will dispatch an event with specified type and an <code>arguments</code> property for interoperability purpose. Such property will contain optional extra arguments used to <code>.emit(type, a1, aN)</code> in first place.</p>
 
 <h4>
-<a name="objectlistenerstype" class="anchor" href="#objectlistenerstype"><span class="octicon octicon-link"></span></a>Object#listeners(type)</h4>
+<a id="objectlistenerstype" class="anchor" href="#objectlistenerstype" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#listeners(type)</h4>
 
 <p>This method <a href="http://nodejs.org/api/events.html#events_emitter_listeners_event">behaves like node.js</a> one but on DOM object it will always return an empty array-like object.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">handler</span><span class="p">()</span> <span class="p">{}</span>
-<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'event'</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">listeners</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">listeners</span><span class="p">(</span><span class="s1">'event'</span><span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">function</span> <span class="pl-enf">handler</span>() {}
+<span class="pl-s">var</span> obj <span class="pl-ko">=</span> {}.on(<span class="pl-s1"><span class="pl-pds">'</span>event<span class="pl-pds">'</span></span>, handler);
+<span class="pl-s">var</span> listeners <span class="pl-ko">=</span> obj.listeners(<span class="pl-s1"><span class="pl-pds">'</span>event<span class="pl-pds">'</span></span>);
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">listeners</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">handler</span><span class="p">);</span> <span class="c1">// true</span>
-</pre></div>
+console<span class="pl-sf">.log</span>(listeners[<span class="pl-cn">0</span>] <span class="pl-ko">===</span> handler); <span class="pl-c"><span class="pl-pdc">//</span> true</span></pre></div>
 
 <p>In the DOM world there's no way to retrieve back nodes and it has never been a real problem but for <em>node.js</em> or generic <em>JS business logic</em> the possibility to understand already added listeners might be handy (I needed this in <a href="https://github.com/WebReflection/dblite#dblite">dblite</a> and I've realized it is a very handy method!)</p>
 
 <h4>
-<a name="objectboundtomethod" class="anchor" href="#objectboundtomethod"><span class="octicon octicon-link"></span></a>Object#boundTo(method)</h4>
+<a id="objectboundtomethod" class="anchor" href="#objectboundtomethod" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#boundTo(method)</h4>
 
 <p>This method creates a single bound version of the generic function or instance method.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">};</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
-<span class="p">);</span> <span class="c1">// true</span>
-<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)();</span> <span class="c1">// true</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> obj <span class="pl-ko">=</span> {
+  <span class="pl-enf">test</span>: <span class="pl-s">function</span> () {
+    console<span class="pl-sf">.log</span>(<span class="pl-v">this</span> <span class="pl-ko">===</span> obj);
+  }
+};
+console<span class="pl-sf">.log</span>(
+  obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>) <span class="pl-ko">===</span> obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>)
+); <span class="pl-c"><span class="pl-pdc">//</span> true</span>
+obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>)(); <span class="pl-c"><span class="pl-pdc">//</span> true</span></pre></div>
 
 <p>If the argument is <em>a function instead of a string</em> that function is used instead.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)</span>
-<span class="p">);</span> <span class="c1">// true</span>
-<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">test</span><span class="p">)();</span> <span class="c1">// true</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">function</span> <span class="pl-enf">test</span>() {
+  console<span class="pl-sf">.log</span>(<span class="pl-v">this</span> <span class="pl-ko">===</span> obj);
+}
+<span class="pl-s">var</span> obj <span class="pl-ko">=</span> {};
+console<span class="pl-sf">.log</span>(
+  obj.boundTo(test) <span class="pl-ko">===</span> obj.boundTo(test)
+); <span class="pl-c"><span class="pl-pdc">//</span> true</span>
+obj.boundTo(test)(); <span class="pl-c"><span class="pl-pdc">//</span> true</span></pre></div>
 
 <p>Same thing if we pass the method itself as function instead of method name:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">test</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">};</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
-  <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">test</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">)</span>
-<span class="p">);</span> <span class="c1">// true</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> obj <span class="pl-ko">=</span> {
+  <span class="pl-enf">test</span>: <span class="pl-s">function</span> () {
+    console<span class="pl-sf">.log</span>(<span class="pl-v">this</span> <span class="pl-ko">===</span> obj);
+  }
+};
+console<span class="pl-sf">.log</span>(
+  obj.boundTo(obj.test) <span class="pl-ko">===</span> obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>)
+); <span class="pl-c"><span class="pl-pdc">//</span> true</span></pre></div>
 
 <h4>
-<a name="since-version-052" class="anchor" href="#since-version-052"><span class="octicon octicon-link"></span></a>since version 0.5.2</h4>
+<a id="since-version-052" class="anchor" href="#since-version-052" aria-hidden="true"><span class="octicon octicon-link"></span></a>since version 0.5.2</h4>
 
 <p>The <code>boundTo</code> method now is able to set, if not already present, a method to a generic object.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="k">this</span><span class="p">};</span>
-<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="o">===</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){})</span>
-<span class="nx">obj</span><span class="p">.</span><span class="nx">boundTo</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)()</span> <span class="o">===</span> <span class="nx">obj</span>
-<span class="nx">obj</span><span class="p">.</span><span class="nx">test</span> <span class="o">===</span> <span class="nx">fn</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> <span class="pl-enf">fn</span> <span class="pl-ko">=</span> <span class="pl-s">function</span>(){<span class="pl-k">return</span> <span class="pl-v">this</span>};
+obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>, fn) <span class="pl-ko">===</span> obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>, <span class="pl-s">function</span>(){})
+obj.boundTo(<span class="pl-s1"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>, fn)() <span class="pl-ko">===</span> obj
+obj.test <span class="pl-ko">===</span> fn</pre></div>
 
 <p>This can be very useful for runtime, in scope, function addressing as example for DOM handlers.</p>
 
 <h4>
-<a name="objectexpecttype1--typen" class="anchor" href="#objectexpecttype1--typen"><span class="octicon octicon-link"></span></a>Object#expect(type1, ..., typeN)</h4>
+<a id="objectexpecttype1--typen" class="anchor" href="#objectexpecttype1--typen" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#expect(type1, ..., typeN)</h4>
 
 <p>Prepares upfront the generic object to accept later on <code>when</code> calls so that it's not needed to <code>when</code> with empty listeners anymore but just declare through this method what might be emitted/dispatched/triggered later on.</p>
 
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">myApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyApp</span><span class="p">().</span><span class="nx">expect</span><span class="p">(</span>
-  <span class="s1">'geolocation'</span><span class="p">,</span>
-  <span class="s1">'filePermission'</span><span class="p">,</span>
-  <span class="s1">'fullScreen'</span>
-<span class="p">);</span>
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> myApp <span class="pl-ko">=</span> <span class="pl-ko">new</span> <span class="pl-enti">MyApp</span>().expect(
+  <span class="pl-s1"><span class="pl-pds">'</span>geolocation<span class="pl-pds">'</span></span>,
+  <span class="pl-s1"><span class="pl-pds">'</span>filePermission<span class="pl-pds">'</span></span>,
+  <span class="pl-s1"><span class="pl-pds">'</span>fullScreen<span class="pl-pds">'</span></span>
+);
 
-<span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="p">(</span>
-  <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geolocation'</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">);</span>
+<span class="pl-sc">navigator</span>.geolocation.getCurrentPosition(
+  <span class="pl-s">function</span>(<span class="pl-vpf">info</span>) {
+    myApp.emit(<span class="pl-s1"><span class="pl-pds">'</span>geolocation<span class="pl-pds">'</span></span>, info);
+  }
+);
 
-<span class="c1">// ... later on ...</span>
-<span class="nx">myApp</span>
-  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'geolocation'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// map it</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'filePermission'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// upload it</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'fullScreen'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">ok</span><span class="p">)</span> <span class="p">;</span><span class="c1">// show it!</span>
-  <span class="p">})</span>
-<span class="p">;</span>
-</pre></div>
+<span class="pl-c"><span class="pl-pdc">//</span> ... later on ...</span>
+myApp
+  .when(<span class="pl-s1"><span class="pl-pds">'</span>geolocation<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> (<span class="pl-vpf">info</span>) {
+    <span class="pl-c"><span class="pl-pdc">//</span> map it</span>
+  })
+  .when(<span class="pl-s1"><span class="pl-pds">'</span>filePermission<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> (<span class="pl-vpf">file</span>) {
+    <span class="pl-c"><span class="pl-pdc">//</span> upload it</span>
+  })
+  .when(<span class="pl-s1"><span class="pl-pds">'</span>fullScreen<span class="pl-pds">'</span></span>, <span class="pl-s">function</span> (<span class="pl-vpf">err</span>, <span class="pl-vpf">ok</span>) {
+    <span class="pl-k">if</span> (ok) ;<span class="pl-c"><span class="pl-pdc">//</span> show it!</span>
+  })
+;</pre></div>
 
 <h4>
-<a name="objectwhentype-handler" class="anchor" href="#objectwhentype-handler"><span class="octicon octicon-link"></span></a>Object#when(type, handler)</h4>
+<a id="objectwhentype-handler" class="anchor" href="#objectwhentype-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>Object#when(type, handler)</h4>
 
 <p>This method simply provides a way to retrieve some data the very first time it has been triggered.</p>
 
 <p>Please note this is not an equivalent to <a href="http://promises-aplus.github.io/promises-spec/">Promises/A+</a>, the one implemented in next version of JavaScript, neither <a href="https://github.com/cujojs/when#whenjs">when</a> library, this is just meant to simplify few common cases in an Event_ish_ way.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="c1">// async, who knows if and when it will happen</span>
-<span class="c1">// will be asked only once in any case (not a watchPosition)</span>
-<span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="p">(</span>
-  <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">myApp</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="nx">err</span> <span class="o">||</span> <span class="s1">'unknown'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">);</span>
+<div class="highlight highlight-javascript"><pre><span class="pl-c"><span class="pl-pdc">//</span> async, who knows if and when it will happen</span>
+<span class="pl-c"><span class="pl-pdc">//</span> will be asked only once in any case (not a watchPosition)</span>
+<span class="pl-sc">navigator</span>.geolocation.getCurrentPosition(
+  <span class="pl-s">function</span>(<span class="pl-vpf">info</span>) {
+    myApp.emit(<span class="pl-s1"><span class="pl-pds">'</span>geocurrentposition<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>, info);
+  },
+  <span class="pl-s">function</span>(<span class="pl-vpf">err</span>) {
+    myApp.emit(<span class="pl-s1"><span class="pl-pds">'</span>geocurrentposition<span class="pl-pds">'</span></span>, err <span class="pl-ko">||</span> <span class="pl-s1"><span class="pl-pds">'</span>unknown<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>);
+  }
+);
 
 
-<span class="c1">// wait to retrieve initial position</span>
-<span class="nx">myApp</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'geocurrentposition'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">pos</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">''</span> <span class="o">+</span> <span class="nx">err</span><span class="p">);</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pos</span><span class="p">.</span><span class="nx">coords</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">});</span>
+<span class="pl-c"><span class="pl-pdc">//</span> wait to retrieve initial position</span>
+myApp.when(<span class="pl-s1"><span class="pl-pds">'</span>geocurrentposition<span class="pl-pds">'</span></span>, <span class="pl-s">function</span>(<span class="pl-vpf">err</span>, <span class="pl-vpf">pos</span>) {
+  <span class="pl-k">if</span> (err) {
+    console<span class="pl-sf">.error</span>(<span class="pl-s1"><span class="pl-pds">'</span><span class="pl-pds">'</span></span> <span class="pl-ko">+</span> err);
+  } <span class="pl-k">else</span> {
+    console<span class="pl-sf">.log</span>(pos.coords);
+  }
+});
 
-<span class="c1">// any other object could listen even if resolved</span>
-<span class="c1">// it wan't ask again for the position</span>
-</pre></div>
+<span class="pl-c"><span class="pl-pdc">//</span> any other object could listen even if resolved</span>
+<span class="pl-c"><span class="pl-pdc">//</span> it wan't ask again for the position</span></pre></div>
 
 <p>Above example could be extended to database access request or any other classic user operation that should not be asked more than once, decoupling different requests independently.</p>
 
 <h4>
-<a name="documentwhenready-callback" class="anchor" href="#documentwhenready-callback"><span class="octicon octicon-link"></span></a>document.when("ready", callback)</h4>
+<a id="documentwhenready-callback" class="anchor" href="#documentwhenready-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a>document.when("ready", callback)</h4>
 
 <p>This is a very special case featured directly in core.
 Inspired by the most famous <code>$(document).ready(callback)</code> behavior, <code>document.when("ready", callback)</code> acts exactly the same way.</p>
 
 <p>If you load <code>eddy.dom.js</code> lazily, this should work in any case even after the <code>DOMContentLoaded</code> and for all supported browsers.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="c1">// even if lazily loaded</span>
-<span class="nb">document</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'we are ready to go'</span><span class="p">);</span>
-<span class="p">});</span>
+<div class="highlight highlight-javascript"><pre><span class="pl-c"><span class="pl-pdc">//</span> even if lazily loaded</span>
+<span class="pl-sc">document</span>.when(<span class="pl-s1"><span class="pl-pds">'</span>ready<span class="pl-pds">'</span></span>, <span class="pl-s">function</span>(<span class="pl-vpf">e</span>){
+  console<span class="pl-sf">.log</span>(<span class="pl-s1"><span class="pl-pds">'</span>we are ready to go<span class="pl-pds">'</span></span>);
+});
 
-<span class="c1">// later, even loaded asynchronously and without AMD</span>
-<span class="nb">document</span><span class="p">.</span><span class="nx">when</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="nx">initLibrary</span><span class="p">);</span>
-</pre></div>
+<span class="pl-c"><span class="pl-pdc">//</span> later, even loaded asynchronously and without AMD</span>
+<span class="pl-sc">document</span>.when(<span class="pl-s1"><span class="pl-pds">'</span>ready<span class="pl-pds">'</span></span>, initLibrary);</pre></div>
 
 <p>This will ensure that the event will be available whenever a script will ask to listen for the <code>ready</code> event.</p>
 
 <p>Please note that if the document is already ready, this will be fired asynchronously and ASAP but never inline.</p>
 
 <h3>
-<a name="dom-only" class="anchor" href="#dom-only"><span class="octicon octicon-link"></span></a>DOM Only</h3>
+<a id="dom-only" class="anchor" href="#dom-only" aria-hidden="true"><span class="octicon octicon-link"></span></a>DOM Only</h3>
 
 <p>In order to make life easier on DOM world too, there are few extra methods on top of regular <code>eddy</code> stuff, including same behavior for <code>XMLHttpRequest</code>.</p>
 
 <h4>
-<a name="domdatakey-value" class="anchor" href="#domdatakey-value"><span class="octicon octicon-link"></span></a>DOM#data(key[, value])</h4>
+<a id="domdatakey-value" class="anchor" href="#domdatakey-value" aria-hidden="true"><span class="octicon octicon-link"></span></a>DOM#data(key[, value])</h4>
 
 <p>This method is a normalizer for the <code>dataset</code> magic attributes behavior with one exception: you can simply assign <code>null</code> or <code>undefined</code> to remove the attribute when and if not needed anymore.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'div'</span><span class="p">);</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="s1">'value'</span><span class="p">);</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="s1">'data-key'</span><span class="p">);</span> <span class="c1">// true</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">);</span> <span class="c1">// 'value'</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
-<span class="nx">div</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="s1">'data-key'</span><span class="p">);</span> <span class="c1">// false</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> div <span class="pl-ko">=</span> <span class="pl-sc">document</span>.<span class="pl-sf">createElement</span>(<span class="pl-s1"><span class="pl-pds">'</span>div<span class="pl-pds">'</span></span>);
+div.data(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span>);
+div.hasAttribute(<span class="pl-s1"><span class="pl-pds">'</span>data-key<span class="pl-pds">'</span></span>); <span class="pl-c"><span class="pl-pdc">//</span> true</span>
+div.data(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>); <span class="pl-c"><span class="pl-pdc">//</span> 'value'</span>
+div.data(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>);
+div.hasAttribute(<span class="pl-s1"><span class="pl-pds">'</span>data-key<span class="pl-pds">'</span></span>); <span class="pl-c"><span class="pl-pdc">//</span> false</span></pre></div>
 
 <h3>
-<a name="arrayprototype-enriched-api" class="anchor" href="#arrayprototype-enriched-api"><span class="octicon octicon-link"></span></a>Array.prototype Enriched API</h3>
+<a id="arrayprototype-enriched-api" class="anchor" href="#arrayprototype-enriched-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Array.prototype Enriched API</h3>
 
 <p>New in version <code>0.3</code>, all <code>Array.prototype</code> methods but <code>boundTo</code> and <code>listeners</code> have been made smart enough to perform the same call inside each item of the array.</p>
 
 <p>This approach simplifies a very common pattern with collections, specially in the DOM world, so that we can add or remove events to many objects at once.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="kd">function</span> <span class="nx">$</span><span class="p">(</span><span class="nx">CSS</span><span class="p">,</span> <span class="nx">parentNode</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// @link http://webreflection.blogspot.com/2014/05/134-bytes-for-optimized-and-very-basic.html</span>
-  <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">parentNode</span> <span class="o">||</span> <span class="nb">document</span><span class="p">,</span>
-      <span class="nx">first</span> <span class="o">=</span> <span class="nx">CSS</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">':first'</span><span class="p">)</span> <span class="o">===</span> <span class="nx">CSS</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">6</span><span class="p">,</span>
-      <span class="nx">query</span> <span class="o">=</span> <span class="nx">first</span> <span class="o">?</span>
-        <span class="nx">el</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="nx">CSS</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">))</span> <span class="o">:</span>
-        <span class="nx">el</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="nx">CSS</span><span class="p">);</span>
-  <span class="k">return</span> <span class="nx">first</span> <span class="o">?</span>
-    <span class="p">(</span><span class="nx">query</span> <span class="o">?</span> <span class="p">[</span><span class="nx">query</span><span class="p">]</span> <span class="o">:</span> <span class="p">[])</span> <span class="o">:</span>
-    <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
-<span class="p">}</span>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">function</span> <span class="pl-enf">$</span>(<span class="pl-vpf">CSS</span>, <span class="pl-vpf">parentNode</span>) {
+  <span class="pl-c"><span class="pl-pdc">//</span> @link http://webreflection.blogspot.com/2014/05/134-bytes-for-optimized-and-very-basic.html</span>
+  <span class="pl-s">var</span> el <span class="pl-ko">=</span> parentNode <span class="pl-ko">||</span> <span class="pl-sc">document</span>,
+      first <span class="pl-ko">=</span> CSS.<span class="pl-sf">lastIndexOf</span>(<span class="pl-s1"><span class="pl-pds">'</span>:first<span class="pl-pds">'</span></span>) <span class="pl-ko">===</span> CSS.length <span class="pl-ko">-</span> <span class="pl-cn">6</span>,
+      query <span class="pl-ko">=</span> first <span class="pl-ko">?</span>
+        el.querySelector(CSS.<span class="pl-sf">slice</span>(<span class="pl-cn">0</span>, <span class="pl-ko">-</span><span class="pl-cn">6</span>)) <span class="pl-ko">:</span>
+        el.querySelectorAll(CSS);
+  <span class="pl-k">return</span> first <span class="pl-ko">?</span>
+    (query <span class="pl-ko">?</span> [query] <span class="pl-ko">:</span> []) <span class="pl-ko">:</span>
+    <span class="pl-sc">Array</span>.prototype.slice.<span class="pl-sf">call</span>(query);
+}
 
-<span class="c1">// later on ...</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">'ul &gt; li'</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">'click'</span><span class="p">,</span> <span class="nx">doStuff</span><span class="p">);</span>
-</pre></div>
+<span class="pl-c"><span class="pl-pdc">//</span> later on ...</span>
+$(<span class="pl-s1"><span class="pl-pds">'</span>ul &gt; li<span class="pl-pds">'</span></span>).on(<span class="pl-s1"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, doStuff);</pre></div>
 
 <p>The assumption is that collections are commonly used like that.</p>
 
 <h3>
-<a name="which-file-" class="anchor" href="#which-file-"><span class="octicon octicon-link"></span></a>Which File ?</h3>
+<a id="which-file-" class="anchor" href="#which-file-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Which File ?</h3>
 
 <p><code>eddy.js</code> comes in different flavors but it operates on global, native, constructors.
 This means once you require or include or load <code>eddy.js</code> you need to manually <code>delete</code> polluted prototypes if needed.
@@ -406,11 +418,13 @@ Anyway, here the list of files you need:</p>
 <a href="build/eddy.amd.js">AMD including DOM</a>, same as <code>eddy.dom.js</code> inside the require AMD logic. Both <code>ie8</code> and <code>dom4</code> are strongly suggested here too.</li>
 <li>
 <a href="build/eddy.node.js">node.js</a>, meaning node.js and other server side engines since no export is used/needed</li>
-</ul><p>You can install <code>eddy.js</code> directly via <code>npm install eddy</code> too and simply use <code>require('eddy')</code>.
+</ul>
+
+<p>You can install <code>eddy.js</code> directly via <code>npm install eddy</code> too and simply use <code>require('eddy')</code>.
 The version for node should work for Rhino too without problems ;-)</p>
 
 <h3>
-<a name="why-eddy-as-name-" class="anchor" href="#why-eddy-as-name-"><span class="octicon octicon-link"></span></a>Why Eddy As Name ?</h3>
+<a id="why-eddy-as-name-" class="anchor" href="#why-eddy-as-name-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why Eddy As Name ?</h3>
 
 <p>Not only because of the " <em>Event Driven</em> sound check ", the definition I prefer is the following one:</p>
 
@@ -421,7 +435,7 @@ The version for node should work for Rhino too without problems ;-)</p>
 <p>but <a href="http://dictionary.reference.com/browse/eddy">all other definitions</a> are somehow very metaphoric too ;-)</p>
 
 <h3>
-<a name="not-your-meal-" class="anchor" href="#not-your-meal-"><span class="octicon octicon-link"></span></a>Not Your Meal ?</h3>
+<a id="not-your-meal-" class="anchor" href="#not-your-meal-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Not Your Meal ?</h3>
 
 <p>If you are stuck in late 90s dogmas about JS and forbidden <code>Object.prototype</code> pollution, you can always go for <a href="https://github.com/WebReflection/event-target#event-target">EventTarget</a> mixin and use that with all your classes.</p>
 
