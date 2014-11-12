@@ -11,6 +11,11 @@ wru.test([
       wru.assert(Object.eddy || typeof eddy !== 'undefined' && eddy); // global eddy
     }
   }, {
+    name: "Class",
+    test: function () {
+        wru.assert('there is a global Class utility', typeof Class === 'function');
+    }
+  },{
     name: 'boundTo',
     test: function () {
       function method() {
