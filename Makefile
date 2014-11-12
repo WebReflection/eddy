@@ -61,6 +61,10 @@ var:
 	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).max.js >build/no-copy.$(REPO).js
 	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).max.js >build/$(REPO).max.js
 	cat template/copyright build/no-copy.$(REPO).js >build/$(REPO).js
+	echo "" >>build/$(REPO).max.js
+	echo "" >>build/$(REPO).js
+	cat es-class/build/es-class.max.js >>build/$(REPO).max.js
+	cat es-class/build/es-class.js >>build/$(REPO).js
 	rm build/no-copy.$(REPO).max.js
 	rm build/no-copy.$(REPO).js
 
@@ -71,6 +75,10 @@ dom:
 	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).dom.max.js >build/no-copy.$(REPO).dom.js
 	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).dom.max.js >build/$(REPO).dom.max.js
 	cat template/copyright build/no-copy.$(REPO).dom.js >build/$(REPO).dom.js
+	echo "" >>build/$(REPO).dom.max.js
+	echo "" >>build/$(REPO).dom.js
+	cat es-class/build/es-class.max.js >>build/$(REPO).dom.max.js
+	cat es-class/build/es-class.js >>build/$(REPO).dom.js
 	rm build/no-copy.$(REPO).dom.max.js
 	rm build/no-copy.$(REPO).dom.js
 
@@ -78,6 +86,10 @@ dom:
 node:
 	mkdir -p build
 	cat template/license.before LICENSE.txt template/license.after template/node.before $(NODE) template/node.after >build/$(REPO).node.js
+	echo "" >>build/$(REPO).node.js
+	cat es-class/build/es-class.max.js >>build/$(REPO).node.js
+	echo "" >>build/$(REPO).node.js
+	echo "global.Class=global.Class||Class;" >>build/$(REPO).node.js
 
 # build AMD version
 amd:
@@ -86,6 +98,10 @@ amd:
 	node node_modules/uglify-js/bin/uglifyjs --verbose build/no-copy.$(REPO).amd.max.js >build/no-copy.$(REPO).amd.js
 	cat template/license.before LICENSE.txt template/license.after build/no-copy.$(REPO).amd.max.js >build/$(REPO).amd.max.js
 	cat template/copyright build/no-copy.$(REPO).amd.js >build/$(REPO).amd.js
+	echo "" >>build/$(REPO).amd.max.js
+	echo "" >>build/$(REPO).amd.js
+	cat es-class/build/es-class.max.js >>build/$(REPO).amd.max.js
+	cat es-class/build/es-class.js >>build/$(REPO).amd.js
 	rm build/no-copy.$(REPO).amd.max.js
 	rm build/no-copy.$(REPO).amd.js
 

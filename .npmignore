@@ -1,3 +1,6 @@
+.gitmodules
+.gitignore
+es-class/*
 src/*
 test/*
 template/*
