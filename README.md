@@ -110,7 +110,7 @@ By default, `capture` is false.
 
 
 #### Object#once(type, handler[, capture])
-Same as `Object#on(type, handler[, capture])` except the event is triggered once and never again unless specified later on.
+Similar to `Object#on(type, handler[, capture])`, except the event is triggered once and never again unless specified later on.
 ```javascript
 // on a generic HTML page inside a script tag...
 this.once('load', function(e) {
@@ -121,6 +121,7 @@ this.once('load', function(e) {
   // nothing happened
 });
 ```
+Please read the [note about `.off`](https://github.com/WebReflection/eddy#note-about-off-and-once) before chosing this method.
 
 
 #### Object#off(type, handler[, capture])
@@ -139,7 +140,6 @@ keepEntriesButton.on('click', function () {
 
 ##### Note about `.off` and `.once`
 Please **note** that in case `.once` was used, instead of `.on`, this method will **not** remove the listener.
-
 Accordingly, if you need to eventually drop later on a listener via `.off`, use `.on` and not `.once`.
 
 
