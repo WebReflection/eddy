@@ -137,6 +137,12 @@ keepEntriesButton.on('click', function () {
 });
 ```
 
+##### Note about `.off` and `.once`
+Please **note** that in case `.once` was used, instead of `.on`, this method will **not** remove the listener.
+
+Accordingly, if you need to eventually drop later on a listener via `.off`, use `.on` and not `.once`.
+
+
 
 #### Object#trigger(type[, detail])
 Triggers / fires all handlers associated to the event `type` enriching the event with arbitrary `detail` simulating what `CustomEvent` does in DOM Level 4 specifications.
