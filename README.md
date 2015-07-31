@@ -8,6 +8,7 @@ a not so obtrusive and *highly optimized* attempt to make JavaScript more awesom
 [![NPM](https://nodei.co/npm/eddy.png?downloads=true)](https://nodei.co/npm/eddy/)
 
 
+
 #### Now in cdnJS
 Many thanks to [cdnjs](http://www.cdnjs.com) for hosting this script. Following an example on how to include it.
 ```html
