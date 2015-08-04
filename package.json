@@ -1,5 +1,6 @@
 {
   "version": "0.7.0",
+  "license": "MIT",
   "name": "eddy",
   "description": "Event Driven JS",
   "homepage": "https://github.com/WebReflection/eddy",
@@ -27,5 +28,8 @@
   "main": "./build/eddy.node.js",
   "scripts": {
     "test": "node test/.test.js"
+  },
+  "devDependencies": {
+    "wru": "^0.1.0"
   }
 }
